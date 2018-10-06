@@ -1,0 +1,56 @@
+swagger: '2.0'
+info:
+  version: 0.0.1
+  title: Projekt Cool-Aid
+  description: Office hours booking system. Legally distinct from the trademarked beverage.
+
+paths:
+  /student:
+    post:
+      summary: Add a new student.
+      parameters: 
+        - in: body
+          name: body
+          description: Student object.
+          required: true
+          schema:
+            $ref: '#/definitions/Student'
+      responses:
+        '405':
+          description: Invalid input.
+  /student/login:
+    get:
+      summary: Login student.
+      parameters: 
+        - name: utorId
+          in: query
+          description: The username.
+          required: true
+          type: string
+        - name: studentNumber
+          in: query
+          description: The password.
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Successful login.
+  /student/logout:
+    get:
+      summary: Logout student.
+      responses:
+        '200':
+          description: Successful logout.
+
+definitions:
+  Student:
+    type: object
+    properties:
+      utorId:
+        type: string
+      studentNumber:
+        type: integer
+      firstName:
+        type: string
+      lastName:
+        type: string
