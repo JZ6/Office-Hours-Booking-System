@@ -3,6 +3,13 @@
 ## Goal
 Describe the approach you intend to take for testing your implementation.
 
+## Design
+
+Chosen testing framework:
+
+TDD and CI Plans:
+
+
 ## Handout
 
 Modern programmers write tests as they write code. Part of writing pretty well any code is to figure out a way to exercise it from a test suite. Typically the approach is called Test Driven Development (TDD). All of you have been exposed to Junit in Java. In this project the test code may be more challenging in that in addition to unit tests to exercise your endpoints and models you will need to find ways to test the client code for your web apps. Fortunately, modern frameworks like django and ruby on rails have full support for built in tests, often employing frameworks like http://www.seleniumhq.org/ for client testing. In fact, many books have been written that walk you through test driven development using the big web frameworks. For instance, for django see http://www.obeythetestinggoat.com/pages/book.html or for ruby see http://www.saasbook.info/

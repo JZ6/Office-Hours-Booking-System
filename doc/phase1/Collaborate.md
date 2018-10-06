@@ -3,6 +3,23 @@
 ## Goal
 Establish how your team is going to work together. How you will manage your sources. How you will contribute to your sources. When you will meet, how you will communicate, who will scribe, how you will maintain your backlog, etc.
 
+## Design
+
+**Source Contributions:**
+
+**Meeting Times:**
+
+**Meeting Locations:**
+
+**Means of Communication:**
+
+Slack, Messenger, Github Projects/Issues.
+
+**Scribe:**
+
+**Project Backlog Maintainence:**
+Github Project Board and Issues.
+
 
 ## Handout
 

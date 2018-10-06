@@ -3,6 +3,19 @@
 ## Goal
 Design the APIs supported by the Ticket, Applicant (etc) endpoints.
 
+## Design
+
+End points (REST):
+
+### Get
+
+### Put
+
+### Update
+
+### Delete
+
+
 ## Handout
 
 You will follow Bezos dictum for your project. Clients will use endpoints to get, put, update the details of applicant, course and the other model objects required.
