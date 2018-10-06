@@ -1,5 +1,8 @@
 # Api.md
 
+## Goal
+Design the APIs supported by the Ticket, Applicant (etc) endpoints.
+
 ## Handout
 
 You will follow Bezos dictum for your project. Clients will use endpoints to get, put, update the details of applicant, course and the other model objects required.
