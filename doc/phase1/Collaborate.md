@@ -5,6 +5,8 @@ Establish how your team is going to work together. How you will manage your sour
 
 ## Design
 
+Team Members:  [Grant](https://github.com/wonggran), Asher, Pablo, [Benson](https://github.com/bensonchan), [Jay](https://github.com/JZ6)
+
 **Source Contributions:**
 
 **Meeting Times:**
@@ -19,6 +21,14 @@ Slack, Messenger, Github Projects/Issues.
 
 **Project Backlog Maintainence:**
 Github Project Board and Issues.
+
+## Meetings
+
+* Meeting 1 (Friday, October 5, 2018) [4PM - 5PM]:
+  * Took place during CSC302 tutorial in room BA2175.
+  * Team members present: Grant, Asher, Benson, Pablo, Jay
+  * Notes: Discussed preliminary elements of the project, such as basic UI design, project infrastructure, and project   language/framework.
+We also decided to compile the strength and learning goals of each team member using [google sheets](https://docs.google.com/spreadsheets/d/1VuGrKT8nzdXNjr2z0zlAprT-Ls2GLufDvrs8wtJoTwY/edit?usp=sharing).
 
 
 ## Handout
