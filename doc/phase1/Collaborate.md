@@ -26,9 +26,10 @@ Github Project Board and Issues.
 
 * Meeting 1 (Friday, October 5, 2018) [4PM - 5PM]:
   * Took place during CSC302 tutorial in room BA2175.
-  * Team members present: Grant, Asher, Benson, Pablo, Jay
-  * Notes: Discussed preliminary elements of the project, such as basic UI design, project infrastructure, and project   language/framework.
-We also decided to compile the strength and learning goals of each team member using [google sheets](https://docs.google.com/spreadsheets/d/1VuGrKT8nzdXNjr2z0zlAprT-Ls2GLufDvrs8wtJoTwY/edit?usp=sharing).
+  * Team members present: Grant, Asher, Benson, Pablo, Jay.
+  * Notes: 
+    * Discussed preliminary elements of the project, such as basic UI design, project infrastructure, and project   language/framework. 
+    * We also decided to compile the strengths and learning goals of each team member on [Scope.md](Scope.md).
 
 
 ## Handout
