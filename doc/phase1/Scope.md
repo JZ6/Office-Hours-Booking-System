@@ -5,12 +5,18 @@ Triage the use cases to identify an area of focus for your team.
 
 ## Design Use Cases
 
-Team learning goals:
+### Team learning goals:
+| Name | Skills | Learning Goals |
+| ------------- | ------------- | ------------- |
+| Jay | Javascript | Frontend, Backend (Python), End point design. |
+| Grant | Relational Database Design, PostgreSQL | Database design using documents, moving data from user input to the database, update views from database, prevent data corruption from concurrent operations on the database. |
+| Benson | Cursory full stack development | Frontend (React, JS, Bootstrap?), UI design, End point design. |
+| Asher | | |
+| Pablo | | |
 
-Chosen use case subset:
+### Chosen use case subset:
 
-Omitted application parts:
-
+### Omitted application parts:
 
 ## Handout
 
