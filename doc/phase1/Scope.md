@@ -10,7 +10,7 @@ Triage the use cases to identify an area of focus for your team.
 | ------------- | ------------- | ------------- |
 | Jay | Javascript | Frontend, Backend (Python), End point design. |
 | Grant | Relational Database Design, PostgreSQL | Database design using documents, moving data from user input to the database, update views from database, prevent data corruption from concurrent operations on the database. |
-| Benson | Cursory full stack development | Frontend (React, JS, Bootstrap?), UI design, End point design. |
+| Benson | Cursory full stack development (Ruby on Rails, Django) | Frontend (React, JS, AJAX, Bootstrap?), UI design, End point design. |
 | Asher | | |
 | Pablo | | |
 
