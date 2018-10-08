@@ -4,7 +4,7 @@
 Design the APIs supported by the Ticket, Applicant (etc) endpoints.
 
 ## Design
-Please refer to [OpenAPI.md](doc/phase1/OpenApi.md) for details.
+Please refer to [OpenAPI.yaml](doc/phase1/OpenApi.yaml) for details.
 
 ## Handout
 
