@@ -3,6 +3,24 @@
 ## Goal
 Slice the app. Describe the main client and server components and identify the middleware you intend to use to build each. 
 
+## Frameworks
+
+### Preferences
+
+| Name | Frontend | Backend | Database |
+| --- | --- | --- | --- |
+| Jay | React, Vanilla JS, Angular | Node.js, Python | SQL, sessionStorage, MongoDB |
+| Grant | React | Node.js | MongoDB |
+| Benson | React, JS | Python, Java | No preference |
+| Asher |  |  |  |
+| Pablo |  |  |  |
+
+### Chosen
+
+| Frontend | Backend | Database |
+| --- | --- | --- |
+|  |  |  |
+
 ## Design
 
 Chosen testing framework:
