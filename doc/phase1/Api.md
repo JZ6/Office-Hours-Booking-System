@@ -4,17 +4,7 @@
 Design the APIs supported by the Ticket, Applicant (etc) endpoints.
 
 ## Design
-
-End points (REST):
-
-### Get
-
-### Put
-
-### Update
-
-### Delete
-
+Please refer to (OpenAPI.md)[doc/phase1/OpenApi.md] for details.
 
 ## Handout
 
