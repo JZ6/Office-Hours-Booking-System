@@ -7,12 +7,12 @@ Triage the use cases to identify an area of focus for your team.
 
 ### Team learning goals:
 | Name | Skills | Learning Goals |
-| ------------- | ------------- | ------------- |
-| Jay | Javascript | Frontend, Backend (Python), End point design. |
-| Grant | Relational Database Design, PostgreSQL | Database design using documents, moving data from user input to the database, update views from database, prevent data corruption from concurrent operations on the database. |
-| Benson | Cursory full stack development (Ruby on Rails, Django) | Frontend (React, JS, AJAX, Bootstrap?), UI design, End point design. |
+| --- | --- | --- |
+| Jay | Javascript | Frontend (HTML, CSS, VDOM), Python backend, end points. |
+| Grant | HTML, CSS, Schema design | Concurrent data transcations, designing and managing a database using documents, API design and implementation in Javascript, limit access to actions based on account priviledge, implementing a form of reminders/notifications. |
+| Benson | HTML, CSS, Ruby on Rails, Django, MySQL (all cursory) | Frontend (React, JS, AJAX), UI design, end point design. |
 | Asher | | |
-| Pablo | | |
+| Pablo | HTML, CSS, PHP | Frontend, get a deep understanding of how to use React or any similar library/framework. Get familiar with using external APIs. In general, focus on high level interface design -and not so much in tweaking CSS. |
 
 ### Chosen use case subset:
 
