@@ -3,34 +3,38 @@
 ## Goal
 Establish how your team is going to work together. How you will manage your sources. How you will contribute to your sources. When you will meet, how you will communicate, who will scribe, how you will maintain your backlog, etc.
 
-## Design
+## The Team
+### [Grant](https://github.com/wonggran)
 
-Team Members:  [Grant](https://github.com/wonggran), Asher, Pablo, [Benson](https://github.com/bensonchan), [Jay](https://github.com/JZ6)
+### [Asher]()
 
-**Source Contributions:**
+### [Pablo]()
 
-**Meeting Times:**
+### [Benson](https://github.com/bensonchan)
+I'm eager to learn about React and the latest trendy tools. Despite having two courses worth of web development, I didn't get around to learning any fancy stuff with javascript and AJAX. I have a great interest in UI design and user experience, having spent excessive time discussing (complaining) about it to my friends. My weaknesses are a general lack of experience in web development and a bad sense of humour.
 
-**Meeting Locations:**
+### [Jay](https://github.com/JZ6)
 
-**Means of Communication:**
+## Communication
+Communication will be done via Slack, Facebook Messenger, and Github Projects and Issues.
 
-Slack, Messenger, Github Projects/Issues.
+### Meetings
+Meetings will generally occur after lecture/tutorial in either the same room or anything available. Additional times may be alotted.
 
-**Scribe:**
+#### Meeting 1 (Friday, October 5, 2018) [4PM - 5PM]:
+* Took place during CSC302 tutorial in room BA2175.
+* Team members present: Grant, Asher, Benson, Pablo, Jay.
+* Notes: 
+  * Discussed preliminary elements of the project, such as basic UI design, project infrastructure, and project   language/framework. 
+  * We also decided to compile the strengths and learning goals of each team member on [Scope.md](Scope.md).
 
-**Project Backlog Maintainence:**
-Github Project Board and Issues.
+## Methodology
+We will be using Agile via Kanban on Github's Projects feature. Due to the experimental nature of the project, the numerous unforeseen challenges should be best tackled with a flexible approach. Scrum assumes expertise in time budgeting, something we don't have and perhaps shouldn't enforce when the focus is on exploration and learning.
 
-## Meetings
+TODO: How to keep track of progress.
 
-* Meeting 1 (Friday, October 5, 2018) [4PM - 5PM]:
-  * Took place during CSC302 tutorial in room BA2175.
-  * Team members present: Grant, Asher, Benson, Pablo, Jay.
-  * Notes: 
-    * Discussed preliminary elements of the project, such as basic UI design, project infrastructure, and project   language/framework. 
-    * We also decided to compile the strengths and learning goals of each team member on [Scope.md](Scope.md).
-
+### GitHub
+TODO: How we want to use github.
 
 ## Handout
 
