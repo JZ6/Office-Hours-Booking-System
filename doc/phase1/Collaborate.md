@@ -14,6 +14,7 @@ Establish how your team is going to work together. How you will manage your sour
 I'm eager to learn about React and the latest trendy tools. Despite having two courses worth of web development, I didn't get around to learning any fancy stuff with javascript and AJAX. I have a great interest in UI design and user experience, having spent excessive time discussing (complaining) about it to my friends. My weaknesses are a general lack of experience in web development and a bad sense of humour.
 
 ### [Jay](https://github.com/JZ6)
+I would like to improve upon my current full stack web development knowledge, as well as expose myself to new technology that are going to be relevant now or in the near future for my profession. I would also like to gain experience in working with a team of different developers possessing varying skill sets. We can accomplish this by building upon each other’s strengths and supplementing our own weaknesses.
 
 ## Communication
 Communication will be done via Slack, Facebook Messenger, and Github Projects and Issues.
