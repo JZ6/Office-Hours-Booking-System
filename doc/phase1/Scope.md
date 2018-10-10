@@ -6,13 +6,17 @@ Triage the use cases to identify an area of focus for your team.
 ## Design Use Cases
 
 ### Team learning goals:
+##### Individual learning goals
 | Name | Skills | Learning Goals |
 | --- | --- | --- |
 | Jay | Javascript | Frontend (HTML, CSS, VDOM), Python backend, end points. |
 | Grant | HTML, CSS, Schema design | Concurrent data transcations, designing and managing a database using documents, API design and implementation in Javascript, limit access to actions based on account priviledge, implementing a form of reminders/notifications. |
 | Benson | HTML, CSS, Ruby on Rails, Django, MySQL (all cursory) | Frontend (React, JS, AJAX), UI design, end point design. |
-| Asher | | |
+| Asher | Python, MongoDB, SQL, API design, data modeling | Improve DevOps skills (Docker, build tools, Kubernetes/deployment), learn a frontend JS library, practice project management |
 | Pablo | HTML, CSS, PHP | Frontend, get a deep understanding of how to use React or any similar library/framework. Get familiar with using external APIs. In general, focus on high level interface design -and not so much in tweaking CSS. |
+
+##### Synthesis
+As a team...
 
 ### Chosen use case subset:
 
