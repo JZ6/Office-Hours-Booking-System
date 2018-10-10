@@ -11,7 +11,7 @@ Establish how your team is going to work together. How you will manage your sour
 ### [Pablo]()
 
 ### [Benson](https://github.com/bensonchan)
-I'm eager to learn about React and the latest trendy tools. Despite having two courses worth of web development, I didn't get around to learning any fancy stuff with javascript and AJAX. I have a great interest in UI design and user experience, having spent excessive time discussing (complaining) about it to my friends. My weaknesses are a general lack of experience in web development and a bad sense of humour.
+I'm eager to learn about React and the latest trendy tools and offer my full schedule to this course. Despite already having two courses worth of web development, I didn't get around to learning any fancy stuff with Javascript and React. I have a great interest in UI design and user experience, having spent excessive time discussing (complaining) about it to my friends. My weaknesses are a general lack of experience in web development and a bad sense of humour.
 
 ### [Jay](https://github.com/JZ6)
 I would like to improve upon my current full stack web development knowledge, as well as expose myself to new technology that are going to be relevant now or in the near future for my profession. I would also like to gain experience in working with a team of different developers possessing varying skill sets. We can accomplish this by building upon each other’s strengths and supplementing our own weaknesses.
@@ -20,7 +20,7 @@ I would like to improve upon my current full stack web development knowledge, as
 Communication will be done via Slack, Facebook Messenger, and Github Projects and Issues.
 
 ### Meetings
-Meetings will generally occur after lecture/tutorial in either the same room or anything available. Additional times may be alotted.
+Scrum style meetings will generally occur after lecture/tutorial in either the same room or anything available. Additional times may be alotted. Attendance can be substituted with a report and/or messages.
 
 #### Meeting 1 (Friday, October 5, 2018) [4PM - 5PM]:
 * Took place during CSC302 tutorial in room BA2175.
@@ -28,9 +28,17 @@ Meetings will generally occur after lecture/tutorial in either the same room or 
 * Notes: 
   * Discussed preliminary elements of the project, such as basic UI design, project infrastructure, and project   language/framework. 
   * We also decided to compile the strengths and learning goals of each team member on [Scope.md](Scope.md).
+  
+#### Meeting 2 (Wednesday, October 10, 2018) [5PM - 6PM]:
+* Took place in BA3200.
+* Team members present: Grant, Asher, Benson, Pablo, Jay, Abed.
+* Notes:
+  * Discussed phase 1 documentation and how to divvy it up.
+  * Discussed use cases related our learning goals and their requirements.
+  * Discussed options for project architecture/technology relevant to our learning goals and use cases.
 
 ## Methodology
-We will be using Agile via Kanban on Github's Projects feature. Due to the experimental nature of the project, the numerous unforeseen challenges should be best tackled with a flexible approach. Scrum assumes expertise in time budgeting, something we don't have and perhaps shouldn't enforce when the focus is on exploration and learning.
+We will be using Scrum with Kanban via Github's Projects feature. Due to the experimental nature of the project, the numerous unforeseen challenges should be best tackled with a flexible approach. Scrum allows rapid responses to change and will keep the team on the same page with regular meetings.
 
 TODO: How to keep track of progress.
 
