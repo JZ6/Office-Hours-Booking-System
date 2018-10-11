@@ -5,7 +5,7 @@ Triage the use cases to identify an area of focus for your team.
 
 ## Design Use Cases
 ### Learning Goals
-Below are the skills and experience each member brings and their learning goals, from which focal use cases are chosen.
+Below are the skills and experience each member brings and their learning goals, from which focal use cases can be chosen from [the handout](https://docs.google.com/document/d/1pIAb_yHoHQygp31I1gV69eHaMwOaWXZtDMfVHg3q5eQ/edit#heading=h.3a98l0b27xf8).
 
 ---
 #### Jay
@@ -29,7 +29,8 @@ Concurrent data transcations, designing and managing a database using documents,
 HTML, CSS, Ruby on Rails, Django, MySQL (all cursory)  
 **Learning Goals**  
 Frontend (React, JS, asynchronous requests), UI design, end point design.  
-**Use Cases**  
+**Use Cases**   
+3. Create office hours interval, 5. Manage meetings in intervals, 6. Create, delete, edit meeting comments, 7. Create, delete, edit meeting notes, 8. Instructor Manage notes, 9. Instructor Manage Comments, 12. Choose meeting slot, 13. Cancel meeting slot, 14. Edit meeting slot, 17. Student Manage Comments.
 
 ---
 #### Asher
@@ -60,6 +61,9 @@ TODO: Compile agreed list of use cases.
 TODO: Include use cases required for the above to function.
 #### Optional Use Cases
 TODO: Include use cases that may be explored once everything central is done.
+
+## Team Learning Goals
+TODO: Identify overall team goals based on individual learning goals and selected use cases.
 
 ## Handout
 The individuals on your team probably have developed specific tastes over the last years as to what kind of code you like to build. The system as described is probably too big for a group to build (part time) in the style you would like to in the time you have. Hence, you will likely have to triage the use cases down to a subset in order to focus on the work that is the most valuable to you. We use the word valuable here in a very general way. (Perhaps because it's a technology you want to get to know more. Perhaps it's a technology you want to learn from scratch. Perhaps it's a technology that you think will improve your chances in the upcoming hunt for jobs)
