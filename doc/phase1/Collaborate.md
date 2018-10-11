@@ -15,7 +15,7 @@ Below are the strengths, weaknesses, and experience each member brings to the te
 My biggest strength is that I offer my full schedule to this course. Despite already having two courses worth of web development, it was too cursory to claim proficiency. I have a great interest in UI design and user experience, having spent excessive time discussing (complaining) about it to my friends. My weaknesses are a general lack of experience in web development and a bad sense of humour.
 
 ### [Jay](https://github.com/JZ6)
-I would like to improve upon my current full stack web development knowledge, as well as expose myself to new technology that are going to be relevant now or in the near future for my profession. I would also like to gain experience in working with a team of different developers possessing varying skill sets. We can accomplish this by building upon each other’s strengths and supplementing our own weaknesses.
+I have previous full stack web development knowledge working as summer intern, and I am a fast learner who is willing to expose myself to new technology that are going to be relevant now or in the near future for my profession. I am more interested and focused on frontend (UI, Javascript) development, and I strive to improve myself everyday!
 
 ### [Abed]()
 
