@@ -4,6 +4,7 @@
 Establish how your team is going to work together. How you will manage your sources. How you will contribute to your sources. When you will meet, how you will communicate, who will scribe, how you will maintain your backlog, etc.
 
 ## The Team
+Below are the strengths, weaknesses, and experience each member brings to the team.
 ### [Grant](https://github.com/wonggran)
 
 ### [Asher]()
@@ -11,10 +12,12 @@ Establish how your team is going to work together. How you will manage your sour
 ### [Pablo]()
 
 ### [Benson](https://github.com/bensonchan)
-I'm eager to learn about React and the latest trendy tools and offer my full schedule to this course. Despite already having two courses worth of web development, I didn't get around to learning any fancy stuff with Javascript and React. I have a great interest in UI design and user experience, having spent excessive time discussing (complaining) about it to my friends. My weaknesses are a general lack of experience in web development and a bad sense of humour.
+My biggest strength is that I offer my full schedule to this course. Despite already having two courses worth of web development, it was too cursory to claim proficiency. I have a great interest in UI design and user experience, having spent excessive time discussing (complaining) about it to my friends. My weaknesses are a general lack of experience in web development and a bad sense of humour.
 
 ### [Jay](https://github.com/JZ6)
 I would like to improve upon my current full stack web development knowledge, as well as expose myself to new technology that are going to be relevant now or in the near future for my profession. I would also like to gain experience in working with a team of different developers possessing varying skill sets. We can accomplish this by building upon each other’s strengths and supplementing our own weaknesses.
+
+### [Abed]()
 
 ## Communication
 Communication will be done via Slack, Facebook Messenger, and Github Projects and Issues.
@@ -46,7 +49,6 @@ TODO: How to keep track of progress.
 TODO: How we want to use github.
 
 ## Handout
-
 You will create a plan for how your team will collaborate, review code, etc.
 * Goal: Provide insight into your collaborative work as a team
 * Make sure to describe the team’s competencies and constraints. Ex: Experience, strengths, skills, schedule conflicts and/or other relevant information about individual team members.
