@@ -9,7 +9,7 @@ Triage the use cases to identify an area of focus for your team.
 ##### Individual learning goals
 | Name | Skills | Learning Goals |
 | --- | --- | --- |
-| Jay | Javascript | Frontend (HTML, CSS, VDOM), Python backend, end points. |
+| Jay | Javascript, Python, C, Java | I would like to improve upon my current full stack web development knowledge, as well as expose myself to new technology that are going to be relevant now or in the near future for my profession. I would also like to gain experience in working with a team of different developers possessing varying skill sets. We can accomplish this by building upon each other’s strengths and supplementing our own weaknesses. |
 | Grant | HTML, CSS, Schema design | Concurrent data transcations, designing and managing a database using documents, API design and implementation in Javascript, limit access to actions based on account priviledge, implementing a form of reminders/notifications. |
 | Benson | HTML, CSS, Ruby on Rails, Django, MySQL (all cursory) | Frontend (React, JS, AJAX), UI design, end point design. |
 | Asher | Python, MongoDB, SQL, API design, data modeling | Improve DevOps skills (Docker, build tools, Kubernetes/deployment), learn a frontend JS library, practice some form of TDD |
