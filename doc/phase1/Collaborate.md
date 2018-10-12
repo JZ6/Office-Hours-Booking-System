@@ -26,16 +26,16 @@ knowledge to the team to make our workflow, testing and deployment as
 effortless as possible. My web stack knowledge is weak, but not non-existent.
 
 ## Communication
-Communication will be done via Slack, Facebook Messenger, and Github Projects and Issues.
+Slack will be the main discussion board, with Facebook Messenger for immediate questions or alerts. Github Projects and issues will be used for kanban and issue tracking.
 
 ### Meetings
-Scrum style meetings will generally occur after lecture/tutorial in either the same room or anything available. Additional times may be alotted. Attendance can be substituted with a report and/or messages.
+Scrum style meetings will occur after lecture and during tutorial (Monday, Wednesday, Friday) in either the same room or anything available. Each meeting will feature a standup section for *at most* 20 minutes, after which a freeform discussion may take place. Attendance can be substituted with a report and/or messages if necessary.
 
 #### Meeting 1 (Friday, October 5, 2018) [4PM - 5PM]:
 * Took place during CSC302 tutorial in room BA2175.
 * Team members present: Grant, Asher, Benson, Pablo, Jay.
 * Notes: 
-  * Discussed preliminary elements of the project, such as basic UI design, project infrastructure, and project   language/framework. 
+  * Discussed preliminary elements of the project, such as basic UI design, project infrastructure, and project language/framework. 
   * We also decided to compile the strengths and learning goals of each team member on [Scope.md](Scope.md).
   
 #### Meeting 2 (Wednesday, October 10, 2018) [5PM - 6PM]:
@@ -45,14 +45,22 @@ Scrum style meetings will generally occur after lecture/tutorial in either the s
   * Discussed phase 1 documentation and how to divvy it up.
   * Discussed use cases related our learning goals and their requirements.
   * Discussed options for project architecture/technology relevant to our learning goals and use cases.
+  
+#### Meeting 3 (Friday, October 12, 2018) [4PM - 5:30PM]:
+* Took place during CSC302 tutorial in room BA2175.
+* Team members present: Grant, Asher, Benson, Pablo, Jay, Abed.
+* Notes:
+  * Further discussion of project architecture and details. Details will be included in phase 1 documentation.
+  * Further discussion on phase 1 documentation based on the above.
 
 ## Methodology
 We will be using Scrum with Kanban via Github's Projects feature. Due to the experimental nature of the project, the numerous unforeseen challenges should be best tackled with a flexible approach. Scrum allows rapid responses to change and will keep the team on the same page with regular meetings.
 
+### Tracking Progress
 TODO: How to keep track of progress.
 
-### GitHub
-TODO: How we want to use github.
+### Git Flow
+TODO: How we want to follow git flow, dev branch per service, feature branches per dev branch. Merge etiquette, pull request peer review criteria (feature requirements, test cases themselves, running test cases).
 
 ## Handout
 You will create a plan for how your team will collaborate, review code, etc.
