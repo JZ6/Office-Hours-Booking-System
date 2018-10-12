@@ -3,12 +3,20 @@
 ## Goal
 Describe the approach you intend to take for testing your implementation.
 
-## Design
+## Framework
+### Continuous Integration
+Travis will be used to run tests automatically on pushes to the dev branches per service and to master.
+### API Service
+TODO: 
+### Content Delivery Service
+TODO: 
+### Webapp Service
+TODO: 
+### Interface
+TODO: 
 
-Chosen testing framework:
-
-TDD and CI Plans:
-
+## Writing Tests
+Features and their tests will be written by the same person. Tests will be reviewed during a pull request by two other people.
 
 ## Handout
 
