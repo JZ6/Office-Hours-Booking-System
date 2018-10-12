@@ -6,6 +6,7 @@ Establish how your team is going to work together. How you will manage your sour
 ## The Team
 Below are the strengths, weaknesses, and experience each member brings to the team.
 ### [Grant](https://github.com/wonggran)
+My strengths include designing database models of objects and their relations between one another, roleplaying interactions between the user and an application, writing modular code that is testable in single units, simulating user needs to guide user interface design, forming a high level view of relations between application modules, listening with curiousity and a willingness to learn, and prioritizing individual collaboration and self development through understanding and compromise. My weaknesses include a lack of knowledge on current web application development technologies and web application design, inexperience with conversing using technical terminology preventing me from properly expressing a concept, timidness when team conflicts arise, and an unwavering belief of always being able to do better as an individual and as a team that blinds me in seeing my own and my team's strengths. My experience includes 1 year of C# and ASP.Net MVC web application development mainly carrying out simple front-end upgrades and fixes.
 
 ### [Asher]()
 
