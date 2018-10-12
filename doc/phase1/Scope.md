@@ -19,8 +19,10 @@ Responsive Frontend for this web app, as well as conflict resolution such as una
 #### Grant
 **Skills**  
 HTML, CSS, Schema design, Relational database querying
+
 **Learning Goals**  
 Concurrent data transcations, designing and managing a database using documents (MongoDB + Mongoose), API design and implementation in Javascript, limit access to actions based on account priviledge, implementing a form of reminders/notifications.  
+
 **Use Cases**  
 2. Create a new class (importing a classlist csv), 3 & 4 Create and delete meeting, 8 & 9 Creation and management of notes by TA/instructor and students, 12 - 14 Student creation and management of meeting slot, 17 Student creation and management of comments.
 
