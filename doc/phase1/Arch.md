@@ -14,6 +14,7 @@ Slice the app. Describe the main client and server components and identify the m
 | Benson | React, JS | Python, Java | No preference |
 | Asher |  |  |  |
 | Pablo |  |  |  |
+| Abed | React | Node.js, Ruby, Python | MongoDB |
 
 ### Chosen
 

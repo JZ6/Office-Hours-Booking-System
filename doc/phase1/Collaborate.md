@@ -18,7 +18,12 @@ My biggest strength is that I offer my full schedule to this course. Despite alr
 ### [Jay](https://github.com/JZ6)
 I have previous full stack web development knowledge working as summer intern, and I am a fast learner who is willing to expose myself to new technology that are going to be relevant now or in the near future for my profession. I am more interested and focused on frontend (UI, Javascript) development, and I strive to improve myself everyday!
 
-### [Abed]()
+### [Abed](https://github.com/abedef)
+My personal focuses include backend design and systems programming. I also
+spent my PEY working closely with many CI/CD and IAAS systems and have become
+familiar with a few related industry-standard tools. I will try to bring this
+knowledge to the team to make our workflow, testing and deployment as
+effortless as possible. My web stack knowledge is weak, but not non-existent.
 
 ## Communication
 Communication will be done via Slack, Facebook Messenger, and Github Projects and Issues.
