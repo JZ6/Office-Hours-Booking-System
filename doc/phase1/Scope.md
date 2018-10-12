@@ -54,8 +54,13 @@ Frontend, get a deep understanding of how to use React or any similar library/fr
 ---
 #### Abed
 **Skills**  
+Ruby, Python, MongoDB, Docker, CI/CD  
 **Learning Goals**  
+Become more comfortable with a backend web framework, as well as React. Looking
+to also work on infrastructure and and experiment with remote deployments and
+scaling.  
 **Use Cases**  
+`TODO`, and the web app's online deployment.  
 
 ---
 ### Final Use Case Subset
