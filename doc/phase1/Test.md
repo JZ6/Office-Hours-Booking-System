@@ -8,10 +8,10 @@ Describe the approach you intend to take for testing your implementation.
 Travis will be used to run tests automatically on pushes to the dev branches per service and to master.
 ### API Service
 TODO: 
-### Webapp Delivery Service
-TODO: JEST?
 ### Webapp Service
-TODO: JEST?
+
+[JEST](https://jestjs.io/) is a zero configuration testing platform, that is used by Facebook to test all JavaScript code including React applications. One of Jest's philosophies is to provide an integrated "zero-configuration" experience. We observed that when engineers are provided with ready-to-use tools, they end up writing more tests, which in turn results in more stable and healthy code bases.
+
 ### Interface
 TODO: Selenium?
 
