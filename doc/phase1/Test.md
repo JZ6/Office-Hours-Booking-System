@@ -16,8 +16,8 @@ We have decided to use the testing framework Jest because we will be working mai
 ### User Interface
 React component testing will be done with Jest and Enzyme, which should cover basic forms and interactions. If needed, Puppeteer can be used to simulate mouse inputs in a chromium browser for more complex behaviour like drag and drop.
 
-## Writing Tests
-Features and their tests will be written by the same person. Tests will be reviewed during a pull request by two other people.
+## Test Driven Development
+Tests and features will be written by the same person at the same time, following TDD principles. Tests will then be reviewed during a pull request by two other people.
 
 ## Handout
 
