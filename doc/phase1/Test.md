@@ -5,17 +5,16 @@ Describe the approach you intend to take for testing your implementation.
 
 ## Framework
 ### Continuous Integration
-Travis will be used to run tests automatically on pushes to the dev branches per service and to master.
+Travis will be used to run tests automatically on commits and pushes to the dev branches per service and to master.
 ### API Service
 TODO: 
 ### Webapp Service
+[Jest](https://jestjs.io/) is a zero configuration testing platform, that is used by Facebook to test all JavaScript code including React applications. One of Jest's philosophies is to provide an integrated "zero-configuration" experience. We observed that when engineers are provided with ready-to-use tools, they end up writing more tests, which in turn results in more stable and healthy code bases.
 
-[JEST](https://jestjs.io/) is a zero configuration testing platform, that is used by Facebook to test all JavaScript code including React applications. One of Jest's philosophies is to provide an integrated "zero-configuration" experience. We observed that when engineers are provided with ready-to-use tools, they end up writing more tests, which in turn results in more stable and healthy code bases.
+We have decided to use the testing framework Jest because we will be working mainly with React and NodeJS in the frontend Webapp service, thus Jest would be a perfect hassle free choice for our developmental needs.
 
-We have decided to use the testing framework JEST because we will be working mainly with React and NodeJS in the frontend Webapp service, thus JEST would be a perfect hassle free choice for our developmental needs.
-
-### Interface
-TODO: Selenium?
+### User Interface
+React component testing will be done with Jest and Enzyme, which should cover basic forms and interactions. If needed, Puppeteer can be used to simulate mouse inputs in a chromium browser for more complex behaviour like drag and drop.
 
 ## Writing Tests
 Features and their tests will be written by the same person. Tests will be reviewed during a pull request by two other people.
