@@ -2,7 +2,7 @@
 
 # Team
 
-* [Grant]()
+* [Grant](https://github.com/wonggran)
 
 * [Benson](https://github.com/bensonchan)
 
@@ -10,7 +10,7 @@
 
 * [Pablo]()
 
-* [Asher]()
+* [Asher](https://github.com/asher-dev)
 
 * [Abed](https://github.com/abedef)
 
