@@ -13,13 +13,6 @@ paths:
       responses:
         '200':
           description: Successfully added user.
-    put:
-      summary: Edit a user.
-      requestBody:
-        $ref: '#/components/requestBodies/UserBody'
-      responses:
-        '200':
-          description: Successfully edited user.
   /user/{utorId}:
     get:
       summary: Return a user.
@@ -36,6 +29,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+    put:
+      summary: Edit a user.
+      parameters:
+      - name: utorId
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/UserBody'
+      responses:
+        '200':
+          description: Successfully edited user.
     delete:
       summary: Delete a user.
       parameters: 
@@ -55,15 +61,20 @@ components:
       properties:
         utorId:
           type: string
+          example: rossbob2
         studentNumber:
           type: integer
+          example: 1234567890
         firstName:
           type: string
+          example: Bob
         lastName:
           type: string
-        instructor:
-          type: boolean
-          description: Whether user has instructor privileges.
+          example: Ross
+        role:
+          type: string
+          enum: [student, ta, instructor]
+          example: instructor
         classes:
           type: array
           items:
@@ -71,7 +82,7 @@ components:
     
     Class:
       type: string
-      description: e.g. CSC302
+      example: csc302
     
     Meeting:
       type: object
@@ -79,11 +90,13 @@ components:
         instructor:
           type: string
           description: UtorId of the assigned instructor.
+          example: rossbob2
         class:
           $ref: '#/components/schemas/Class'
         comment:
           type: string
           description: Comment left by instructor.
+          example: We don't make mistakes, just happy little accidents.
         startTime:
           type: integer
           description: Unix time.
