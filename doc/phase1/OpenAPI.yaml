@@ -1,96 +1,113 @@
-swagger: '2.0'
+openapi: 3.0.0
 info:
-  version: 0.0.1
   title: Projekt Cool-Aid
   description: Office hours booking system. Legally distinct from the trademarked beverage.
+  version: 0.0.1
 
 paths:
   /user:
     post:
       summary: Add a new user.
-      parameters: 
-        - in: body
-          name: body
-          description: Student object.
-          required: true
-          schema:
-            $ref: '#/definitions/User'
+      requestBody:
+        $ref: '#/components/requestBodies/UserBody'
       responses:
-        '405':
-          description: Invalid input.
-  /user/login:
+        '200':
+          description: Successfully added user.
+    put:
+      summary: Edit a user.
+      requestBody:
+        $ref: '#/components/requestBodies/UserBody'
+      responses:
+        '200':
+          description: Successfully edited user.
+  /user/{utorId}:
     get:
-      summary: Login user.
-      parameters: 
-        - name: utorId
-          in: query
-          description: The username.
-          required: true
-          type: string
-        - name: studentNumber
-          in: query
-          description: The password.
-          required: true
+      summary: Return a user.
+      parameters:
+      - name: utorId
+        in: path
+        required: true
+        schema:
           type: string
       responses:
         '200':
-          description: Successful login.
-  /user/logout:
-    get:
-      summary: Logout user.
+          description: Successfully returned user.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    delete:
+      summary: Delete a user.
+      parameters: 
+      - name: utorId
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
         '200':
-          description: Successful logout.
+          description: Successfully deleted user.
   
-definitions:
-  User:
-    type: object
-    properties:
-      utorId:
-        type: string
-      studentNumber:
-        type: integer
-      firstName:
-        type: string
-      lastName:
-        type: string
-      instructor:
-        type: boolean
-        description: Whether user has instructor privileges.
-  
-  Class:
-    type: string
-    description: e.g. CSC302
-  
-  Meeting:
-    type: object
-    properties:
-      instructor:
-        type: string
-        description: UtorId of the assigned instructor.
-      class:
-        $ref: '#/definitions/Class'
-      comment:
-        type: string
-        description: Comment left by instructor.
-      sessions:
-        $ref: '#/definitions/Intervals'
-  
-  Intervals:
-    type: array
-    items:
+components:
+  schemas:
+    User:
       type: object
       properties:
+        utorId:
+          type: string
+        studentNumber:
+          type: integer
+        firstName:
+          type: string
+        lastName:
+          type: string
+        instructor:
+          type: boolean
+          description: Whether user has instructor privileges.
+        classes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Class'
+    
+    Class:
+      type: string
+      description: e.g. CSC302
+    
+    Meeting:
+      type: object
+      properties:
+        instructor:
+          type: string
+          description: UtorId of the assigned instructor.
+        class:
+          $ref: '#/components/schemas/Class'
+        comment:
+          type: string
+          description: Comment left by instructor.
         startTime:
           type: integer
           description: Unix time.
-        duration:
+        intervalDuration:
           type: integer
-          description: Seconds.
-        student:
-          type: string
-          description: UtorId of the assigned student (can be empty).
-        note:
-          type: string
-          description: Note left by student. Should be deleted on updating student.
-      
+          description: Seconds per interval.
+        intervals:
+          description: A chronologically sorted dense array where startTime + index * intervalDuration = interval start time in unix time.
+          type: array
+          items:
+            type: object
+            properties:
+              student:
+                type: string
+                description: UtorId of the assigned student (can be empty).
+              note:
+                type: string
+                description: Note left by student. Should be deleted on updating student.
+  
+  requestBodies:
+    UserBody:
+      description: A JSON User object.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/User'
