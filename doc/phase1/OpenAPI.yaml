@@ -68,6 +68,41 @@ paths:
       responses:
         '200':
           description: Successfully added course.
+    put:
+      summary: Edit a course.
+      parameters: 
+      - name: course
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/CourseBody'
+      responses:
+        '200':
+          description: Successfully edited course.
+    get:
+      summary: Return a course.
+      parameters: 
+      - name: course
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfully returned course.
+    delete:
+      summary: Delete a course.
+      parameters: 
+      - name: course
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfully deleted course.
   /{course}/meetings:
     post:
       summary: Add a new meeting.
