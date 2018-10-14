@@ -54,7 +54,21 @@ paths:
         '200':
           description: Successfully deleted user.
   
-  /{course}/meeting:
+  /{course}:
+    post:
+      summary: Add a new course.
+      parameters: 
+      - name: course
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/CourseBody'
+      responses:
+        '200':
+          description: Successfully added course.
+  /{course}/meetings:
     post:
       summary: Add a new meeting.
       parameters: 
@@ -68,7 +82,19 @@ paths:
       responses:
         '200':
           description: Successfully added meeting.
-  /{course}/meeting/{startTime}:
+    get:
+      summary: Return all meetings for course.
+      parameters: 
+      - name: course
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfully returned meetings.
+      
+  /{course}/meetings/{startTime}:
     put:
       summary: Edit a meeting.
       parameters: 
@@ -123,6 +149,51 @@ paths:
       responses:
         '200':
           description: Successfully deleted meeting.
+  /{course}/meetings/{startTime}/{interval}:
+    get:
+      summary: Return student and note on interval.
+      parameters: 
+      - name: course
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: startTime
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: interval
+        in: path
+        required: true
+        description: Index of the interval in Meeting array.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successfully returned interval.
+    put:
+      summary: Update student and note on interval.
+      parameters: 
+      - name: course
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: startTime
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: interval
+        in: path
+        required: true
+        description: Index of the interval in Meeting array.
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successfully updated interval.
 
 components:
   schemas:
@@ -151,8 +222,16 @@ components:
             $ref: '#/components/schemas/Course'
     
     Course:
-      type: string
-      example: csc302
+      type: object
+      properties:
+        instructors:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        tas:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
     
     Meeting:
       type: object
@@ -202,3 +281,10 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Meeting'
+    CourseBody:
+      description: A JSON Course object.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Course'
