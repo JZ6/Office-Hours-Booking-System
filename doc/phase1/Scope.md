@@ -10,22 +10,21 @@ Below are the skills and experience each member brings and their learning goals,
 ---
 #### Jay
 **Skills**  
-Javascript, Python, C, Java  
+Javascript, Python, C, Java
 
 **Learning Goals**  
 I would like to improve upon my current full stack web development knowledge, as well as expose myself to new technology that are going to be relevant now or in the near future for my profession. I would also like to gain experience in working with a team of different developers possessing varying skill sets. We can accomplish this by building upon each other’s strengths and supplementing our own weaknesses. Some specfic areas I have in mind include responsive design, frontend JS and Mongodb.
 
-**Use Cases**
+**Use Cases**  
+Database related:  
+2 - Create new class  
+3 - Create office hours interval  
+4 - Delete interval with no meetings  
 
-Database related:
-2 - Create new class
-3 - Create office hours interval
-4 - Delete interval with no meetings
-
-Frontend related:
-5 - Manage meetings in intervals
-12 - Choose meeting slot
-13 - Cancel meeting slot
+Frontend related:  
+5 - Manage meetings in intervals  
+12 - Choose meeting slot  
+13 - Cancel meeting slot  
 
 ---
 #### Grant
@@ -41,62 +40,115 @@ Concurrent data transcations, designing and managing a database using documents 
 ---
 #### Benson
 **Skills**  
-HTML, CSS, Ruby on Rails, Django, MySQL (all cursory)  
+HTML, CSS, Ruby on Rails, Django, MySQL (all cursory)
+
 **Learning Goals**  
-Frontend (React, JS, asynchronous requests), UI design, end point design.  
+Frontend (React, JS, asynchronous requests), UI design, end point design.
+
 **Use Cases**   
 3. Create office hours interval, 5. Manage meetings in intervals, 6. Create, delete, edit meeting comments, 7. Create, delete, edit meeting notes, 8. Instructor Manage notes, 9. Instructor Manage Comments, 12. Choose meeting slot, 13. Cancel meeting slot, 14. Edit meeting slot, 17. Student Manage Comments.
 
 ---
 #### Asher
 **Skills**  
-Python, MongoDB, SQL, API design, data modeling  
+Python, MongoDB, SQL, API design, data modeling
+
 **Learning Goals**  
 Improve DevOps skills (Docker, build tools, Kubernetes/deployment), learn a frontend JS library, practice some form of TDD  
+
 **Use Cases**  
 
 ---
 #### Pablo
 **Skills**  
-HTML, CSS, PHP  
+HTML, CSS, PHP
+
 **Learning Goals**  
 Primary learning objective: Learn currently used tools to create highly interactive interfaces. I'd like to focus more on the high level general aspect of the design of the interface and its functionality, rather than visual tweaks or details. That's why learning React in depth and putting it into practice is a solid learning objective for me.
 Secondary learning objectives: Get a wider view of how a full stack web app comes together and the different frameworks/technologies used in both front and back end.
 
 **Use Cases**  
-In order to create a highly interactive interface I want to abide by the following principles:
-A) Include a lot of clickable options. Maybe even implement drag a drop functionality or drag to pan.
-B) User friendly interface with coherent expandibles and sensible distribution of information.
-C) Get away from simple read interfaces where all you have to do is scroll down a page and read text.
+In order to create a highly interactive interface I want to abide by the following principles:  
+A) Include a lot of clickable options. Maybe even implement drag a drop functionality or drag to pan.  
+B) User friendly interface with coherent expandibles and sensible distribution of information.  
+C) Get away from simple read interfaces where all you have to do is scroll down a page and read text.  
 D) Engage the user as much as possible. I.e. Given them the option to input information, add comments, change settings...
 
-I'll group the user cases I want to work on based on these 4 aspects:
-A) 3,12,5: This involves the view of the calendar item. I would like to be able to implement scrolling to navigate the calendar or drag and drop to change a meeting interval's time
-B) 2,3,4,5,6,7,8,9,12,13,14,17: This applies to all the use cases which purpose is displaying and interacting with information
-C) 3,4,5,12,13,14: The process of managing events should be smooth, user friendly and should use a sensible set of expandables that make the process more intuitive and engaging.
-D) 6,7,8,9,17: Provide an interactible way of managing notes/comments on events
+I'll group the user cases I want to work on based on these 4 aspects:  
+A) 3,12,5: This involves the view of the calendar item. I would like to be able to implement scrolling to navigate the calendar or drag and drop to change a meeting interval's time  
+B) 2,3,4,5,6,7,8,9,12,13,14,17: This applies to all the use cases which purpose is displaying and interacting with information  
+C) 3,4,5,12,13,14: The process of managing events should be smooth, user friendly and should use a sensible set of expandables that make the process more intuitive and engaging.  
+D) 6,7,8,9,17: Provide an interactible way of managing notes/comments on events  
 
 ---
 #### Abed
 **Skills**  
-Ruby, Python, MongoDB, Docker, CI/CD  
+Ruby, Python, MongoDB, Docker, CI/CD
+
 **Learning Goals**  
 Become more comfortable with a backend web framework, as well as React. Looking
 to also work on infrastructure and and experiment with remote deployments and
-scaling.  
+scaling.
+
 **Use Cases**  
 `TODO`, and the web app's online deployment.  
 
 ---
 ### Final Use Case Subset
-TODO: Compile agreed list of use cases.
-#### Prerequisite Use Cases
-TODO: Include use cases required for the above to function.
-#### Optional Use Cases
-TODO: Include use cases that may be explored once everything central is done.
+**Instructor/TA**  
+* Create new class
+  * Import classlist (csv file from CDF or quercus)
+* Create office hours interval
+  * One time
+  * Repeating
+* Delete interval with no meetings
+  * With meetings, what?
+* Manage meetings in intervals
+  * Reschedule meetings to another interval
+  * Cancel/Delete meetings
+  * Move meeting earlier or later within the interval
+* Create, delete, edit meeting comments (shared with student)
+* Create, delete, edit meeting notes (NOT shared with student)
+* Instructor Manage notes
+  * Create note about student meeting
+  * Find a note made about a student
+  * Find a comment made for a student
+  * Delete a note
+  * Edit a note
+* Instructor Manage Comments
+  * Create comment
+  * Edit comment
+  * Delete comment
+  * Find comment
+
+**Student**  
+* Choose meeting slot
+* Cancel meeting slot
+* Edit meeting slot
+* Student Manage Comments
+  * Create comment
+  * Including in advance! (Propose agenda or ask questions)
+  * Delete, Edit comments
+  * Find comments
+
+#### Omitted Use Cases
+**Instructor/TA**  
+* Manage preferences
+  * Set Default reminder schedule for student
+  * Set Default reminder schedule for instructor
+* Create office hours interval
+  * Set default reminder for student meetings in interval
+  * Set default instructor reminder for meetings, intervals
+* Generate persistent link to share meetings and/or intervals (eg in a quercus announcement or email)
+* Sync/Export intervals and meetings to personal electronic calendar(s)
+
+**Student**  
+* Efficiently Inform instructor when running late for meeting. System should adapt.
+* Configure reminders
+* Sync/Export meetings to personal electronic calendar(s)
 
 ## Team Learning Goals
-TODO: Identify overall team goals based on individual learning goals and selected use cases.
+The general team goal is to create a robust and feature-rich React client and API service. Therefore, use cases which explore this area were chosen. Other goals relate to all possible use cases such as learning Docker and working in a team, while features such as a database service provide functionality to use cases.
 
 ## Handout
 The individuals on your team probably have developed specific tastes over the last years as to what kind of code you like to build. The system as described is probably too big for a group to build (part time) in the style you would like to in the time you have. Hence, you will likely have to triage the use cases down to a subset in order to focus on the work that is the most valuable to you. We use the word valuable here in a very general way. (Perhaps because it's a technology you want to get to know more. Perhaps it's a technology you want to learn from scratch. Perhaps it's a technology that you think will improve your chances in the upcoming hunt for jobs)
