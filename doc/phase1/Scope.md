@@ -48,8 +48,21 @@ Improve DevOps skills (Docker, build tools, Kubernetes/deployment), learn a fron
 **Skills**  
 HTML, CSS, PHP  
 **Learning Goals**  
-Frontend, get a deep understanding of how to use React or any similar library/framework. Get familiar with using external APIs. In general, focus on high level interface design -and not so much in tweaking CSS.  
+Primary learning objective: Learn currently used tools to create highly interactive interfaces. I'd like to focus more on the high level general aspect of the design of the interface and its functionality, rather than visual tweaks or details. That's why learning React in depth and putting it into practice is a solid learning objective for me.
+Secondary learning objectives: Get a wider view of how a full stack web app comes together and the different frameworks/technologies used in both front and back end.
+
 **Use Cases**  
+In order to create a highly interactive interface I want to abide by the following principles:
+A) Include a lot of clickable options. Maybe even implement drag a drop functionality or drag to pan.
+B) User friendly interface with coherent expandibles and sensible distribution of information.
+C) Get away from simple read interfaces where all you have to do is scroll down a page and read text.
+D) Engage the user as much as possible. I.e. Given them the option to input information, add comments, change settings...
+
+I'll group the user cases I want to work on based on these 4 aspects:
+A) 3,12,5: This involves the view of the calendar item. I would like to be able to implement scrolling to navigate the calendar or drag and drop to change a meeting interval's time
+B) 2,3,4,5,6,7,8,9,12,13,14,17: This applies to all the use cases which purpose is displaying and interacting with information
+C) 3,4,5,12,13,14: The process of managing events should be smooth, user friendly and should use a sensible set of expandables that make the process more intuitive and engaging.
+D) 6,7,8,9,17: Provide an interactible way of managing notes/comments on events
 
 ---
 #### Abed
