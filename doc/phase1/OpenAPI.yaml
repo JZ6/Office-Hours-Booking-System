@@ -54,6 +54,76 @@ paths:
         '200':
           description: Successfully deleted user.
   
+  /{course}/meeting:
+    post:
+      summary: Add a new meeting.
+      parameters: 
+      - name: course
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        $ref: '#/components/requestBodies/MeetingBody'
+      responses:
+        '200':
+          description: Successfully added meeting.
+  /{course}/meeting/{startTime}:
+    put:
+      summary: Edit a meeting.
+      parameters: 
+      - name: course
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: startTime
+        in: path
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        $ref: '#/components/requestBodies/MeetingBody'
+      responses:
+        '200':
+          description: Successfully edited meeting.
+    get:
+      summary: Return a meeting.
+      parameters:
+      - name: course
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: startTime
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successfully returned meeting.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meeting'
+    delete:
+      summary: Delete a meeting.
+      parameters: 
+      - name: course
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: startTime
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: Successfully deleted meeting.
+
 components:
   schemas:
     User:
@@ -78,34 +148,35 @@ components:
         classes:
           type: array
           items:
-            $ref: '#/components/schemas/Class'
+            $ref: '#/components/schemas/Course'
     
-    Class:
+    Course:
       type: string
       example: csc302
     
     Meeting:
       type: object
+      description: Only editable by TAs and instructors.
       properties:
         instructor:
           type: string
           description: UtorId of the assigned instructor.
           example: rossbob2
-        class:
-          $ref: '#/components/schemas/Class'
+        course:
+          $ref: '#/components/schemas/Course'
         comment:
           type: string
-          description: Comment left by instructor.
+          description: Comment left by instructor. Viewable by all.
           example: We don't make mistakes, just happy little accidents.
         startTime:
           type: integer
-          description: Unix time.
+          description: Unix time. Combined with course code, unique identifier.
         intervalDuration:
           type: integer
           description: Seconds per interval.
         intervals:
-          description: A chronologically sorted dense array where startTime + index * intervalDuration = interval start time in unix time.
           type: array
+          description: A chronologically sorted dense array where startTime + index * intervalDuration = interval start time in unix time. Editable by all.
           items:
             type: object
             properties:
@@ -114,7 +185,7 @@ components:
                 description: UtorId of the assigned student (can be empty).
               note:
                 type: string
-                description: Note left by student. Should be deleted on updating student.
+                description: Note left by student. Should be deleted on updating student. Only viewable by TAs, Instructors, and relevant student.
   
   requestBodies:
     UserBody:
@@ -124,3 +195,10 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/User'
+    MeetingBody:
+      description: A JSON Meeting object.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Meeting'
