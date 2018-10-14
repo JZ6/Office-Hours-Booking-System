@@ -8,7 +8,7 @@
 
 * [Jay](https://github.com/JZ6)
 
-* [Pablo]()
+* [Pablo](https://github.com/pablolluchr)
 
 * [Asher](https://github.com/asher-dev)
 
