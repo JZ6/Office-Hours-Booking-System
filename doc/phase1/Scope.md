@@ -11,10 +11,13 @@ Below are the skills and experience each member brings and their learning goals,
 #### Jay
 **Skills**  
 Javascript, Python, C, Java  
+
 **Learning Goals**  
 I would like to improve upon my current full stack web development knowledge, as well as expose myself to new technology that are going to be relevant now or in the near future for my profession. I would also like to gain experience in working with a team of different developers possessing varying skill sets. We can accomplish this by building upon each other’s strengths and supplementing our own weaknesses. Some specfic areas I have in mind include responsive design, frontend JS and program testing.
+
 **Use Cases**  
 Responsive Frontend for this web app, as well as conflict resolution such as unavailable slot selection.
+
 ---
 #### Grant
 **Skills**  
