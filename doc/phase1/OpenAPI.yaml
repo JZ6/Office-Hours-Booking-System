@@ -5,22 +5,22 @@ info:
   description: Office hours booking system. Legally distinct from the trademarked beverage.
 
 paths:
-  /student:
+  /user:
     post:
-      summary: Add a new student.
+      summary: Add a new user.
       parameters: 
         - in: body
           name: body
           description: Student object.
           required: true
           schema:
-            $ref: '#/definitions/Student'
+            $ref: '#/definitions/User'
       responses:
         '405':
           description: Invalid input.
-  /student/login:
+  /user/login:
     get:
-      summary: Login student.
+      summary: Login user.
       parameters: 
         - name: utorId
           in: query
@@ -35,15 +35,15 @@ paths:
       responses:
         '200':
           description: Successful login.
-  /student/logout:
+  /user/logout:
     get:
-      summary: Logout student.
+      summary: Logout user.
       responses:
         '200':
           description: Successful logout.
-
+  
 definitions:
-  Student:
+  User:
     type: object
     properties:
       utorId:
@@ -54,3 +54,43 @@ definitions:
         type: string
       lastName:
         type: string
+      instructor:
+        type: boolean
+        description: Whether user has instructor privileges.
+  
+  Class:
+    type: string
+    description: e.g. CSC302
+  
+  Meeting:
+    type: object
+    properties:
+      instructor:
+        type: string
+        description: UtorId of the assigned instructor.
+      class:
+        $ref: '#/definitions/Class'
+      comment:
+        type: string
+        description: Comment left by instructor.
+      sessions:
+        $ref: '#/definitions/Intervals'
+  
+  Intervals:
+    type: array
+    items:
+      type: object
+      properties:
+        startTime:
+          type: integer
+          description: Unix time.
+        duration:
+          type: integer
+          description: Seconds.
+        student:
+          type: string
+          description: UtorId of the assigned student (can be empty).
+        note:
+          type: string
+          description: Note left by student. Should be deleted on updating student.
+      
