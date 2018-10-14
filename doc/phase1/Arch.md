@@ -10,7 +10,7 @@ Slice the app. Describe the main client and server components and identify the m
 | Name | Frontend | Backend | Database |
 | --- | --- | --- | --- |
 | Jay | React, Vanilla JS, Angular | Node.js, Python | SQL, MongoDB |
-| Grant | React | Node.js | MongoDB |
+| Grant | React | Node.js, Django | MongoDB |
 | Benson | React, JS | Python, Java | No preference |
 | Asher |  |  |  |
 | Pablo |  |  |  |
