@@ -91,7 +91,13 @@ to also work on infrastructure and and experiment with remote deployments and
 scaling.
 
 **Use Cases**  
-`TODO`, and the web app's online deployment.  
+* The web app's online deployment
+* Create new class
+* Create office hours interval
+* Manage meetings in intervals
+* Create, delete, edit private and public meeting comments and notes
+  (instructor and student)
+* Generate persistent link to share meetings/intervals
 
 ---
 ### Final Use Case Subset
