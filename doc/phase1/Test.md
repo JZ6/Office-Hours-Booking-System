@@ -12,7 +12,7 @@ Python's built in unittest framework will be used for AIOHTTP.
 We have decided to use the testing framework Jest because we will be working mainly with React and NodeJS in the Webapp service, thus Jest would be a perfect hassle free choice for our server-side developmental needs, and React TestUtils would be sufficicent for client-side (React).
 
 ## Functional/End to End Testing
-Puppeteer or Selenium can be used to simulate user inputs in a browser for functional testing.
+Puppeteer or Selenium can be used to simulate user inputs in a browser for functional testing. However, if possible, UI interactions should be translated to event invocations, which can be tested without simulations. We foresee heavy upkeep concerning things like mouse coordinates due to the experimental and volatile nature of the project.
 
 ## Integration Testing
 
