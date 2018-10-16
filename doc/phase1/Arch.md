@@ -14,3 +14,9 @@ Expose various endpoints to perform requested Instructor, TA, and Student action
 
 ## Database Service
 Performs queries requested by the API service using MongoDB.
+
+## Rationale for division of system
+The decision to divide the office hour booking system into Instructor/TA and Student web applications comes from the different use requirements of Instructor/TA and Student users. Instructors have the ability to create courses, specify TAs, manage intervals and notes, and add student's to the class and since they are ultimately the course admistrators they should be the only ones able to do so on our system. This is different than what TAs are intended to do which is only manage intervals, meetings, and notes. This gives reason to have two separate web applications to support the needs of a course instructor and its TAs. Students only manage their own meetings and notes meaning they lack any use requirements that can affect any other users besides themselves, thus warranting a separate web application.
+
+## Rationale for choice of middleware
+The choice of a Node.js-React-aiohttp-MongoDB development stack comes from fulfilling individual team member learning goals about the web technologies they would like to learn and factoring in our pre-existing collective strengths in Javascript and Python.
