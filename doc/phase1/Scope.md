@@ -101,6 +101,7 @@ scaling.
 
 ---
 ### Final Use Case Subset
+Use cases will be prioritized as either
 **Instructor/TA**  
 * Create new class
   * Import classlist (csv file from CDF or quercus)
@@ -117,15 +118,13 @@ scaling.
 * Create, delete, edit meeting notes (NOT shared with student)
 * Instructor Manage notes
   * Create note about student meeting
-  * Find a note made about a student
-  * Find a comment made for a student
   * Delete a note
   * Edit a note
 * Instructor Manage Comments
   * Create comment
   * Edit comment
   * Delete comment
-  * Find comment
+* Generate persistent link to share meetings and/or intervals (eg in a quercus announcement or email)
 
 **Student**  
 * Choose meeting slot
@@ -136,6 +135,7 @@ scaling.
   * Including in advance! (Propose agenda or ask questions)
   * Delete, Edit comments
   * Find comments
+* Sync/Export intervals and meetings to personal electronic calendar(s)
 
 #### Omitted Use Cases
 **Instructor/TA**  
@@ -145,8 +145,11 @@ scaling.
 * Create office hours interval
   * Set default reminder for student meetings in interval
   * Set default instructor reminder for meetings, intervals
-* Generate persistent link to share meetings and/or intervals (eg in a quercus announcement or email)
-* Sync/Export intervals and meetings to personal electronic calendar(s)
+* Instructor Manage notes
+  * Find a note made about a student
+  * Find a comment made for a student
+* Instructor Manage Comments
+  * Find comment
 
 **Student**  
 * Efficiently Inform instructor when running late for meeting. System should adapt.
