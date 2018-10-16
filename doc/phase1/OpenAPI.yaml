@@ -7,12 +7,13 @@ info:
 paths:
   /user:
     post:
-      summary: Add a new user.
+      summary: Add/edit a user.
       requestBody:
         $ref: '#/components/requestBodies/UserBody'
       responses:
         '200':
           description: Successfully added user.
+
   /user/{utorId}:
     get:
       summary: Return a user.
@@ -29,22 +30,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-    put:
-      summary: Edit a user.
-      parameters:
-      - name: utorId
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        $ref: '#/components/requestBodies/UserBody'
-      responses:
-        '200':
-          description: Successfully edited user.
     delete:
       summary: Delete a user.
-      parameters: 
+      parameters:
       - name: utorId
         in: path
         required: true
@@ -53,12 +41,29 @@ paths:
       responses:
         '200':
           description: Successfully deleted user.
-  
-  /{course}:
+
+  /user/{utorId}/schedule:
+    get:
+      summary: Return a user's private notes.
+      parameters:
+      - name: utorId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfully returned user's private notes.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /course/{courseCode}:
     post:
-      summary: Add a new course.
-      parameters: 
-      - name: course
+      summary: Add/edit a course.
+      parameters:
+      - name: courseCode
         in: path
         required: true
         schema:
@@ -68,23 +73,10 @@ paths:
       responses:
         '200':
           description: Successfully added course.
-    put:
-      summary: Edit a course.
-      parameters: 
-      - name: course
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        $ref: '#/components/requestBodies/CourseBody'
-      responses:
-        '200':
-          description: Successfully edited course.
     get:
       summary: Return a course.
-      parameters: 
-      - name: course
+      parameters:
+      - name: courseCode
         in: path
         required: true
         schema:
@@ -94,8 +86,8 @@ paths:
           description: Successfully returned course.
     delete:
       summary: Delete a course.
-      parameters: 
-      - name: course
+      parameters:
+      - name: courseCode
         in: path
         required: true
         schema:
@@ -103,11 +95,12 @@ paths:
       responses:
         '200':
           description: Successfully deleted course.
-  /{course}/meetings:
+
+  /course/{courseCode}/meetings:
     post:
-      summary: Add a new meeting.
-      parameters: 
-      - name: course
+      summary: Add/edit a meeting.
+      parameters:
+      - name: courseCode
         in: path
         required: true
         schema:
@@ -119,8 +112,8 @@ paths:
           description: Successfully added meeting.
     get:
       summary: Return all meetings for course.
-      parameters: 
-      - name: course
+      parameters:
+      - name: courseCode
         in: path
         required: true
         schema:
@@ -128,30 +121,12 @@ paths:
       responses:
         '200':
           description: Successfully returned meetings.
-      
-  /{course}/meetings/{startTime}:
-    put:
-      summary: Edit a meeting.
-      parameters: 
-      - name: course
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: startTime
-        in: path
-        required: true
-        schema:
-          type: integer
-      requestBody:
-        $ref: '#/components/requestBodies/MeetingBody'
-      responses:
-        '200':
-          description: Successfully edited meeting.
+
+  /course/{courseCode}/meetings/{startTime}:
     get:
       summary: Return a meeting.
       parameters:
-      - name: course
+      - name: courseCode
         in: path
         required: true
         schema:
@@ -170,8 +145,8 @@ paths:
                 $ref: '#/components/schemas/Meeting'
     delete:
       summary: Delete a meeting.
-      parameters: 
-      - name: course
+      parameters:
+      - name: courseCode
         in: path
         required: true
         schema:
@@ -184,11 +159,12 @@ paths:
       responses:
         '200':
           description: Successfully deleted meeting.
-  /{course}/meetings/{startTime}/{interval}:
+
+  /course/{courseCode}/meetings/{startTime}/{interval}:
     get:
       summary: Return student and note on interval.
-      parameters: 
-      - name: course
+      parameters:
+      - name: courseCode
         in: path
         required: true
         schema:
@@ -209,8 +185,8 @@ paths:
           description: Successfully returned interval.
     put:
       summary: Update student and note on interval.
-      parameters: 
-      - name: course
+      parameters:
+      - name: courseCode
         in: path
         required: true
         schema:
@@ -255,7 +231,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Course'
-    
+
     Course:
       type: object
       properties:
@@ -267,7 +243,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/User'
-    
+
     Meeting:
       type: object
       description: Only editable by TAs and instructors.
@@ -284,13 +260,13 @@ components:
           example: We don't make mistakes, just happy little accidents.
         startTime:
           type: integer
-          description: Unix time. Combined with course code, unique identifier.
+          description: ISO 8601 time. Combined with course code, unique identifier.
         intervalDuration:
           type: integer
           description: Seconds per interval.
         intervals:
           type: array
-          description: A chronologically sorted dense array where startTime + index * intervalDuration = interval start time in unix time. Editable by all.
+          description: A chronologically sorted dense array where startTime + index * intervalDuration = interval start time in ISO 8601 time. Editable by all.
           items:
             type: object
             properties:
@@ -300,7 +276,7 @@ components:
               note:
                 type: string
                 description: Note left by student. Should be deleted on updating student. Only viewable by TAs, Instructors, and relevant student.
-  
+
   requestBodies:
     UserBody:
       description: A JSON User object.
@@ -323,3 +299,4 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Course'
+
