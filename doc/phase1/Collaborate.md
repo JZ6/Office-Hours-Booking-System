@@ -53,14 +53,21 @@ Scrum style meetings will occur after lecture and during tutorial (Monday, Wedne
   * Further discussion of project architecture and details. Details will be included in phase 1 documentation.
   * Further discussion on phase 1 documentation based on the above.
 
-## Methodology
-We will be using Scrum with Kanban via Github's Projects feature. Due to the experimental nature of the project, the numerous unforeseen challenges should be best tackled with a flexible approach. Scrum allows rapid responses to change and will keep the team on the same page with regular meetings.
+#### Meeting 4 (Monday, October 15, 2018) [5PM - 6PM]:
+* Took place outside BA2210.
+* Team members present: Grant, Asher, Benson, Pablo, Jay.
+* Notes:
+  * Discussed final details on documentation.
+  * Discussed API design.
 
-### Tracking Progress
-TODO: How to keep track of progress.
+## Methodology
+We will be using Scrum with Kanban via Github's Projects feature. Due to the experimental nature of the project, the numerous unforeseen challenges should be best tackled with a flexible approach. Scrum allows rapid responses to change and will keep the team on the same page with regular meetings. Progress will be tracked on Github's Projects feature as well, with the backlog being handled by kanban.
 
 ### Git Flow
-TODO: How we want to follow git flow, dev branch per service, feature branches per dev branch. Merge etiquette, pull request peer review criteria (feature requirements, test cases themselves, running test cases).
+We will be adhering to the git flow, with a development branch per service and feature branches per development branch. Pull requests will be made upon the completion of a feature branch. Feature requirements, test cases, and code will be reviewed by two other members. Features will be tracked via Issues.
+
+### Member Workload
+Team members will not be restricted to specific domains. Instead, we will prioritize features that suit our learning goals while ensuring that all core features are finished.
 
 ## Handout
 You will create a plan for how your team will collaborate, review code, etc.
