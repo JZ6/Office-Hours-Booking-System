@@ -101,7 +101,8 @@ scaling.
 
 ---
 ### Final Use Case Subset
-Use cases will be prioritized as either
+Use cases will be prioritized as either 1 - important or 2 - optional.
+
 **Instructor/TA**  
 * Create new class
   * Import classlist (csv file from CDF or quercus)
