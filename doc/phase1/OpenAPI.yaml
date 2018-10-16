@@ -263,7 +263,7 @@ components:
           description: ISO 8601 time. Combined with course code, unique identifier.
         intervalDuration:
           type: integer
-          description: Seconds per interval.
+          description: Milliseconds per interval.
         intervals:
           type: array
           description: A chronologically sorted dense array where startTime + index * intervalDuration = interval start time in ISO 8601 time. Editable by all.
