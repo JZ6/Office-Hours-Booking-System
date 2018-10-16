@@ -20,7 +20,7 @@ Slice the app. Describe the main client and server components and identify the m
 
 | Frontend | Backend | Database |
 | --- | --- | --- |
-|  |  |  |
+|  React & Typescript | aiohttp | MongoDB & Motor |
 
 ## Design
 
