@@ -170,9 +170,9 @@ paths:
         '200':
           description: Successfully deleted meeting.
 
-  /course/{courseCode}/meetings/{startTime}/{interval}:
+  /course/{courseCode}/meetings/{startTime}/{slot}:
     get:
-      summary: Return student name and associated notes for given interval.
+      summary: Return student name and associated notes for given slot.
       parameters:
       - name: courseCode
         in: path
@@ -185,21 +185,21 @@ paths:
         schema:
           type: string
           description: ISO 8601 formatted time
-      - name: interval
+      - name: slot
         in: path
         required: true
-        description: Index of the interval in Meeting array.
+        description: Index of the slot in Meeting array.
         schema:
           type: integer
       responses:
         '200':
-          description: Successfully returned interval.
+          description: Successfully returned slot.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Meeting'
     put:
-      summary: Update student and note on interval.
+      summary: Update student and note on slot.
       parameters:
       - name: courseCode
         in: path
@@ -212,15 +212,15 @@ paths:
         schema:
           type: string
           description: ISO 8601 formatted time
-      - name: interval
+      - name: slot
         in: path
         required: true
-        description: Index of the interval in Meeting array.
+        description: Index of the slot in Meeting array.
         schema:
           type: integer
       responses:
         '200':
-          description: Successfully updated interval.
+          description: Successfully updated slot.
 
 components:
   schemas:
@@ -259,6 +259,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/User'
+        students:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
 
     Meeting:
       type: object
@@ -277,18 +281,21 @@ components:
         startTime:
           type: string
           description: ISO 8601 formatted time. Combined with course code, unique identifier.
-        intervalDuration:
+        slotDuration:
           type: integer
-          description: Milliseconds per interval.
-        intervals:
+          description: Milliseconds per slot.
+        slots:
           type: array
-          description: A chronologically sorted dense array where startTime + index * intervalDuration = interval start time in ISO 8601 time. Editable by all.
+          description: A chronologically sorted dense array where startTime + index * slotDuration = slot start time in ISO 8601 time. Editable by all.
           items:
             type: object
             properties:
               student:
                 type: string
                 description: UtorId of the assigned student (can be empty).
+              course:
+                $ref: '#/components/schemas/Course'
+                description: Course the slot is for.
               note:
                 type: string
                 description: Note left by student. Should be deleted on updating student. Only viewable by TAs, Instructors, and relevant student.
