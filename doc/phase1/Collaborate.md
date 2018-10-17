@@ -10,7 +10,8 @@ My strengths include designing database models of objects and their relations be
 
 ### [Asher]()
 
-### [Pablo]()
+### [Pablo](https://github.com/pablolluchr)
+I've had some experience with front-end development at projects of my own. Despite being very interested in web design I have never partaken in a university project related to it. I'm most experienced in java. I'm not very experience with version control and team collaboration software. Thus, I'm not only hoping to learn technical skills but get used to working with a team on a formal level.
 
 ### [Benson](https://github.com/bensonchan)
 My biggest strength is that I offer my full schedule to this course. Despite already having two courses worth of web development, it was too cursory to claim proficiency. I have a great interest in UI design and user experience, having spent excessive time discussing (complaining) about it to my friends. My weaknesses are a general lack of experience in web development and a bad sense of humour.
@@ -24,6 +25,13 @@ spent my PEY working closely with many CI/CD and IAAS systems and have become
 familiar with a few related industry-standard tools. I will try to bring this
 knowledge to the team to make our workflow, testing and deployment as
 effortless as possible. My web stack knowledge is weak, but not non-existent.
+
+## Team strengths
+The biggest strength of the team is that people's skills and interests are very diverse. 
+In regards to web development, some members of the team have experience with full stack web app development (as interns, work experience and independently) and others have little to some experience. Some other members are also experienced in back-end programming such as database design. Others gather experience in testing, deployment and the knowledge of industry-standard tools.
+Regarding member's interests, some of us are willing to know more about front-end while others want to deepen their knowledge on back-end.
+Overall, despite not everyone being proficient at the tasks/technologies needed to accomplish the project, everyone is willing to learn and get to explore new technologies.
+
 
 ## Communication
 Slack will be the main discussion board, with Facebook Messenger for immediate questions or alerts. Github Projects and issues will be used for kanban and issue tracking.
