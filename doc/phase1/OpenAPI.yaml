@@ -67,7 +67,7 @@ paths:
         in: path
         required: true
         schema:
-          $ref: '#/components/schemas/Course'
+          type: string
       requestBody:
         $ref: '#/components/requestBodies/CourseBody'
       responses:
@@ -80,7 +80,7 @@ paths:
         in: path
         required: true
         schema:
-          $ref: '#/components/schemas/Course'
+          type: string
       responses:
         '200':
           description: Successfully returned course.
@@ -95,7 +95,7 @@ paths:
         in: path
         required: true
         schema:
-          $ref: '#/components/schemas/Course'
+          type: string
       responses:
         '200':
           description: Successfully deleted course.
@@ -108,7 +108,7 @@ paths:
         in: path
         required: true
         schema:
-          $ref: '#/components/schemas/Course'
+          type: string
       requestBody:
         $ref: '#/components/requestBodies/MeetingBody'
       responses:
@@ -138,7 +138,7 @@ paths:
         in: path
         required: true
         schema:
-          $ref: '#/components/schemas/Course'
+          type: string
       - name: startTime
         in: path
         required: true
@@ -159,7 +159,7 @@ paths:
         in: path
         required: true
         schema:
-          $ref: '#/components/schemas/Course'
+          type: string
       - name: startTime
         in: path
         required: true
@@ -178,7 +178,7 @@ paths:
         in: path
         required: true
         schema:
-          $ref: '#/components/schemas/Course'
+          type: string
       - name: startTime
         in: path
         required: true
@@ -199,11 +199,11 @@ paths:
               schema:
                 type: object
                 properties:
-                  student:
+                  utorId:
                     type: string
                     description: UtorId of the assigned student (can be empty).
-                  course:
-                    $ref: '#/components/schemas/Course'
+                  courseCode:
+                    type: string
                     description: Course the slot is for.
                   note:
                     type: string
@@ -216,7 +216,7 @@ paths:
         in: path
         required: true
         schema:
-          $ref: '#/components/schemas/Course'
+          type: string
       - name: startTime
         in: path
         required: true
@@ -254,10 +254,10 @@ components:
           type: string
           enum: [student, ta, instructor]
           example: instructor
-        classes:
+        courses:
           type: array
           items:
-            $ref: '#/components/schemas/Course'
+            type: string
 
     Course:
       type: object
@@ -265,15 +265,18 @@ components:
         instructors:
           type: array
           items:
-            $ref: '#/components/schemas/User'
+            type: string
+            description: UtorID.
         tas:
           type: array
           items:
-            $ref: '#/components/schemas/User'
+            type: string
+            description: UtorID.
         students:
           type: array
           items:
-            $ref: '#/components/schemas/User'
+            type: string
+            description: UtorID.
 
     Meeting:
       type: object
@@ -283,8 +286,8 @@ components:
           type: string
           description: UtorId of the assigned instructor.
           example: rossbob2
-        course:
-          $ref: '#/components/schemas/Course'
+        courseCode:
+          type: string
         comment:
           type: string
           description: Comment left by instructor. Viewable by all.
@@ -301,12 +304,12 @@ components:
           items:
             type: object
             properties:
-              student:
+              utorId:
                 type: string
                 description: UtorId of the assigned student (can be empty).
-              course:
-                $ref: '#/components/schemas/Course'
-                description: Course the slot is for.
+              courseCode:
+                type: string
+                description: Course code this slot pertains to.
               note:
                 type: string
                 description: Note left by student. Should be deleted on updating student. Only viewable by TAs, Instructors, and relevant student.
