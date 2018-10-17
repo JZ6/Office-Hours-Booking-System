@@ -7,12 +7,13 @@ info:
 paths:
   /user:
     post:
-      summary: Add a new user.
+      summary: Add/edit a user.
       requestBody:
         $ref: '#/components/requestBodies/UserBody'
       responses:
         '200':
           description: Successfully added user.
+
   /user/{utorId}:
     get:
       summary: Return a user.
@@ -29,22 +30,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
-    put:
-      summary: Edit a user.
-      parameters:
-      - name: utorId
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        $ref: '#/components/requestBodies/UserBody'
-      responses:
-        '200':
-          description: Successfully edited user.
     delete:
       summary: Delete a user.
-      parameters: 
+      parameters:
       - name: utorId
         in: path
         required: true
@@ -53,65 +41,74 @@ paths:
       responses:
         '200':
           description: Successfully deleted user.
-  
-  /{course}:
-    post:
-      summary: Add a new course.
-      parameters: 
-      - name: course
+
+  /user/{utorId}/schedule:
+    get:
+      summary: Return a user's meetings along with relevant notes belonging to user.
+      parameters:
+      - name: utorId
         in: path
         required: true
         schema:
           type: string
+      responses:
+        '200':
+          description: Successfully returned user's meetings and private notes.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /course/{courseCode}:
+    post:
+      summary: Add/edit a course.
+      parameters:
+      - name: courseCode
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/Course'
       requestBody:
         $ref: '#/components/requestBodies/CourseBody'
       responses:
         '200':
           description: Successfully added course.
-    put:
-      summary: Edit a course.
-      parameters: 
-      - name: course
-        in: path
-        required: true
-        schema:
-          type: string
-      requestBody:
-        $ref: '#/components/requestBodies/CourseBody'
-      responses:
-        '200':
-          description: Successfully edited course.
     get:
       summary: Return a course.
-      parameters: 
-      - name: course
+      parameters:
+      - name: courseCode
         in: path
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/Course'
       responses:
         '200':
           description: Successfully returned course.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
     delete:
       summary: Delete a course.
-      parameters: 
-      - name: course
+      parameters:
+      - name: courseCode
         in: path
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/Course'
       responses:
         '200':
           description: Successfully deleted course.
-  /{course}/meetings:
+
+  /course/{courseCode}/meetings:
     post:
-      summary: Add a new meeting.
-      parameters: 
-      - name: course
+      summary: Add/edit a meeting.
+      parameters:
+      - name: courseCode
         in: path
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/Course'
       requestBody:
         $ref: '#/components/requestBodies/MeetingBody'
       responses:
@@ -119,48 +116,35 @@ paths:
           description: Successfully added meeting.
     get:
       summary: Return all meetings for course.
-      parameters: 
-      - name: course
+      parameters:
+      - name: courseCode
         in: path
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/Course'
       responses:
         '200':
           description: Successfully returned meetings.
-      
-  /{course}/meetings/{startTime}:
-    put:
-      summary: Edit a meeting.
-      parameters: 
-      - name: course
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: startTime
-        in: path
-        required: true
-        schema:
-          type: integer
-      requestBody:
-        $ref: '#/components/requestBodies/MeetingBody'
-      responses:
-        '200':
-          description: Successfully edited meeting.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meeting'
+
+  /course/{courseCode}/meetings/{startTime}:
     get:
       summary: Return a meeting.
       parameters:
-      - name: course
+      - name: courseCode
         in: path
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/Course'
       - name: startTime
         in: path
         required: true
         schema:
-          type: integer
+          type: string
+          description: ISO 8601 formatted time
       responses:
         '200':
           description: Successfully returned meeting.
@@ -170,65 +154,84 @@ paths:
                 $ref: '#/components/schemas/Meeting'
     delete:
       summary: Delete a meeting.
-      parameters: 
-      - name: course
+      parameters:
+      - name: courseCode
         in: path
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/Course'
       - name: startTime
         in: path
         required: true
         schema:
-          type: integer
+          type: string
+          description: ISO 8601 formatted time
       responses:
         '200':
           description: Successfully deleted meeting.
-  /{course}/meetings/{startTime}/{interval}:
+
+  /course/{courseCode}/meetings/{startTime}/{slot}:
     get:
-      summary: Return student and note on interval.
-      parameters: 
-      - name: course
+      summary: Return student name and associated notes for given slot.
+      parameters:
+      - name: courseCode
         in: path
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/Course'
       - name: startTime
         in: path
         required: true
         schema:
-          type: integer
-      - name: interval
+          type: string
+          description: ISO 8601 formatted time
+      - name: slot
         in: path
         required: true
-        description: Index of the interval in Meeting array.
+        description: Index of the slot in Meeting array.
         schema:
           type: integer
       responses:
         '200':
-          description: Successfully returned interval.
+          description: Successfully returned slot.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  student:
+                    type: string
+                    description: UtorId of the assigned student (can be empty).
+                  course:
+                    $ref: '#/components/schemas/Course'
+                    description: Course the slot is for.
+                  note:
+                    type: string
+                    description: Note left by student. Should be deleted on updating student. Only viewable by TAs, Instructors, and relevant student.
+                  
     put:
-      summary: Update student and note on interval.
-      parameters: 
-      - name: course
+      summary: Update student and note on slot.
+      parameters:
+      - name: courseCode
         in: path
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/Course'
       - name: startTime
         in: path
         required: true
         schema:
-          type: integer
-      - name: interval
+          type: string
+          description: ISO 8601 formatted time
+      - name: slot
         in: path
         required: true
-        description: Index of the interval in Meeting array.
+        description: Index of the slot in Meeting array.
         schema:
           type: integer
       responses:
         '200':
-          description: Successfully updated interval.
+          description: Successfully updated slot.
 
 components:
   schemas:
@@ -255,7 +258,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Course'
-    
+
     Course:
       type: object
       properties:
@@ -267,7 +270,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/User'
-    
+        students:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+
     Meeting:
       type: object
       description: Only editable by TAs and instructors.
@@ -283,24 +290,27 @@ components:
           description: Comment left by instructor. Viewable by all.
           example: We don't make mistakes, just happy little accidents.
         startTime:
+          type: string
+          description: ISO 8601 formatted time. Combined with course code, unique identifier.
+        slotDuration:
           type: integer
-          description: Unix time. Combined with course code, unique identifier.
-        intervalDuration:
-          type: integer
-          description: Seconds per interval.
-        intervals:
+          description: Milliseconds per slot.
+        slots:
           type: array
-          description: A chronologically sorted dense array where startTime + index * intervalDuration = interval start time in unix time. Editable by all.
+          description: A chronologically sorted dense array where startTime + index * slotDuration = slot start time in ISO 8601 time. Editable by all.
           items:
             type: object
             properties:
               student:
                 type: string
                 description: UtorId of the assigned student (can be empty).
+              course:
+                $ref: '#/components/schemas/Course'
+                description: Course the slot is for.
               note:
                 type: string
                 description: Note left by student. Should be deleted on updating student. Only viewable by TAs, Instructors, and relevant student.
-  
+
   requestBodies:
     UserBody:
       description: A JSON User object.
