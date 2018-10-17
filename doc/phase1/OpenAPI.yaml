@@ -42,9 +42,9 @@ paths:
         '200':
           description: Successfully deleted user.
 
-  /user/{utorId}/schedule:
+  /user/{utorId}/blocks:
     get:
-      summary: Return a user's meetings along with relevant notes belonging to user.
+      summary: Return a user's blocks along with relevant notes belonging to user.
       parameters:
       - name: utorId
         in: path
@@ -53,7 +53,7 @@ paths:
           type: string
       responses:
         '200':
-          description: Successfully returned user's meetings and private notes.
+          description: Successfully returned user's blocks and private notes.
           content:
             application/json:
               schema:
@@ -100,66 +100,71 @@ paths:
         '200':
           description: Successfully deleted course.
 
-  /course/{courseCode}/meetings:
+  /blocks:
     post:
-      summary: Add/edit a meeting.
-      parameters:
-      - name: courseCode
-        in: path
-        required: true
-        schema:
-          type: string
+      summary: Add/edit a block. 'author' and 'startTime' act as the key.
       requestBody:
-        $ref: '#/components/requestBodies/MeetingBody'
+        $ref: '#/components/requestBodies/BlockBody'
       responses:
         '200':
-          description: Successfully added meeting.
+          description: Successfully added block.
     get:
-      summary: Return all meetings for course.
+      summary: Return all blocks, can filter by query parameters.
       parameters:
-      - name: courseCode
-        in: path
-        required: true
+      - in: query
+        name: author
+        description: UtorID of the creator.
         schema:
-          $ref: '#/components/schemas/Course'
+          type: string
+      - in: query
+        name: startTime
+        description: ISO 8601 formatted time.
+        schema:
+          type: string
+      - in: query
+        name: courseCode
+        schema:
+          type: string
       responses:
         '200':
-          description: Successfully returned meetings.
+          description: Successfully returned blocks.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Meeting'
+                $ref: '#/components/schemas/Block'
 
-  /course/{courseCode}/meetings/{startTime}:
+  /blocks/{utorId}/{startTime}:
     get:
-      summary: Return a meeting.
+      summary: Return a specific block.
       parameters:
-      - name: courseCode
+      - name: utorId
         in: path
         required: true
+        description: UtorID of the author of the block.
         schema:
           type: string
       - name: startTime
         in: path
         required: true
+        description: ISO 8601 formatted start time.
         schema:
           type: string
-          description: ISO 8601 formatted time
       responses:
         '200':
-          description: Successfully returned meeting.
+          description: Successfully returned block.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Meeting'
+                $ref: '#/components/schemas/Block'
     delete:
-      summary: Delete a meeting.
+      summary: Delete a block.
       parameters:
-      - name: courseCode
+      - name: utorId
         in: path
         required: true
         schema:
           type: string
+        description: UtorID of the author of the block.
       - name: startTime
         in: path
         required: true
@@ -168,15 +173,16 @@ paths:
           description: ISO 8601 formatted time
       responses:
         '200':
-          description: Successfully deleted meeting.
+          description: Successfully deleted block.
 
-  /course/{courseCode}/meetings/{startTime}/{slot}:
+  /blocks/{utorId}/{startTime}/{slot}:
     get:
       summary: Return student name and associated notes for given slot.
       parameters:
-      - name: courseCode
+      - name: utorId
         in: path
         required: true
+        description: UtorID of the author of the block.
         schema:
           type: string
       - name: startTime
@@ -188,7 +194,7 @@ paths:
       - name: slot
         in: path
         required: true
-        description: Index of the slot in Meeting array.
+        description: Index of the slot in block array.
         schema:
           type: integer
       responses:
@@ -212,21 +218,22 @@ paths:
     put:
       summary: Update student and note on slot.
       parameters:
-      - name: courseCode
-        in: path
+      - in: path
+        name: utorId
         required: true
+        description: UtorID of the author of the block.
         schema:
           type: string
-      - name: startTime
-        in: path
+      - in: path
+        name: startTime
         required: true
         schema:
           type: string
           description: ISO 8601 formatted time
-      - name: slot
-        in: path
+      - in: path
+        name: slot
         required: true
-        description: Index of the slot in Meeting array.
+        description: Index of the slot in block array.
         schema:
           type: integer
       responses:
@@ -278,29 +285,32 @@ components:
             type: string
             description: UtorID.
 
-    Meeting:
+    Block:
       type: object
       description: Only editable by TAs and instructors.
       properties:
-        instructor:
+        author:
           type: string
-          description: UtorId of the assigned instructor.
+          description: UtorId of the instructor/TA author.
           example: rossbob2
-        courseCode:
-          type: string
+        courseCodes:
+          type: array
+          description: All relevant courses.
+          items:
+            type: string
         comment:
           type: string
-          description: Comment left by instructor. Viewable by all.
+          description: Comment left by instructor/TA.
           example: We don't make mistakes, just happy little accidents.
         startTime:
           type: string
-          description: ISO 8601 formatted time. Combined with course code, unique identifier.
+          description: ISO 8601 formatted time.
         slotDuration:
           type: integer
           description: Milliseconds per slot.
         slots:
           type: array
-          description: A chronologically sorted dense array where startTime + index * slotDuration = slot start time in ISO 8601 time. Editable by all.
+          description: A chronologically sorted dense array where startTime + index * slotDuration = slot start time in ISO 8601 time.
           items:
             type: object
             properties:
@@ -322,13 +332,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/User'
-    MeetingBody:
-      description: A JSON Meeting object.
+    BlockBody:
+      description: A JSON block object.
       required: true
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Meeting'
+            $ref: '#/components/schemas/Block'
     CourseBody:
       description: A JSON Course object.
       required: true
