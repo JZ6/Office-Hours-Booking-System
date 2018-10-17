@@ -44,7 +44,7 @@ paths:
 
   /user/{utorId}/schedule:
     get:
-      summary: Return a user's private notes.
+      summary: Return a user's meetings along with relevant notes belonging to user.
       parameters:
       - name: utorId
         in: path
@@ -53,7 +53,7 @@ paths:
           type: string
       responses:
         '200':
-          description: Successfully returned user's private notes.
+          description: Successfully returned user's meetings and private notes.
           content:
             application/json:
               schema:
@@ -67,7 +67,7 @@ paths:
         in: path
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/Course'
       requestBody:
         $ref: '#/components/requestBodies/CourseBody'
       responses:
@@ -80,10 +80,14 @@ paths:
         in: path
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/Course'
       responses:
         '200':
           description: Successfully returned course.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
     delete:
       summary: Delete a course.
       parameters:
@@ -91,7 +95,7 @@ paths:
         in: path
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/Course'
       responses:
         '200':
           description: Successfully deleted course.
@@ -104,7 +108,7 @@ paths:
         in: path
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/Course'
       requestBody:
         $ref: '#/components/requestBodies/MeetingBody'
       responses:
@@ -117,10 +121,14 @@ paths:
         in: path
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/Course'
       responses:
         '200':
           description: Successfully returned meetings.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meeting'
 
   /course/{courseCode}/meetings/{startTime}:
     get:
@@ -130,12 +138,13 @@ paths:
         in: path
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/Course'
       - name: startTime
         in: path
         required: true
         schema:
-          type: integer
+          type: string
+          description: ISO 8601 formatted time
       responses:
         '200':
           description: Successfully returned meeting.
@@ -150,30 +159,32 @@ paths:
         in: path
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/Course'
       - name: startTime
         in: path
         required: true
         schema:
-          type: integer
+          type: string
+          description: ISO 8601 formatted time
       responses:
         '200':
           description: Successfully deleted meeting.
 
   /course/{courseCode}/meetings/{startTime}/{interval}:
     get:
-      summary: Return student and note on interval.
+      summary: Return student name and associated notes for given interval.
       parameters:
       - name: courseCode
         in: path
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/Course'
       - name: startTime
         in: path
         required: true
         schema:
-          type: integer
+          type: string
+          description: ISO 8601 formatted time
       - name: interval
         in: path
         required: true
@@ -183,6 +194,10 @@ paths:
       responses:
         '200':
           description: Successfully returned interval.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Meeting'
     put:
       summary: Update student and note on interval.
       parameters:
@@ -190,12 +205,13 @@ paths:
         in: path
         required: true
         schema:
-          type: string
+          $ref: '#/components/schemas/Course'
       - name: startTime
         in: path
         required: true
         schema:
-          type: integer
+          type: string
+          description: ISO 8601 formatted time
       - name: interval
         in: path
         required: true
@@ -259,8 +275,8 @@ components:
           description: Comment left by instructor. Viewable by all.
           example: We don't make mistakes, just happy little accidents.
         startTime:
-          type: integer
-          description: ISO 8601 time. Combined with course code, unique identifier.
+          type: string
+          description: ISO 8601 formatted time. Combined with course code, unique identifier.
         intervalDuration:
           type: integer
           description: Milliseconds per interval.
@@ -299,4 +315,3 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Course'
-
