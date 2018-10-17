@@ -4,15 +4,17 @@
 Establish how your team is going to work together. How you will manage your sources. How you will contribute to your sources. When you will meet, how you will communicate, who will scribe, how you will maintain your backlog, etc.
 
 ## The Team
-Below are the relevant strengths and experience each member brings to the team.
+Below are the strengths, weaknesses, and experience each member brings to the team.
 ### [Grant](https://github.com/wonggran)
 My strengths include designing database models of objects and their relations between one another, roleplaying interactions between the user and an application, writing modular code that is testable in single units, simulating user needs to guide user interface design, forming a high level view of relations between application modules, listening with curiousity and a willingness to learn, and prioritizing individual collaboration and self development through understanding and compromise. My weaknesses include a lack of knowledge on current web application development technologies and web application design, inexperience with conversing using technical terminology preventing me from properly expressing a concept, timidness when team conflicts arise, and an unwavering belief of always being able to do better as an individual and as a team that blinds me in seeing my own and my team's strengths. My experience includes 1 year of C# and ASP.Net MVC web application development mainly carrying out simple front-end upgrades and fixes.
 
-### [Asher]()
+### [Asher](https://github.com/asher-dev)
+* Worked as a developer on a SaaS project and gained experience with Python/Flask for API development, MongoDB and MySQL, and various AWS services (including S3, Batch, Lambda, RDS Aurora).
+* Primary strengths are agile methodology, version control maintenance, data modeling, and software design. Also able to help with general programming in python and ES6, API design/implementation, unit testing, database queries and schemas.
+* I have a tendency to overscope, and I often work slowly because of too much attention to detail. I have very little prior experience with DevOps and task automation.
 
 ### [Pablo](https://github.com/pablolluchr)
-HTML, CSS, PHP and JS at Intermediate level.
-SQL at beginner level.
+I've had some experience with front-end development at projects of my own. Despite being very interested in web design I have never partaken in a university project related to it. I'm most experienced in java. I'm not very experience with version control and team collaboration software. Thus, I'm not only hoping to learn technical skills but get used to working with a team on a formal level.
 
 ### [Benson](https://github.com/bensonchan)
 My biggest strength is that I offer my full schedule to this course. Despite already having two courses worth of web development, it was too cursory to claim proficiency. I have a great interest in UI design and user experience, having spent excessive time discussing (complaining) about it to my friends. My weaknesses are a general lack of experience in web development and a bad sense of humour.
@@ -33,11 +35,6 @@ In regards to web development, some members of the team have experience with ful
 Regarding member's interests, some of us are willing to know more about front-end while others want to deepen their knowledge on back-end.
 Overall, despite not everyone being proficient at the tasks/technologies needed to accomplish the project, everyone is willing to learn and get to explore new technologies.
 
-## Contribution availability
-### Pablo
-I'm willing to spend a daily hour working on the project. This won't apply on the week of the 29th of October nor the week of the 11th of November due to midterms, assignments, and personal reasons. During these weeks I'll spend an average of 30min daily instead.
-Besides, on the week of the 4th of November I'll have greater availability and will be able to work for 1.30-2 hours daily. 
-I'm willing to make exceptions to this and spend extra hours if needed to.
 
 ## Communication
 Slack will be the main discussion board, with Facebook Messenger for immediate questions or alerts. Github Projects and issues will be used for kanban and issue tracking.
@@ -74,14 +71,23 @@ Scrum style meetings will occur after lecture and during tutorial (Monday, Wedne
   * Discussed final details on documentation.
   * Discussed API design.
 
-## Methodology
-We will be using Scrum with Kanban via Github's Projects feature. Due to the experimental nature of the project, the numerous unforeseen challenges should be best tackled with a flexible approach. Scrum allows rapid responses to change and will keep the team on the same page with regular meetings. Progress will be tracked on Github's Projects feature as well, with the backlog being handled by kanban.
+## Project Methodology
+We will be using Scrum with Kanban via Github's Projects feature. Due to the experimental nature of the project, the numerous unforeseen challenges should be best tackled with a flexible approach. Scrum allows rapid responses to change and will keep the team on the same page with regular meetings.
+* Sprints will be weekly, with relatively narrow scope to account for the short cycle
+* Scrum/stand-up meetings will occur on M/W/F during or immediately following scheduled class time. Contributors who are unable to attend in person will report on Slack (progress since last meeting, plans before next meeting, any blockers).
+* Friday tutorial times will be used for retrospective and sprint planning
+  * Sprint planning: select a sprint scope from backlog based on project roadmap, estimate tickets, rank by priority, and set sprint goals based on projected sprint velocity.
+  * Retrospective: in the last sprint, what went well and didn't go well, and are there any action items to improve workflow or more effectively achieve goals.
 
-### Git Flow
-We will be adhering to the git flow, with a development branch per service and feature branches per development branch. Pull requests will be made upon the completion of a feature branch. Feature requirements, test cases, and code will be reviewed by two other members. Features will be tracked via Issues.
+### Git Workflow
+We will follow a pared-down variation of the GitFlow workflow, optimized for continuous deployment to a live test environment. In this variation, the top level (`master`) and release branches are truncated from the model, so our `master` will be equivalent to GitFlow's `develop` branch, and will be under continuous deployment to a live test environment. All branches off master will be working branches at the developers' discretion. This may include feature branches, or aggregate branches to tie features together before opening a pull request to master. All feature branches and commit messages should contain the feature/story's associated issue number. Feature requirements, test cases, and code will be reviewed by two other members.
 
 ### Member Workload
-Team members will not be restricted to specific domains. Instead, we will prioritize features that suit our learning goals while ensuring that all core features are finished.
+Team members will not be restricted to specific domains. Instead, we will prioritize features that suit our learning goals while ensuring that all core features are finished. With that said, each service (as well as DevOps) will have primary contributors.
+* API Service: Abed, Grant, Asher
+* Web client: Pablo, Benson, Jay
+* Database: Grant, Asher
+* DevOps: Asher, Abed
 
 ## Handout
 You will create a plan for how your team will collaborate, review code, etc.
