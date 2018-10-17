@@ -4,14 +4,15 @@
 Establish how your team is going to work together. How you will manage your sources. How you will contribute to your sources. When you will meet, how you will communicate, who will scribe, how you will maintain your backlog, etc.
 
 ## The Team
-Below are the strengths, weaknesses, and experience each member brings to the team.
+Below are the relevant strengths and experience each member brings to the team.
 ### [Grant](https://github.com/wonggran)
 My strengths include designing database models of objects and their relations between one another, roleplaying interactions between the user and an application, writing modular code that is testable in single units, simulating user needs to guide user interface design, forming a high level view of relations between application modules, listening with curiousity and a willingness to learn, and prioritizing individual collaboration and self development through understanding and compromise. My weaknesses include a lack of knowledge on current web application development technologies and web application design, inexperience with conversing using technical terminology preventing me from properly expressing a concept, timidness when team conflicts arise, and an unwavering belief of always being able to do better as an individual and as a team that blinds me in seeing my own and my team's strengths. My experience includes 1 year of C# and ASP.Net MVC web application development mainly carrying out simple front-end upgrades and fixes.
 
 ### [Asher]()
 
 ### [Pablo](https://github.com/pablolluchr)
-I've had some experience with front-end development at projects of my own. Despite being very interested in web design I have never partaken in a university project related to it. I'm most experienced in java. I'm not very experience with version control and team collaboration software. Thus, I'm not only hoping to learn technical skills but get used to working with a team on a formal level.
+HTML, CSS, PHP and JS at Intermediate level.
+SQL at beginner level.
 
 ### [Benson](https://github.com/bensonchan)
 My biggest strength is that I offer my full schedule to this course. Despite already having two courses worth of web development, it was too cursory to claim proficiency. I have a great interest in UI design and user experience, having spent excessive time discussing (complaining) about it to my friends. My weaknesses are a general lack of experience in web development and a bad sense of humour.
@@ -32,6 +33,11 @@ In regards to web development, some members of the team have experience with ful
 Regarding member's interests, some of us are willing to know more about front-end while others want to deepen their knowledge on back-end.
 Overall, despite not everyone being proficient at the tasks/technologies needed to accomplish the project, everyone is willing to learn and get to explore new technologies.
 
+## Contribution availability
+### Pablo
+I'm willing to spend a daily hour working on the project. This won't apply on the week of the 29th of October nor the week of the 11th of November due to midterms, assignments, and personal reasons. During these weeks I'll spend an average of 30min daily instead.
+Besides, on the week of the 4th of November I'll have greater availability and will be able to work for 1.30-2 hours daily. 
+I'm willing to make exceptions to this and spend extra hours if needed to.
 
 ## Communication
 Slack will be the main discussion board, with Facebook Messenger for immediate questions or alerts. Github Projects and issues will be used for kanban and issue tracking.
