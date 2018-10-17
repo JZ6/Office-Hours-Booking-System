@@ -197,7 +197,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Meeting'
+                type: object
+                properties:
+                  student:
+                    type: string
+                    description: UtorId of the assigned student (can be empty).
+                  course:
+                    $ref: '#/components/schemas/Course'
+                    description: Course the slot is for.
+                  note:
+                    type: string
+                    description: Note left by student. Should be deleted on updating student. Only viewable by TAs, Instructors, and relevant student.
+                  
     put:
       summary: Update student and note on slot.
       parameters:
