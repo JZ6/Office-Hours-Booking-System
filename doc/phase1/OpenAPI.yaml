@@ -21,6 +21,7 @@ paths:
       - name: utorId
         in: path
         required: true
+        description: UtorID of the user (e.g. "rossbob2").
         schema:
           type: string
       responses:
@@ -36,6 +37,7 @@ paths:
       - name: utorId
         in: path
         required: true
+        description: UtorID of the user (e.g. "rossbob2").
         schema:
           type: string
       responses:
@@ -44,11 +46,12 @@ paths:
 
   /user/{utorId}/blocks:
     get:
-      summary: Return a user's blocks along with relevant notes belonging to user.
+      summary: Return blocks relevant to the user, upholding note privacy.
       parameters:
       - name: utorId
         in: path
         required: true
+        description: UtorID of the user (e.g. "rossbob2").
         schema:
           type: string
       responses:
@@ -57,7 +60,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Block'
 
   /course/{courseCode}:
     post:
@@ -66,6 +71,7 @@ paths:
       - name: courseCode
         in: path
         required: true
+        description: Course code (e.g. "csc302").
         schema:
           type: string
       requestBody:
@@ -79,6 +85,7 @@ paths:
       - name: courseCode
         in: path
         required: true
+        description: Course code (e.g. "csc302").
         schema:
           type: string
       responses:
@@ -94,6 +101,7 @@ paths:
       - name: courseCode
         in: path
         required: true
+        description: Course code (e.g. "csc302").
         schema:
           type: string
       responses:
@@ -113,12 +121,12 @@ paths:
       parameters:
       - in: query
         name: author
-        description: UtorID of the creator.
+        description: UtorID of the author of the block (e.g. "rossbob2").
         schema:
           type: string
       - in: query
         name: startTime
-        description: ISO 8601 formatted time.
+        description: ISO 8601 formatted time (e.g "2008-09-15T15:53:00").
         schema:
           type: string
       - in: query
@@ -140,13 +148,13 @@ paths:
       - name: utorId
         in: path
         required: true
-        description: UtorID of the author of the block.
+        description: UtorID of the author of the block (e.g. "rossbob2").
         schema:
           type: string
       - name: startTime
         in: path
         required: true
-        description: ISO 8601 formatted start time.
+        description: ISO 8601 formatted time (e.g "2008-09-15T15:53:00").
         schema:
           type: string
       responses:
@@ -157,44 +165,44 @@ paths:
               schema:
                 $ref: '#/components/schemas/Block'
     delete:
-      summary: Delete a block.
+      summary: Delete a specific block.
       parameters:
       - name: utorId
         in: path
         required: true
+        description: UtorID of the author of the block (e.g. "rossbob2").
         schema:
           type: string
-        description: UtorID of the author of the block.
       - name: startTime
         in: path
         required: true
+        description: ISO 8601 formatted time (e.g "2008-09-15T15:53:00").
         schema:
           type: string
-          description: ISO 8601 formatted time
       responses:
         '200':
           description: Successfully deleted block.
 
   /blocks/{utorId}/{startTime}/{slot}:
     get:
-      summary: Return student name and associated notes for given slot.
+      summary: Return student and note registered to slot.
       parameters:
       - name: utorId
         in: path
         required: true
-        description: UtorID of the author of the block.
+        description: UtorID of the author of the block (e.g. "rossbob2").
         schema:
           type: string
       - name: startTime
         in: path
         required: true
+        description: ISO 8601 formatted time (e.g "2008-09-15T15:53:00").
         schema:
           type: string
-          description: ISO 8601 formatted time
       - name: slot
         in: path
         required: true
-        description: Index of the slot in block array.
+        description: Index of the slot in block array (e.g. 2).
         schema:
           type: integer
       responses:
@@ -216,29 +224,29 @@ paths:
                     description: Note left by student. Should be deleted on updating student. Only viewable by TAs, Instructors, and relevant student.
                   
     put:
-      summary: Update student and note on slot.
+      summary: Edit student and note registered to slot.
       parameters:
       - in: path
         name: utorId
         required: true
-        description: UtorID of the author of the block.
+        description: UtorID of the author of the block (e.g. "rossbob2").
         schema:
           type: string
       - in: path
         name: startTime
         required: true
+        description: ISO 8601 formatted time (e.g "2008-09-15T15:53:00").
         schema:
           type: string
-          description: ISO 8601 formatted time
       - in: path
         name: slot
         required: true
-        description: Index of the slot in block array.
+        description: Index of the slot in block array (e.g. 2).
         schema:
           type: integer
       responses:
         '200':
-          description: Successfully updated slot.
+          description: Successfully edited slot.
 
 components:
   schemas:
@@ -291,7 +299,7 @@ components:
 
     Block:
       type: object
-      description: Only editable by TAs and instructors.
+      description: Office hours section.
       properties:
         author:
           type: string
@@ -310,14 +318,14 @@ components:
         startTime:
           type: string
           description: ISO 8601 formatted time.
-          example: 2008-09-15T15:53:00
+          example: "2008-09-15T15:53:00"
         slotDuration:
           type: integer
           description: Milliseconds per slot.
           example: 300000
         slots:
           type: array
-          description: A chronologically sorted dense array where startTime + index * slotDuration = slot start time in ISO 8601 time.
+          description: A chronologically sorted dense array of slots. startTime + index * slotDuration = slot start time in ISO 8601 time.
           items:
             type: object
             properties:
