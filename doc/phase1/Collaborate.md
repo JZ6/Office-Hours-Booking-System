@@ -37,7 +37,7 @@ Overall, despite not everyone being proficient at the tasks/technologies needed 
 
 
 ## Communication
-Slack will be the main discussion board, with Facebook Messenger for immediate questions or alerts. Github Projects and issues will be used for kanban and issue tracking.
+Slack will be the main discussion board and used for online meetings, with Facebook Messenger for immediate questions or alerts. Github Projects and issues will be used for kanban and issue tracking.
 
 ### Meetings
 Scrum style meetings will occur after lecture and during tutorial (Monday, Wednesday, Friday) in either the same room or anything available. Each meeting will feature a standup section for *at most* 20 minutes, after which a freeform discussion may take place. Attendance can be substituted with a report and/or messages if necessary.
@@ -68,8 +68,13 @@ Scrum style meetings will occur after lecture and during tutorial (Monday, Wedne
 * Took place outside BA2210.
 * Team members present: Grant, Asher, Benson, Pablo, Jay.
 * Notes:
-  * Discussed final details on documentation.
-  * Discussed API design.
+  * Discussed final details on documentation, API design.
+  
+#### Meeting 5 (Wednesday, October 17, 2018) [4PM - 5PM]:
+* Took place during CSC302 tutorial in room BA2175.
+* Team members present: Grant, Asher, Benson, Pablo, Jay.
+* Notes:
+  * Discussed documentation, API.
 
 ## Project Methodology
 We will be using Scrum with Kanban via Github's Projects feature. Due to the experimental nature of the project, the numerous unforeseen challenges should be best tackled with a flexible approach. Scrum allows rapid responses to change and will keep the team on the same page with regular meetings.
