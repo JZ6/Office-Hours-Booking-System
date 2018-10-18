@@ -4,7 +4,7 @@
 The general team goal is to create a responsive and feature-rich React client and AIOHTTP API service through test driven development. Otherwise, alongside the general goal, Asher wishes to learn Docker, devops, and deployment, Grant wishes to learn MongoDB, and Abed wishes to learn about deployment.
 
 ### Consensus
-Consensus was arrived through pooling individual goals and relevant use cases then prioritizing use cases based on frequency.
+Consensus was arrived through pooling individual goals and their relevant use cases then prioritizing use cases based on frequency.
 
 ## Use Cases
 ### Definitions:
