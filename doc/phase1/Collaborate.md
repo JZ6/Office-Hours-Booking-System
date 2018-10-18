@@ -6,9 +6,8 @@ Establish how your team is going to work together. How you will manage your sour
 ## The Team
 Below are the strengths, weaknesses, and experience each member brings to the team.
 ### [Grant](https://github.com/wonggran)
-Proficiencies: Python, HTML, CSS, 8 - 10 hours/week in weeks with normal workload, previous work experience in user interface development.
-
-Availability: Heavy workload from other courses during the week of Oct. 29 - Nov. 2
+Proficiencies: Python, HTML, CSS, previous work experience in user interface development.  
+Availability: 8 - 10 hours/week in weeks with normal workload, heavy workload from other courses during the week of Oct. 29 - Nov. 2
 
 ### [Asher](https://github.com/asher-dev)
 * Worked as a developer on a SaaS project and gained experience with Python/Flask for API development, MongoDB and MySQL, and various AWS services (including S3, Batch, Lambda, RDS Aurora).
@@ -19,7 +18,7 @@ Availability: Heavy workload from other courses during the week of Oct. 29 - Nov
 I've had some experience with front-end development at projects of my own. Despite being very interested in web design I have never partaken in a university project related to it. I'm most experienced in java. I'm not very experience with version control and team collaboration software. Thus, I'm not only hoping to learn technical skills but get used to working with a team on a formal level.
 
 ### [Benson](https://github.com/bensonchan)
-Proficiency: Python, HTML, REST.
+Proficiency: Python, HTML, REST.  
 Availability: Almost always. Please let me eat and sleep though.
 
 ### [Jay](https://github.com/JZ6)
