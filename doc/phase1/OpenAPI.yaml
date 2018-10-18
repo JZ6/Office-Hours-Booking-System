@@ -46,7 +46,7 @@ paths:
 
   /user/{utorId}/blocks:
     get:
-      summary: Return blocks relevant to the user, upholding note privacy.
+      summary: Students will receive blocks they can/have registered to, instructors/TAs will receive blocks they created and from their courses they run.
       parameters:
       - name: utorId
         in: path
