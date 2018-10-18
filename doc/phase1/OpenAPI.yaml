@@ -265,6 +265,7 @@ components:
           type: array
           items:
             type: string
+          example: [csc300, csc301, csc302]
 
     Course:
       type: object
@@ -274,16 +275,19 @@ components:
           items:
             type: string
             description: UtorID.
+          example: [rossbob2, billalexander5]
         tas:
           type: array
           items:
             type: string
             description: UtorID.
+          example: [atat4, atst2]
         students:
           type: array
           items:
             type: string
             description: UtorID.
+          example: [parkerpeter15, watsonmary25]
 
     Block:
       type: object
@@ -298,6 +302,7 @@ components:
           description: All relevant courses.
           items:
             type: string
+          example: [csc300, csc301, csc302]
         comment:
           type: string
           description: Comment left by instructor/TA.
@@ -305,9 +310,11 @@ components:
         startTime:
           type: string
           description: ISO 8601 formatted time.
+          example: 2008-09-15T15:53:00
         slotDuration:
           type: integer
           description: Milliseconds per slot.
+          example: 300000
         slots:
           type: array
           description: A chronologically sorted dense array where startTime + index * slotDuration = slot start time in ISO 8601 time.
@@ -317,12 +324,15 @@ components:
               utorId:
                 type: string
                 description: UtorId of the assigned student (can be empty).
+                example: parkerpeter15
               courseCode:
                 type: string
                 description: Course code this slot pertains to.
+                example: csc302
               note:
                 type: string
                 description: Note left by student. Should be deleted on updating student. Only viewable by TAs, Instructors, and relevant student.
+                example: Everybody gets one.
 
   requestBodies:
     UserBody:
