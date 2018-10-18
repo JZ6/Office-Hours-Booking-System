@@ -18,7 +18,9 @@ Proficiency: Python, HTML, REST.
 Availability: Almost always. Please let me eat and sleep though.
 
 ### [Jay](https://github.com/JZ6)
-I have previous full stack web development knowledge working as summer intern, and I am a fast learner who is willing to expose myself to new technology that are going to be relevant now or in the near future for my profession. I am more interested and focused on frontend (UI, Javascript) development, and I strive to improve myself everyday!
+Proficient: JS (Full Stack), UI, Python
+Knowledgable: MongoDB, Testing
+Availability: Weekdays evening.
 
 ### [Abed](https://github.com/abedef)
 My personal focuses include backend design and systems programming. I also
