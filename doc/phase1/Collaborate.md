@@ -6,7 +6,8 @@ Establish how your team is going to work together. How you will manage your sour
 ## The Team
 Below are the strengths, weaknesses, and experience each member brings to the team.
 ### [Grant](https://github.com/wonggran)
-My strengths include designing database models of objects and their relations between one another, roleplaying interactions between the user and an application, writing modular code that is testable in single units, simulating user needs to guide user interface design, forming a high level view of relations between application modules, listening with curiousity and a willingness to learn, and prioritizing individual collaboration and self development through understanding and compromise. My weaknesses include a lack of knowledge on current web application development technologies and web application design, inexperience with conversing using technical terminology preventing me from properly expressing a concept, timidness when team conflicts arise, and an unwavering belief of always being able to do better as an individual and as a team that blinds me in seeing my own and my team's strengths. My experience includes 1 year of C# and ASP.Net MVC web application development mainly carrying out simple front-end upgrades and fixes.
+Proficiencies: Python, HTML, CSS, 8 - 10 hours/week in weeks with normal workload, previous work experience in user interface development.
+Availability: Heavy workload from other courses during the week of Oct. 29 - Nov. 2
 
 ### [Asher](https://github.com/asher-dev)
 * Worked as a developer on a SaaS project and gained experience with Python/Flask for API development, MongoDB and MySQL, and various AWS services (including S3, Batch, Lambda, RDS Aurora).
@@ -24,8 +25,11 @@ Availability: Almost always. Please let me eat and sleep though.
 I have previous full stack web development knowledge working as summer intern, and I am a fast learner who is willing to expose myself to new technology that are going to be relevant now or in the near future for my profession. I am more interested and focused on frontend (UI, Javascript) development, and I strive to improve myself everyday!
 
 ### [Abed](https://github.com/abedef)
-Proficiency: backend design, CI/CD, IAAS
-Availability: Almost always when remote and in person M-W-F, but less available in person during weeks 43, 46 and 49.
+My personal focuses include backend design and systems programming. I also
+spent my PEY working closely with many CI/CD and IAAS systems and have become
+familiar with a few related industry-standard tools. I will try to bring this
+knowledge to the team to make our workflow, testing and deployment as
+effortless as possible. My web stack knowledge is weak, but not non-existent.
 
 ## Team strengths
 The biggest strength of the team is that people's skills and interests are very diverse. 
