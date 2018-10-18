@@ -1,107 +1,13 @@
 # Scope.md
 
-## Goal
-Triage the use cases to identify an area of focus for your team.
+## Team Learning Goals
+The general team goal is to create a responsive and feature-rich React client and AIOHTTP API service through test driven development. Otherwise, alongside the general goal, Asher wishes to learn Docker, devops, and deployment, Grant wishes to learn MongoDB, and Abed wishes to learn about deployment.
 
-## Design Use Cases
-### Learning Goals
-Below are the skills and experience each member brings and their learning goals, from which focal use cases can be chosen from [the handout](https://docs.google.com/document/d/1pIAb_yHoHQygp31I1gV69eHaMwOaWXZtDMfVHg3q5eQ/edit#heading=h.3a98l0b27xf8).
+### Consensus
+Consensus was arrived through pooling individual goals and relevant use cases then prioritizing use cases based on frequency.
 
----
-#### Jay
-**Skills**  
-Javascript, Python, C, Java
-
-**Learning Goals**  
-I would like to improve upon my current full stack web development knowledge, as well as expose myself to new technology that are going to be relevant now or in the near future for my profession. I would also like to gain experience in working with a team of different developers possessing varying skill sets. We can accomplish this by building upon each other’s strengths and supplementing our own weaknesses. Some specfic areas I have in mind include responsive design, frontend JS and Mongodb.
-
-**Use Cases**  
-Database related:  
-2 - Create new class  
-3 - Create office hours interval  
-4 - Delete interval with no meetings  
-
-Frontend related:  
-5 - Manage meetings in intervals  
-12 - Choose meeting slot  
-13 - Cancel meeting slot  
-
----
-#### Grant
-**Skills**  
-HTML, CSS, Schema design, Relational database querying
-
-**Learning Goals**  
-Concurrent data transcations, designing and managing a database using documents (MongoDB + Mongoose), API design and implementation in Javascript, limit access to actions based on account priviledge, implementing a form of reminders/notifications.  
-
-**Use Cases**  
-2. Create a new class (importing a classlist csv), 3 & 4 Create and delete meeting, 8 & 9 Creation and management of notes by TA/instructor and students, 12 - 14 Student creation and management of meeting slot, 17 Student creation and management of comments.
-
----
-#### Benson
-**Skills**  
-HTML, CSS, Ruby on Rails, Django, MySQL (all cursory)
-
-**Learning Goals**  
-Frontend (React, JS, asynchronous requests), UI design, end point design.
-
-**Use Cases**   
-3. Create office hours interval, 5. Manage meetings in intervals, 6. Create, delete, edit meeting comments, 7. Create, delete, edit meeting notes, 8. Instructor Manage notes, 9. Instructor Manage Comments, 12. Choose meeting slot, 13. Cancel meeting slot, 14. Edit meeting slot, 17. Student Manage Comments.
-
----
-#### Asher
-**Skills**  
-Python, MongoDB, SQL, API design, data modeling
-
-**Learning Goals**  
-Improve DevOps skills (Docker, build tools, Kubernetes/deployment), learn a frontend JS library, practice some form of TDD  
-
-**Use Cases**  
-
----
-#### Pablo
-**Skills**  
-HTML, CSS, PHP
-
-**Learning Goals**  
-Primary learning objective: Learn currently used tools to create highly interactive interfaces. I'd like to focus more on the high level general aspect of the design of the interface and its functionality, rather than visual tweaks or details. That's why learning React in depth and putting it into practice is a solid learning objective for me.
-Secondary learning objectives: Get a wider view of how a full stack web app comes together and the different frameworks/technologies used in both front and back end.
-
-**Use Cases**  
-In order to create a highly interactive interface I want to abide by the following principles:  
-A) Include a lot of clickable options. Maybe even implement drag a drop functionality or drag to pan.  
-B) User friendly interface with coherent expandibles and sensible distribution of information.  
-C) Get away from simple read interfaces where all you have to do is scroll down a page and read text.  
-D) Engage the user as much as possible. I.e. Given them the option to input information, add comments, change settings...
-
-I'll group the user cases I want to work on based on these 4 aspects:  
-A) 3,12,5: This involves the view of the calendar item. I would like to be able to implement scrolling to navigate the calendar or drag and drop to change a meeting interval's time  
-B) 2,3,4,5,6,7,8,9,12,13,14,17: This applies to all the use cases which purpose is displaying and interacting with information  
-C) 3,4,5,12,13,14: The process of managing events should be smooth, user friendly and should use a sensible set of expandables that make the process more intuitive and engaging.  
-D) 6,7,8,9,17: Provide an interactible way of managing notes/comments on events  
-
----
-#### Abed
-**Skills**  
-Ruby, Python, MongoDB, Docker, CI/CD
-
-**Learning Goals**  
-Become more comfortable with a backend web framework, as well as React. Looking
-to also work on infrastructure and and experiment with remote deployments and
-scaling.
-
-**Use Cases**  
-* The web app's online deployment
-* Create new class
-* Create office hours interval
-* Manage meetings in intervals
-* Create, delete, edit private and public meeting comments and notes
-  (instructor and student)
-* Generate persistent link to share meetings/intervals
-
----
-### Use Cases
-#### Definitions:
+## Use Cases
+### Definitions:
 Priority 1 is the highest, with 3 being omitted. Due to the slightly confusing terms provided in the handout, these are the agreed upon terms we will be using.
 
 **(Meeting) Block** - A session defined by an instructor/TA, usually an hour or two long. Blocks contain slots. Blocks belong to one instructor/TA. Viewable by instructor/TA and students in the same course.
@@ -145,9 +51,6 @@ Details: This would require students to be constantly checking notifications for
 ##### Users can receive and configure notification/reminders/student-will-be-late alerts.
 Priority: 3  
 Details: Functionality will be offloaded to Google Calendar when syncing is implemented.
-
-## Team Learning Goals
-The general team goal is to create a robust and feature-rich React client and API service. Therefore, use cases which explore this area were chosen. Other goals relate to all possible use cases such as learning Docker and working in a team, while features such as a database service provide functionality to use cases.
 
 ## Handout
 The individuals on your team probably have developed specific tastes over the last years as to what kind of code you like to build. The system as described is probably too big for a group to build (part time) in the style you would like to in the time you have. Hence, you will likely have to triage the use cases down to a subset in order to focus on the work that is the most valuable to you. We use the word valuable here in a very general way. (Perhaps because it's a technology you want to get to know more. Perhaps it's a technology you want to learn from scratch. Perhaps it's a technology that you think will improve your chances in the upcoming hunt for jobs)
