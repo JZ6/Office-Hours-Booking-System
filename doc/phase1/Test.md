@@ -20,10 +20,10 @@ An example of a Pact consumer contract test for the communication between a Reac
 https://github.com/pact-foundation/pact-python
 Python version of Pact. Enables consumer driven contract testing, providing a mock service and DSL for the consumer project, and interaction playback and verification for the service provider project. Currently supports version 2 of the Pact specification.
 
+For more information about what Pact is, and how it can help you test your code more efficiently, check out the Pact documentation.
+
 ## Functional/End to End Testing
 Functional testing will be done with the same tools as integration testing. UI interactions should be translated to event invocations. Avoid things like mouse coordinates or searching elements by string as the UI may change drastically.
-
-For more information about what Pact is, and how it can help you test your code more efficiently, check out the Pact documentation.
 
 ## Continuous Integration
 [Travis](https://travis-ci.org/) will be used to run tests automatically on all commits and pull requests.
