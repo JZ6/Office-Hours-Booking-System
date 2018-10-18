@@ -1,5 +1,3 @@
-Scrum style meetings will occur after lecture and during tutorial (Monday, Wednesday, Friday) in either the same room or anything available. Each meeting will feature a standup section for *at most* 20 minutes, after which a freeform discussion may take place. Attendance can be substituted with a report and/or messages if necessary.
-
 #### Meeting 1 (Friday, October 5, 2018) [4PM - 5PM]:
 * Took place during CSC302 tutorial in room BA2175.
 * Team members present: Grant, Asher, Benson, Pablo, Jay.
