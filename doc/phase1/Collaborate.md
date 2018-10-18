@@ -1,10 +1,6 @@
 # Collaborate.md
 
-## Goal
-Establish how your team is going to work together. How you will manage your sources. How you will contribute to your sources. When you will meet, how you will communicate, who will scribe, how you will maintain your backlog, etc.
-
-## The Team
-Below are the strengths, weaknesses, and experience each member brings to the team.
+## Individual Skills and Availability
 ### [Grant](https://github.com/wonggran)
 Proficiencies: Python, HTML, CSS, previous work experience in user interface development.  
 Availability: 8 - 10 hours/week in weeks with normal workload, heavy workload from other courses during the week of Oct. 29 - Nov. 2
@@ -36,7 +32,6 @@ The biggest strength of the team is that people's skills and interests are very 
 In regards to web development, some members of the team have experience with full stack web app development (as interns, work experience and independently) and others have little to some experience. Some other members are also experienced in back-end programming such as database design. Others gather experience in testing, deployment and the knowledge of industry-standard tools.
 Regarding member's interests, some of us are willing to know more about front-end while others want to deepen their knowledge on back-end.
 Overall, despite not everyone being proficient at the tasks/technologies needed to accomplish the project, everyone is willing to learn and get to explore new technologies.
-
 
 ## Communication
 Slack will be the main discussion board and used for online meetings, with Facebook Messenger for immediate questions or alerts. Github Projects and issues will be used for kanban and issue tracking.
