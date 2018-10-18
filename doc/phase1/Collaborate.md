@@ -41,7 +41,7 @@ Overall, despite not everyone being proficient at the tasks/technologies needed 
 Slack will be the main discussion board and used for online meetings, with Facebook Messenger for immediate questions or alerts. Github Projects and issues will be used for kanban and issue tracking.
 
 ### Meetings
-
+[See Meetings.md](Meetings.md)
 
 ## Project Methodology
 We will be using Scrum with Kanban via Github's Projects feature. Due to the experimental nature of the project, the numerous unforeseen challenges should be best tackled with a flexible approach. Scrum allows rapid responses to change and will keep the team on the same page with regular meetings.
