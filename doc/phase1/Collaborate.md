@@ -17,7 +17,8 @@ My strengths include designing database models of objects and their relations be
 I've had some experience with front-end development at projects of my own. Despite being very interested in web design I have never partaken in a university project related to it. I'm most experienced in java. I'm not very experience with version control and team collaboration software. Thus, I'm not only hoping to learn technical skills but get used to working with a team on a formal level.
 
 ### [Benson](https://github.com/bensonchan)
-My biggest strength is that I offer my full schedule to this course. Despite already having two courses worth of web development, it was too cursory to claim proficiency. I have a great interest in UI design and user experience, having spent excessive time discussing (complaining) about it to my friends. My weaknesses are a general lack of experience in web development and a bad sense of humour.
+Proficiency: Python, HTML, REST.
+Availability: Almost always. Please let me eat and sleep though.
 
 ### [Jay](https://github.com/JZ6)
 I have previous full stack web development knowledge working as summer intern, and I am a fast learner who is willing to expose myself to new technology that are going to be relevant now or in the near future for my profession. I am more interested and focused on frontend (UI, Javascript) development, and I strive to improve myself everyday!
