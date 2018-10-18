@@ -24,11 +24,8 @@ Availability: Almost always. Please let me eat and sleep though.
 I have previous full stack web development knowledge working as summer intern, and I am a fast learner who is willing to expose myself to new technology that are going to be relevant now or in the near future for my profession. I am more interested and focused on frontend (UI, Javascript) development, and I strive to improve myself everyday!
 
 ### [Abed](https://github.com/abedef)
-My personal focuses include backend design and systems programming. I also
-spent my PEY working closely with many CI/CD and IAAS systems and have become
-familiar with a few related industry-standard tools. I will try to bring this
-knowledge to the team to make our workflow, testing and deployment as
-effortless as possible. My web stack knowledge is weak, but not non-existent.
+Proficiency: backend design, CI/CD, IAAS
+Availability: Almost always when remote and in person M-W-F, but less available in person during weeks 43, 46 and 49.
 
 ## Team strengths
 The biggest strength of the team is that people's skills and interests are very diverse. 
