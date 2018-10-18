@@ -12,45 +12,45 @@ Priority 1 is the highest and explored the most, with 3 being omitted. Due to th
 
 **(Meeting) Block** - A session defined by an instructor/TA, usually an hour or two long. Blocks contain slots. Blocks belong to one instructor/TA. Viewable by instructor/TA and students in the same course.
 
-**Comment** - Details per block by instructor/TA on block.
+**Comments** - Details per block by instructor/TA on block.
 
-**(Meeting) Slots** - Individual block slots which are equal in length and have no empty gaps. If setup time is required for e.g. presentations, just make the slots longer. Slots belong to one block.
+**(Meeting) Slots** - Slots for meetings with one student. They are equal in length and contiguous within their block. If setup time is required for e.g. presentations, just make the slots longer. If a specific student needs more time, multiple consecutive slots may be assigned. Slots belong to one block.
  
-**Note** - Details per slot by student, only viewable by student creator and instructor/TA.
+**Notes** - Details per slot by student, only viewable by student creator and instructor/TA.
 
 ##### Users should be able to easily find, view, and organize relevant blocks and their contents.
 Priority: 1  
 
-##### Instructors and TAs can manage Blocks (create, edit, delete) and their comments and Slots (manually assigning students, viewing notes).
+##### Instructors and TAs can manage Blocks (create, edit, delete) and their Comments and Slots (manually assigning students, viewing/editing notes).
 Priority: 1  
-Details: Instructors/TAs will create blocks with the relevant course(s), start time, end time, and duration of slots. Number of slots will be calculated automatically and shown. Option to make block repeat weekly and set a maximum number of slots obtainable per student.
+Details: Instructors/TAs can create blocks with relevant course(s), start time, end time, and duration of slots. Number of slots will be calculated automatically and shown. Option to make the block repeat weekly and set a maximum number of slots obtainable per student.
 
-##### Students can sign up/unsign down for slots and manage notes (create, edit, delete) to them.
+##### Students can register/unregister for slots and manage notes (create, edit, delete) to them.
 Priority: 1  
-Details: Notes should be removed when slot is unsigned down for or when another student is assigned via instructor/TA.
-
-##### Users need to authenticate before being able to access resources.
-Priority: 2  
-Details: Authentication will be spoofed at first. Users will use their UtorID and a ‘password’ such as student numbers to identify themselves and receive appropriate views for a student/instructor/TA.
+Details: Notes should be removed when slot is freed or when another student is assigned via instructor/TA.
 
 ##### Instructors can manage courses (create, edit, delete) and add students/TAs to courses.
 Priority: 2  
 Details: We will start with a premade CSV containing sample students and classes.
 
-##### Users can generate static links to specific states of blocks and its details.
+##### Users can generate static links to specific states of blocks and their details.
 Priority: 2  
 
-##### Users can sync/export blocks/slots to Google Calendar™.
+##### Users can sync/export blocks/slots to Google Calendar.
 Priority: 2  
-Details: Will require user authentication with google accounts. When exporting block, slots will be written into event comment rather than spamming multiple events.
+Details: Users will not be required to use this feature. Will require user authentication with google accounts. When exporting block, slots will be written into event comment rather than flooding the calendar with events.
 
 ##### Users can search for users, courses, and comments with fuzzy searching/autocomplete.
 Priority: 2  
 
+##### Users need to authenticate before being able to access resources.
+Priority: 2.5  
+Details: Authentication will be spoofed at first. Users will use their UtorID and a ‘password’ (i.e. student number) to identify themselves and receive appropriate resources. Shibboleth authentication will be unlikely, but a custom account system is possible.
+
 ##### System can adapt to late/cancelling students.
 Priority: 3  
-Details: This would require students to be constantly checking notifications for system rescheduled times. It would be better if the slot was simply freed and students were notified and prompted to take that slot if convenient.
+Details: This would require students to be constantly checking notifications for system rescheduled times. It would be better if the slot was simply freed and students can claim it at their own discretion.
 
-##### Users can receive and configure notification/reminders/student-will-be-late alerts.
+##### Users can receive and configure notifications/reminders.
 Priority: 3  
-Details: Functionality will be offloaded to Google Calendar when syncing is implemented.
+Details: Functionality will be offloaded to Google Calendar, which would be far more convenient for the user.
