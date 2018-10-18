@@ -8,7 +8,7 @@ Consensus was arrived through pooling individual goals and relevant use cases th
 
 ## Use Cases
 ### Definitions:
-Priority 1 is the highest, with 3 being omitted. Due to the slightly confusing terms provided in the handout, these are the agreed upon terms we will be using.
+Priority 1 is the highest and explored the most, with 3 being omitted. Due to the slightly confusing terms provided in the handout, these are the agreed upon terms we will be using.
 
 **(Meeting) Block** - A session defined by an instructor/TA, usually an hour or two long. Blocks contain slots. Blocks belong to one instructor/TA. Viewable by instructor/TA and students in the same course.
 
@@ -18,13 +18,16 @@ Priority 1 is the highest, with 3 being omitted. Due to the slightly confusing t
  
 **Note** - Details per slot by student, only viewable by student creator and instructor/TA.
 
+##### Users should be able to easily find, view, and organize relevant blocks and their contents.
+Priority: 1  
+
 ##### Instructors and TAs can manage Blocks (create, edit, delete) and their comments and Slots (manually assigning students, viewing notes).
 Priority: 1  
 Details: Instructors/TAs will create blocks with the relevant course(s), start time, end time, and duration of slots. Number of slots will be calculated automatically and shown. Option to make block repeat weekly and set a maximum number of slots obtainable per student.
 
 ##### Students can sign up/unsign down for slots and manage notes (create, edit, delete) to them.
 Priority: 1  
-Details: Students should be able to easily find and view blocks (except blocks from other courses) and their available slots. Notes should be removed when slot is unsigned down for or when another student is assigned via instructor/TA.
+Details: Notes should be removed when slot is unsigned down for or when another student is assigned via instructor/TA.
 
 ##### Users need to authenticate before being able to access resources.
 Priority: 2  
@@ -51,11 +54,3 @@ Details: This would require students to be constantly checking notifications for
 ##### Users can receive and configure notification/reminders/student-will-be-late alerts.
 Priority: 3  
 Details: Functionality will be offloaded to Google Calendar when syncing is implemented.
-
-## Handout
-The individuals on your team probably have developed specific tastes over the last years as to what kind of code you like to build. The system as described is probably too big for a group to build (part time) in the style you would like to in the time you have. Hence, you will likely have to triage the use cases down to a subset in order to focus on the work that is the most valuable to you. We use the word valuable here in a very general way. (Perhaps because it's a technology you want to get to know more. Perhaps it's a technology you want to learn from scratch. Perhaps it's a technology that you think will improve your chances in the upcoming hunt for jobs)
-
-Choose the subset in such a way that your team benefits from the project as much as possible. For instance, if you are a group that is keen on building a sophisticated user interface, you could pick a challenging part of the ticket assignment process and invest your effort in making an awesome drag and drop workflow. Naturally, the time spent on this may preclude building out UI for other use cases.  Do NOT implement exclusively CRUD web pages (these add little to the user experience nor teach you much) because there is not enough time to get creative. 
-On the other hand, perhaps your team is not that interested in user interaction work but is very keen on learning how to build endpoints (REST or otherwise) efficiently and with minimal hand coding. Then, you could take on more use cases, implicitly leaving the UI very simple (for instance some of the UI could be triaged down to a invocations of a shell script. You probably would need to spend a lot of time studying one of the sophisticated REST frameworks, like django-rest.
-
-In any case, in scope.md,  articulate  your team learning goals, the particular part of the application you have decided to focus your attention on, and which other parts this will force you to omit. (If the team learning goals represent less than consensus then perhaps you should discuss the issues with the instructor or your TA. If you are comfortable writing about how you came to consensus in the team scope.md that would be ideal.)
