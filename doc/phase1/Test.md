@@ -11,20 +11,17 @@ Python's built in [unittest](https://docs.python.org/3/library/unittest.html) fr
 
 We have decided to use the testing framework Jest because we will be working mainly with React and NodeJS in the Webapp service, thus Jest would be a perfect hassle free choice for our server-side developmental needs, and React TestUtils would be sufficient for client-side (React).
 
-## Functional/End to End Testing
-Puppeteer or Selenium can be used to simulate user inputs in a browser for functional testing. However, if possible, UI interactions should be translated to event invocations, which can be tested without simulations. Avoid things like mouse coordinates as the UI may change drastically.
-
 ## Integration Testing
-
 ### Pact
-
 #### Web app
 https://github.com/paucls/pact-consumer-contract-react-example
 An example of a Pact consumer contract test for the communication between a React application and a backend API.
-
 #### API service
 https://github.com/pact-foundation/pact-python
 Python version of Pact. Enables consumer driven contract testing, providing a mock service and DSL for the consumer project, and interaction playback and verification for the service provider project. Currently supports version 2 of the Pact specification.
+
+## Functional/End to End Testing
+Functional testing will be done with the same tools as integration testing. UI interactions should be translated to event invocations. Avoid things like mouse coordinates or searching elements by string as the UI may change drastically.
 
 For more information about what Pact is, and how it can help you test your code more efficiently, check out the Pact documentation.
 
