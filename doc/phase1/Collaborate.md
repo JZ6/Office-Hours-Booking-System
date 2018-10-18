@@ -7,6 +7,7 @@ Establish how your team is going to work together. How you will manage your sour
 Below are the strengths, weaknesses, and experience each member brings to the team.
 ### [Grant](https://github.com/wonggran)
 Proficiencies: Python, HTML, CSS, 8 - 10 hours/week in weeks with normal workload, previous work experience in user interface development.
+
 Availability: Heavy workload from other courses during the week of Oct. 29 - Nov. 2
 
 ### [Asher](https://github.com/asher-dev)
