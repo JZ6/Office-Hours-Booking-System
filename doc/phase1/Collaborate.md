@@ -23,7 +23,7 @@ Knowledgable: MongoDB, Testing
 Availability: Weekdays evening.
 
 ### [Abed](https://github.com/abedef)
-Proficiency: backend design, CI/CD, IAAS, MongoDB
+Proficiency: backend design, CI/CD, IAAS, MongoDB  
 Availability: Almost always when remote and in person M-W-F, but less available in person during weeks 43, 46 and 49.
 
 ## Team strengths
