@@ -35,9 +35,6 @@ Overall, despite not everyone being proficient at the tasks/technologies needed 
 ## Communication
 Slack will be the main discussion board and used for online meetings, with Facebook Messenger for immediate questions or alerts. Github Projects and issues will be used for kanban and issue tracking.
 
-### Meetings
-[See Meetings.md](Meetings.md)
-
 ## Project Methodology
 We will be using Scrum with Kanban via Github's Projects feature. Due to the experimental nature of the project, the numerous unforeseen challenges should be best tackled with a flexible approach. Scrum allows rapid responses to change and will keep the team on the same page with regular meetings.
 * Sprints will be weekly, with relatively narrow scope to account for the short cycle
@@ -45,6 +42,8 @@ We will be using Scrum with Kanban via Github's Projects feature. Due to the exp
 * Friday tutorial times will be used for retrospective and sprint planning
   * Sprint planning: select a sprint scope from backlog based on project roadmap, estimate tickets, rank by priority, and set sprint goals based on projected sprint velocity.
   * Retrospective: in the last sprint, what went well and didn't go well, and are there any action items to improve workflow or more effectively achieve goals.
+
+[Previous meetings list.](Meetings.md)
 
 ### Git Workflow
 We will follow a pared-down variation of the GitFlow workflow, optimized for continuous deployment to a live test environment. In this variation, the top level (`master`) and release branches are truncated from the model, so our `master` will be equivalent to GitFlow's `develop` branch, and will be under continuous deployment to a live test environment. All branches off master will be working branches at the developers' discretion. This may include feature branches, or aggregate branches to tie features together before opening a pull request to master. All feature branches and commit messages should contain the feature/story's associated issue number. Feature requirements, test cases, and code will be reviewed by two other members.
