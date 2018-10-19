@@ -1,9 +1,9 @@
 # Collaborate.md
 
-## Individual Skills and Availability
+## Individual Proficiencies and Availability
 ### [Grant](https://github.com/wonggran)
-Proficiencies: Python, HTML, CSS, previous work experience in user interface development.  
-Availability: 8 - 10 hours/week in weeks with normal workload, heavy workload from other courses during the week of Oct. 29 - Nov. 2
+* Proficiencies: Python, HTML, CSS, previous work experience in user interface development.  
+* Availability: 8 - 10 hours/week in weeks with normal workload, heavy workload from other courses during the week of Oct. 29 - Nov. 2
 
 ### [Asher](https://github.com/asher-dev)
 * Worked as a developer on a SaaS project and gained experience with Python/Flask for API development, MongoDB and MySQL, and various AWS services (including S3, Batch, Lambda, RDS Aurora).
@@ -11,28 +11,23 @@ Availability: 8 - 10 hours/week in weeks with normal workload, heavy workload fr
 * I have a tendency to overscope, and I often work slowly because of too much attention to detail. I have very little prior experience with DevOps and task automation.
 
 ### [Pablo](https://github.com/pablolluchr)
-*Proficiencies: HTML, CSS, PHP and Python at intermediate level. JS, Python and SQL at a beginner level.
-*Availability: 8hours/week. Exceptions: 5hours/week during week of the 29th of October and week of the 11th of November.  15hours/week during the week of the 4th of November.
-
+* Proficiencies: HTML, CSS, PHP and Python at intermediate level. JS, Python and SQL at a beginner level.
+* Availability: normally 8 hours/week, 5 hours/week during the week of the 29th of October and week of the 11th of November, 15 hours/week during the week of the 4th of November.
 
 ### [Benson](https://github.com/bensonchan)
-Proficiency: Python, HTML, REST.  
-Availability: Almost always. Please let me eat and sleep though.
+* Proficiencies: Python, HTML, REST.  
+* Availability: Almost always. Please let me eat and sleep though.
 
 ### [Jay](https://github.com/JZ6)
-* Proficient: JS (Full Stack), UI, Python
-* Knowledgable: MongoDB, Testing
+* Proficiencies: Javascript (Full Stack), UI, Python, MongoDB, Testing
 * Availability: Weekdays evening. Occupied reading week and some weekends.
 
 ### [Abed](https://github.com/abedef)
-Proficiency: backend design, CI/CD, IAAS, MongoDB  
+Proficiencies: backend design, CI/CD, IAAS, MongoDB  
 Availability: Almost always when remote and in person M-W-F, but less available in person during weeks 43, 46 and 49.
 
-## Team strengths
-The biggest strength of the team is that people's skills and interests are very diverse. 
-In regards to web development, some members of the team have experience with full stack web app development (as interns, work experience and independently) and others have little to some experience. Some other members are also experienced in back-end programming such as database design. Others gather experience in testing, deployment and the knowledge of industry-standard tools.
-Regarding member's interests, some of us are willing to know more about front-end while others want to deepen their knowledge on back-end.
-Overall, despite not everyone being proficient at the tasks/technologies needed to accomplish the project, everyone is willing to learn and get to explore new technologies.
+## Team proficiencies and constraints
+As a team we are proficient in HTML/CSS/Python/Javascript and API development. However, we collectively lack development experience using React and aiohttp, as well as web application deployment and integration testing. A majority of our team has prior work/internship experience as web application programmers so we have a sense of industry best-practices and knowledge of issues that may arise during development. All members are aware of their own foreseeable time periods of high workload that will decrease development pace, but we are prepared to incorporate this variable time constraint in planning our sprints so that critical components are effectively implemented. In addition, all members have committed themselves to learning and using a new technology so we forecast members will consult with eachother and external sources to fill in their own gaps in knowledge. We will also incorporate this variable of learning-during-development to plan the scope of our sprints.
 
 ## Communication
 Slack will be the main discussion board and used for online meetings, with Facebook Messenger for immediate questions or alerts. Github Projects and issues will be used for kanban and issue tracking.
