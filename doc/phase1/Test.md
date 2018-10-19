@@ -1,7 +1,7 @@
 # Test.md
 
 ## Methodology
-We intend to take a bottom-up approach to testing each service individually and together. This is an integration testing approach where the lowest level components are tested first, which then facilitate the testing of higher level components. The process is repeated until the component at the top of the hierarchy is tested.
+We intend to take a bottom-up approach to testing each service, both individually and together. This is an integration testing approach where the lowest level components are tested first, which then facilitate the testing of higher level components. The process is repeated until the component at the top of the hierarchy is tested.
 
 ## Unit Testing
 ### API Service
@@ -10,13 +10,14 @@ Python's built in [unittest](https://docs.python.org/3/library/unittest.html) fr
 [Jest](https://jestjs.io/) is a zero-configuration testing platform that is used by Facebook to test all JavaScript code including React applications. We have decided to use Jest because we will be working mainly with React and NodeJS in the webapp service, thus Jest would be a perfect hassle free choice for server-side testing. React TestUtils and Enzyme will be used for client-side testing (React).
 
 ## Integration Testing
-### Pact
+
+### [Pact](https://github.com/paucls/pact-consumer-contract-react-example)
+
 #### Web app
-https://github.com/paucls/pact-consumer-contract-react-example
-An example of a Pact consumer contract test for the communication between a React application and a backend API.
+[An example of a Pact consumer contract test for the communication between a React application and a backend API.](https://github.com/paucls/pact-consumer-contract-react-example)
+
 #### API service
-https://github.com/pact-foundation/pact-python
-Python version of Pact. Enables consumer driven contract testing, providing a mock service and DSL for the consumer project, and interaction playback and verification for the service provider project. Currently supports version 2 of the Pact specification.
+[Python version of Pact.](https://github.com/pact-foundation/pact-python) Enables consumer driven contract testing, providing a mock service and DSL for the consumer project, and interaction playback and verification for the service provider project. Currently supports version 2 of the Pact specification.
 
 For more information about what Pact is, and how it can help you test your code more efficiently, check out the [Pact documentation](https://docs.pact.io/).
 
