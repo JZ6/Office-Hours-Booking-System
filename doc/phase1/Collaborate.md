@@ -9,6 +9,7 @@
 * Worked as a developer on a SaaS project and gained experience with Python/Flask for API development, MongoDB and MySQL, and various AWS services (including S3, Batch, Lambda, RDS Aurora).
 * Primary strengths are agile methodology, version control maintenance, data modeling, and software design. Also able to help with general programming in python and ES6, API design/implementation, unit testing, database queries and schemas.
 * I have a tendency to overscope, and I often work slowly because of too much attention to detail. I have very little prior experience with DevOps and task automation.
+* Availability: M/W all day + weekends with advance notice.
 
 ### [Pablo](https://github.com/pablolluchr)
 * Proficiencies: HTML, CSS, PHP and Python at intermediate level. JS, Python and SQL at a beginner level.
