@@ -3,24 +3,19 @@
 ## The Office Hours Booking System
 <img src='https://i.imgur.com/N1AJuuV.png' width='500px'>
 
-## Web Application Server
-Serves the client either an Instructor, TA, or Student web application based on their verified identity. The server will be built using the Node.js Express web application framework.
-
-## Client Web Application
-An Instructor, TA, and Student web application that allows the client to perform office hour booking actions through the API service. The applications allow clients to request actions through the API service's endpoints. The application user interface will be built using React.
-
 ## API Service
-Expose various endpoints to perform requested Instructor, TA, and Student actions. The API service will be built using aiohttp and will interface with the database service using Motor.
+Exposes various endpoints to perform back-end operations. Supports operations for instructors and students to interface with the booking system. The API service will be built using asynchronous python. We have tentatively chosen aiohttp for the service framework, with Motor for connecting to MongoDB. Another option to consider for the service framework is Sanic (with UVLoop as a drop-in replacement for asyncio).
+
+## Web Client Application & Service
+
+Users will interact with the booking system using a web client built with React.js and served by a Node.js/Express.js server-side application. The application will provide separate interfaces for instructors and students. A point of consideration that requires further discussion is whether to make API calls directly from the client, or have them go through the Node server first. The former is easier and requires less code, while the latter is more secure. In order to minimize writing extra API specs, the Node server could simply forward API requests (along with identity/auth information) directly to the API service rather than defining its own API layer.
+
 
 ## Database Service
-Performs queries requested by the API service using MongoDB.
+MongoDB will be used as a data store. It will be worth considering a managed service for the live test environment, and it can be run locally in a Docker container for local development environments.
 
-## Rationale for division of system
-The decision to divide the office hour booking system into Instructor/TA and Student web applications comes from the different use requirements of Instructor/TA and Student users. Instructors have the ability to create courses, specify TAs, manage intervals and notes, and add students to the class. Since they are ultimately the course admistrators they should be the only ones capable of performing these administrative tasks. This is different than what TAs are intended to do which is only manage intervals, meetings, and notes. This gives reason to have two separate web applications to support the disjoint needs of a course instructor and its TAs. Students only manage their own meetings and notes meaning they lack any use requirements that can affect any other users besides themselves, thus warranting a separate web application.
 
-Additionally, the division of our system into separate service components allows for the independant development and testing of these services. As individual services pass their local tests, system wide integration tests can be performed to verify the correctness of different couplings of services.
+## Rationale for Technology Stack Choices
+MongoDB, React, and aiohttp were chosing specifically to suit learning goals of our team members. Node.js was chosen for its ease of use and quick set-up with React. Our collecive familiarity with Javascript and Python reduces the learning overhead for diving into technologies based on these languages. MongoDB is also particularly well suited to a small-data, short-term, rapid-prototyping development process.
 
-## Rationale for choice of middleware
-The choice of a Node.js-React-aiohttp-MongoDB development stack comes from fulfilling individual team member learning goals about the web technologies we would like to learn, while also considering our collective familarity with Javascript and Python.
-
-We recognize the benefits brought forth during development and testing when limiting interprocess communication to API calls on modular, independent, and blackboxed services -- as suggested in the Bezos Dictum. Hence our choice of using JSON objects to package information to send between services also guided our choice of development stack as each of our chosen frameworks, libraries, and database provide integrated support for handling JSON.
+The modularity of our services -- keeping the API and client services separate -- allows us to develop and test our front-end and back-end applications as separate entities, against an API contract. This will also conform well to the Bezos Dictum, as the API service will be independently accessible, decoupled from the client.
