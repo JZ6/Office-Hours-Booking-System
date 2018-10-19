@@ -27,13 +27,13 @@ Proficiencies: backend design, CI/CD, IAAS, MongoDB
 Availability: Almost always when remote and in person M-W-F, but less available in person during weeks 43, 46 and 49.
 
 ## Team proficiencies and constraints
-As a team we are proficient in HTML/CSS/Python/Javascript and API development. However, we collectively lack development experience using React and aiohttp, as well as web application deployment and integration testing. A majority of our team has prior work/internship experience as web application programmers so we have a sense of industry best-practices and knowledge of issues that may arise during development. All members are aware of their own foreseeable time periods of high workload that will decrease development pace, but we are prepared to incorporate this variable time constraint in planning our sprints so that critical components are effectively implemented. In addition, all members have committed themselves to learning and using a new technology so we forecast members will consult with eachother and external sources to fill in their own gaps in knowledge. We will also incorporate this variable of learning-during-development to plan the scope of our sprints.
+As a team we are proficient in HTML/CSS/Python/Javascript and API development. However, we collectively lack development experience using React and aiohttp, as well as web application deployment and integration testing. A majority of our team has prior work/internship experience as web application programmers so we have a sense of industry best-practices and knowledge of issues that may arise during development. All members are aware of their own foreseeable time periods of high workload that will decrease development pace, but we are prepared to incorporate this variable time constraint in planning our sprints so that critical components are effectively implemented. In addition, all members have committed themselves to learning and using a new technology, so we forecast members will consult with eachother and external sources to fill in their own gaps in knowledge. We will also incorporate this variable of learning-during-development to plan the scope of our sprints.
 
 ## Communication
 Slack will be the main discussion board and used for online meetings, with Facebook Messenger for immediate questions or alerts. Github Projects and issues will be used for kanban and issue tracking.
 
 ## Project Methodology
-We will be using Scrum with Kanban via Github's Projects feature. Due to the experimental nature of the project, the numerous unforeseen challenges should be best tackled with a flexible approach. Scrum allows rapid responses to change and will keep the team on the same page with regular meetings.
+We will be using Scrum with Kanban via Github's Projects feature. Due to the experimental nature of the project, the numerous unforeseen challenges should be best tackled with a flexible approach. Scrum allows rapid response to change and will keep the team on the same page with regular meetings.
 * Sprints will be weekly, with relatively narrow scope to account for the short cycle
 * Scrum/stand-up meetings will occur on M/W/F during or immediately following scheduled class time. Contributors who are unable to attend in person will report on Slack (progress since last meeting, plans before next meeting, any blockers).
 * Friday tutorial times will be used for retrospective and sprint planning
@@ -48,6 +48,6 @@ We will follow a pared-down variation of the GitFlow workflow, optimized for con
 ### Member Workload
 Team members will not be restricted to specific domains. Instead, we will prioritize features that suit our learning goals while ensuring that all core features are finished. With that said, each service (as well as DevOps) will have primary contributors.
 * API Service: Abed, Grant, Asher
-* Web client: Pablo, Benson, Jay
+* Web client: Pablo, Benson, Jay, Abed
 * Database: Grant, Asher, Jay
 * DevOps: Asher, Abed
