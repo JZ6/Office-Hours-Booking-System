@@ -11,7 +11,9 @@ Availability: 8 - 10 hours/week in weeks with normal workload, heavy workload fr
 * I have a tendency to overscope, and I often work slowly because of too much attention to detail. I have very little prior experience with DevOps and task automation.
 
 ### [Pablo](https://github.com/pablolluchr)
-I've had some experience with front-end development at projects of my own. Despite being very interested in web design I have never partaken in a university project related to it. I'm most experienced in java. I'm not very experience with version control and team collaboration software. Thus, I'm not only hoping to learn technical skills but get used to working with a team on a formal level.
+*Proficiencies: HTML, CSS, PHP and Python at intermediate level. JS, Python and SQL at a beginner level.
+*Availability: 8hours/week. Exceptions: 5hours/week during week of the 29th of October and week of the 11th of November.  15hours/week during the week of the 4th of November.
+
 
 ### [Benson](https://github.com/bensonchan)
 Proficiency: Python, HTML, REST.  
