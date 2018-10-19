@@ -52,12 +52,12 @@
 ## Quick start
 
 1. Make sure that you have Node v8 or above installed.
-2. Run `npm run setup` in order to install dependencies and clean the git repo.
+2. Run `npm install` in order to install dependencies.
 3. Run `npm start` to see the example app at `http://localhost:3000`.
-
 
 Now you're ready to rumble!
 
+Please recheck your commits and don't include build files!
 
 ## Features
 

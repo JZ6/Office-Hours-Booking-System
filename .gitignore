@@ -1,2 +1,4 @@
 node_modules/
 WebAppService/internals/scripts/setup.js
+WebAppService/package-lock.json
+WebAppService/package.json
