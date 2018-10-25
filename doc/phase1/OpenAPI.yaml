@@ -4,6 +4,10 @@ info:
   description: Office hours booking system. Legally distinct from the trademarked beverage.
   version: 0.0.1
 
+security:
+- bearerAuth: []
+  apiKeyAuth: []
+
 paths:
   /user:
     post:
@@ -13,6 +17,8 @@ paths:
       responses:
         '200':
           description: Successfully added user.
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
 
   /user/{utorId}:
     get:
@@ -31,6 +37,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
     delete:
       summary: Delete a user.
       parameters:
@@ -43,6 +51,8 @@ paths:
       responses:
         '200':
           description: Successfully deleted user.
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
 
   /user/{utorId}/blocks:
     get:
@@ -63,6 +73,8 @@ paths:
                 type: array
                 items: 
                   $ref: '#/components/schemas/Block'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
 
   /course/{courseCode}:
     post:
@@ -79,6 +91,8 @@ paths:
       responses:
         '200':
           description: Successfully added course.
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
     get:
       summary: Return a course.
       parameters:
@@ -95,6 +109,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Course'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
     delete:
       summary: Delete a course.
       parameters:
@@ -107,6 +123,8 @@ paths:
       responses:
         '200':
           description: Successfully deleted course.
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
 
   /blocks:
     post:
@@ -116,6 +134,8 @@ paths:
       responses:
         '200':
           description: Successfully added block.
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
     get:
       summary: Return all blocks, can filter by query parameters.
       parameters:
@@ -140,6 +160,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Block'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
 
   /blocks/{utorId}/{startTime}:
     get:
@@ -164,6 +186,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Block'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
     delete:
       summary: Delete a specific block.
       parameters:
@@ -182,6 +206,8 @@ paths:
       responses:
         '200':
           description: Successfully deleted block.
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
 
   /blocks/{utorId}/{startTime}/{slot}:
     get:
@@ -222,6 +248,8 @@ paths:
                   note:
                     type: string
                     description: Note left by student. Should be deleted on updating student. Only viewable by TAs, Instructors, and relevant student.
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
                   
     put:
       summary: Edit student and note registered to slot.
@@ -247,8 +275,19 @@ paths:
       responses:
         '200':
           description: Successfully edited slot.
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
 
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: apiKey
+
   schemas:
     User:
       type: object
@@ -364,3 +403,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Course'
+  
+  responses:
+    UnauthorizedError:
+      description: Bearer token and/or API key is missing or invalid.
