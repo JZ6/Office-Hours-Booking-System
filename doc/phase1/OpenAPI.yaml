@@ -4,11 +4,35 @@ info:
   description: Office hours booking system. Legally distinct from the trademarked beverage.
   version: 0.0.1
 
-security:
+security: # Session token AND API key required in general.
 - bearerAuth: []
   apiKeyAuth: []
 
 paths:
+  /login:
+    post:
+      security:
+      - apiKeyAuth: []  # API key is required to request login.
+      summary: Logs in and returns a session token.
+      requestBody:
+        $ref: '#/components/requestBodies/LoginBody'
+      responses:
+        '200':
+          description: >
+            Successfully authenticated.
+            The session token is returned. You need to include this token in subsequent requests.
+          content:
+            application/json:
+              schema:
+                type: string
+                example: XXXFUNKYTOKEN123XXX
+  /logout:
+    post:
+      summary: Logs out user with current session token.
+      responses:
+        '200':
+          description: Successfully logged out.
+        
   /user:
     post:
       summary: Add/edit a user.
@@ -380,8 +404,24 @@ components:
                 type: string
                 description: Note left by student. Should be deleted on updating student. Only viewable by TAs, Instructors, and relevant student.
                 example: Everybody gets one.
+    Login:
+      type: object
+      properties:
+        utorId:
+          type: string
+          example: rossbob2
+        studentNumber:
+          type: integer
+          example: 1234567890
 
   requestBodies:
+    LoginBody:
+      description: A JSON containing UtorID and student number.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Login'
     UserBody:
       description: A JSON User object.
       required: true
