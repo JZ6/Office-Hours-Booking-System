@@ -310,7 +310,7 @@ components:
     apiKeyAuth:
       type: apiKey
       in: header
-      name: apiKey
+      name: X-API-Key
 
   schemas:
     User:
