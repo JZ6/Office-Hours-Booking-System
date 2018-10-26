@@ -13,11 +13,41 @@ class App extends Component {
     events: [
       {
         start: new Date(),
-        end: new Date(moment().add(1, "days")),
+        end: new Date(moment().add(1, "hours")),
+        title: "Some title"
+      },
+			{
+        start: new Date(),
+        end: new Date(moment().add(2, "hours")),
+        title: "Some title"
+      },
+			{
+        start: new Date(),
+        end: new Date(moment().add(2, "hours")),
+        title: "Some title"
+      },
+			{
+        start: new Date(moment().add(1, "hours")),
+        end: new Date(moment().add(2, "hours")),
         title: "Some title"
       }
     ]
   };
+	
+	handleSelect = ({ start, end }) => {
+    const title = window.prompt('New Event name')
+    if (title)
+      this.setState({
+        events: [
+          ...this.state.events,
+          {
+            start,
+            end,
+            title,
+          },
+        ],
+      })
+	}
 
   render() {
     return (
@@ -28,6 +58,13 @@ class App extends Component {
           defaultView="month"
           events={this.state.events}
           style={{ height: "100vh" }}
+					selectable
+					timeslots="1"
+					step="60"
+					onSelectEvent={event => alert(event.title)}
+					onSelectSlot={this.handleSelect}
+					drilldownView="day"
+					scrollToTime={new Date()}
         />
       </div>
     );
