@@ -1,0 +1,6 @@
+version: '3'
+services:
+  cdf_verification:
+    build: .
+    ports:
+      - "4567:4567"
