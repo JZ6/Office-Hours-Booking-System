@@ -11,6 +11,10 @@ import logo from "./logo.svg";
 import Sidebar from "./Sidebar.js";
 import BlockView from "./BlockView.js";
 
+import components from './components';
+
+console.log(components.login)
+
 Calendar.setLocalizer(Calendar.momentLocalizer(moment));
 
 const DnDCalendar = withDragAndDrop(Calendar);
