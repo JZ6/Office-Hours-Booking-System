@@ -4,11 +4,15 @@
 <img src='https://i.imgur.com/N1AJuuV.png' width='500px'>
 
 ## API Service
-Exposes various endpoints to perform back-end operations. Supports operations for instructors and students to interface with the booking system. The API service will be built using asynchronous python. We have tentatively chosen aiohttp for the service framework, with Motor for connecting to MongoDB. Another option to consider for the service framework is Sanic (with UVLoop as a drop-in replacement for asyncio).
+* Exposes various endpoints to perform back-end operations
+* Supports operations for instructors and students to interface with the booking system
+* Provides a simple authentication endpoint that accepts user credentials and returns a session token
+* All privileged data will require a session token
+The API service will be built using Flask. Flask is well-documented and lightweight, which will keep the overhead low. We will also consider requiring an API key with each request to identify the client application. This will be separate from the authentication implementation.
 
 ## Web Client Application & Service
 
-Users will interact with the booking system using a web client built with React.js and served by a Node.js/Express.js server-side application. The application will provide separate interfaces for instructors and students. A point of consideration that requires further discussion is whether to make API calls directly from the client, or have them go through the Node server first. The former is easier and requires less code, while the latter is more secure. In order to minimize writing extra API specs, the Node server could simply forward API requests (along with identity/auth information) directly to the API service rather than defining its own API layer.
+Users will interact with the booking system using a web client built with React.js and served by a Node.js/Express.js server-side application. The application will provide separate interfaces for instructors and students. A point of consideration that requires further discussion is whether to make API calls directly from the client, or have them go through the Node server first. If we choose to include client API keys in our implementation, the keys will need to be hidden from the browser.
 
 
 ## Database Service
