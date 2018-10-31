@@ -13,6 +13,7 @@ pipenv install
 to install dependencies.
 
 ### Run
+#### With virtualenv shell
 Activate the virtualenv with
 ```bash
 source $(pipenv --venv)/bin/activate
@@ -23,7 +24,23 @@ Now you can run the service with:
 ```
 python run.py
 ```
-Service runs on `localhost:5000`
+#### Directly with Pipenv
+```
+pipenv run python run.py
+```
 
-## Build With Docker
-Not ready yet.
+Service runs on `http://localhost:5000`
+
+## Build/Run With Docker
+
+Install Docker. In this directory, execute command:
+
+```
+docker build -t api-service:dev --rm .
+```
+
+### Run Docker Container
+```
+docker run -p 5000:5000 --name=api-service api-service
+```
+Application will be available at `http://localhost:5000`
