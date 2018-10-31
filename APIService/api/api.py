@@ -1,17 +1,14 @@
-from flask import Flask, request
-from flask_restful import Resource, Api
+from flask import Flask
+from flask_restful import Api
 from flask_pymongo import PyMongo
+
+from api.auth.user import User
 
 app = Flask(__name__)
 api = Api(app)
 
 app.config.from_pyfile('app_config.cfg')
 mongo = PyMongo(app)
-
-class User(Resource):
-    def post(self):
-        data = request.get_json()
-        return data
 
 api.add_resource(User, '/user')
 
