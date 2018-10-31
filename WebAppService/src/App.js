@@ -9,6 +9,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import logo from "./logo.svg";
 
 import Sidebar from "./Sidebar.js";
+import BlockView from "./BlockView.js";
 
 Calendar.setLocalizer(Calendar.momentLocalizer(moment));
 
@@ -21,7 +22,12 @@ class App extends Component {
         start: new Date(),
         end: new Date(moment().add(1, "days")),
         title: "Test Event"
-      }
+      },
+      {
+        start: new Date(moment().add(1, "days")),
+        end: new Date(moment().add(2, "days")),
+        title: "Test Event"
+      },
     ]
   };
 
@@ -35,6 +41,10 @@ class App extends Component {
 
   onEventDrop = ({ event, start, end, allDay }) => {
     console.log(start);
+  };
+
+  onSelectEvent = (event, e) => {
+    this.refs.blockView.onSelectEvent(event);
   };
 
   render() {
@@ -53,11 +63,13 @@ class App extends Component {
 						defaultView="month"
 						events={this.state.events}
 						onEventDrop={this.onEventDrop}
-						onEventResize={this.onEventResize}
+            onEventResize={this.onEventResize}
+            onSelectEvent={this.onSelectEvent}
 						resizable
 						style={{ height: "100vh" }}
 					/>
 				</div>
+        <BlockView ref="blockView" />
 				<Sidebar/>
       </div>
     );
