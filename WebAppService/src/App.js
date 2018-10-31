@@ -8,6 +8,8 @@ import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import logo from "./logo.svg";
 
+import Sidebar from "./Sidebar.js";
+
 Calendar.setLocalizer(Calendar.momentLocalizer(moment));
 
 const DnDCalendar = withDragAndDrop(Calendar);
@@ -38,22 +40,25 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-        <DnDCalendar
-          defaultDate={new Date()}
-          defaultView="month"
-          events={this.state.events}
-          onEventDrop={this.onEventDrop}
-          onEventResize={this.onEventResize}
-          resizable
-          style={{ height: "100vh" }}
-        />
+				<div className="App-container">
+					<header className="App-header">
+						<img src={logo} className="App-logo" alt="logo" />
+						<h1 className="App-title">Welcome to React</h1>
+					</header>
+					<p className="App-intro">
+						To get started, edit <code>src/App.js</code> and save to reload.
+					</p>
+					<DnDCalendar
+						defaultDate={new Date()}
+						defaultView="month"
+						events={this.state.events}
+						onEventDrop={this.onEventDrop}
+						onEventResize={this.onEventResize}
+						resizable
+						style={{ height: "100vh" }}
+					/>
+				</div>
+				<Sidebar/>
       </div>
     );
   }
