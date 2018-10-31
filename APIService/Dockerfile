@@ -25,6 +25,4 @@ RUN ["/bin/bash", "-c", \
 
 COPY . /app
 
-EXPOSE ${API_PORT:-8000}
-
 ENTRYPOINT ["python", "run.py"]
