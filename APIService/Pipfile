@@ -9,7 +9,9 @@ flask-restful = "*"
 flask-pymongo = "*"
 
 [dev-packages]
-pylint = "*"
+pytest = "*"
+"pep8" = "*"
+"flake8" = "*"
 
 [requires]
 python_version = "3.7"
