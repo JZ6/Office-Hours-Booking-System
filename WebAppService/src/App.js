@@ -13,7 +13,11 @@ import BlockView from "./BlockView.js";
 
 import components from './components';
 
-console.log(components.login)
+const {
+  LoginView
+} = components
+
+console.log(LoginView)
 
 Calendar.setLocalizer(Calendar.momentLocalizer(moment));
 
@@ -54,27 +58,21 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-				<div className="App-container">
-					<header className="App-header">
-						<img src={logo} className="App-logo" alt="logo" />
-						<h1 className="App-title">Welcome to React</h1>
-					</header>
-					<p className="App-intro">
-						To get started, edit <code>src/App.js</code> and save to reload.
-					</p>
-					<DnDCalendar
-						defaultDate={new Date()}
-						defaultView="month"
-						events={this.state.events}
-						onEventDrop={this.onEventDrop}
+        <LoginView />
+        <div className="App-container">
+          <DnDCalendar
+            defaultDate={new Date()}
+            defaultView="month"
+            events={this.state.events}
+            onEventDrop={this.onEventDrop}
             onEventResize={this.onEventResize}
             onSelectEvent={this.onSelectEvent}
-						resizable
-						style={{ height: "100vh" }}
-					/>
-				</div>
+            resizable
+            style={{ height: "100%" }}
+          />
+        </div>
         <BlockView ref="blockView" />
-				<Sidebar/>
+        <Sidebar />
       </div>
     );
   }
