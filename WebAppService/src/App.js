@@ -7,13 +7,12 @@ import "./App.css";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
-import Sidebar from "./Sidebar.js";
-
 import components from './components';
 
 const {
   LoginView,
-  BlockView
+  BlockView,
+  SideBar
 } = components
 
 console.log(LoginView)
@@ -74,7 +73,7 @@ class App extends Component {
           />
         </div>
         <BlockView ref="blockView" />
-        <Sidebar />
+        <SideBar />
       </div>
     );
   }
