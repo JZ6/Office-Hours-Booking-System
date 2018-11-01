@@ -1,6 +1,6 @@
 import React from "react";
 
-import "../css/BlockView.css";
+import "../styles/BlockView.css";
 
 export default class BlockView extends React.Component {
 	state = {
