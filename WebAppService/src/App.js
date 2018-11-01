@@ -61,13 +61,16 @@ class App extends Component {
         <div className="App-container">
           <DnDCalendar
             defaultDate={new Date()}
-            defaultView="month"
+            defaultView="week"
             events={this.state.events}
             onEventDrop={this.onEventDrop}
             onEventResize={this.onEventResize}
             onSelectEvent={this.onSelectEvent}
             resizable
-            style={{ height: "100%" }}
+            style={{ 
+              height: "95vh",
+              paddingTop: '1em' 
+            }}
           />
         </div>
         <BlockView ref="blockView" />

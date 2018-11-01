@@ -59,7 +59,7 @@ export default class LoginView extends React.Component {
             h("div", { id: "loginView" },
                 !this.state.loading ? h("input", { className: 'inputField', type: "text", placeholder: "Name", name: "loginName" }) : null,
                 !this.state.loading ? h("input", { className: 'inputField', type: "text", placeholder: "Password", name: "loginPass" }) : null,
-                !this.state.loading ? h("button", { name: "loginButton", onClick: () => this.tryToLogin() }, 'Login'): null,
+                !this.state.loading ? h("button", { id: "loginButton", onClick: () => this.tryToLogin() }, 'Login'): null,
                 this.getLoadingAnimation()
             ) : null
     }
