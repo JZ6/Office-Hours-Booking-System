@@ -7,13 +7,111 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction:  column;
+    flex-direction: column;
     margin: 0;
-  padding: 0;
+    padding: 0;
 }
 
 .inputField{
     margin: 0.5em;
-    /* width: 100vw; */
+   /* width: 100vw;
+    */
 }
 
+#login-LoadingOverlay {
+    margin: auto;
+    width: 100%;
+    position: absolute;
+    left: 0%;
+    bottom: 0%;
+    z-index: 1001;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .6);
+    /* display: none; */
+}
+.login-loader {
+    padding-top: 6%;
+    display: inline-block;
+    position: relative;
+    width: 64px;
+    height: 64px;
+    top: 25%;
+}
+.login-loader div {
+    animation: login-loader 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    transform-origin: 32px 32px;
+}
+.login-loader div:after {
+    content: " ";
+    display: block;
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #fff;
+    margin: -3px 0 0 -3px;
+}
+.login-loader div:nth-child(1) {
+    animation-delay: -0.036s;
+}
+.login-loader div:nth-child(1):after {
+    top: 50px;
+    left: 50px;
+}
+.login-loader div:nth-child(2) {
+    animation-delay: -0.072s;
+}
+.login-loader div:nth-child(2):after {
+    top: 54px;
+    left: 45px;
+}
+.login-loader div:nth-child(3) {
+    animation-delay: -0.108s;
+}
+.login-loader div:nth-child(3):after {
+    top: 57px;
+    left: 39px;
+}
+.login-loader div:nth-child(4) {
+    animation-delay: -0.144s;
+}
+.login-loader div:nth-child(4):after {
+    top: 58px;
+    left: 32px;
+}
+.login-loader div:nth-child(5) {
+    animation-delay: -0.18s;
+}
+.login-loader div:nth-child(5):after {
+    top: 57px;
+    left: 25px;
+}
+.login-loader div:nth-child(6) {
+    animation-delay: -0.216s;
+}
+.login-loader div:nth-child(6):after {
+    top: 54px;
+    left: 19px;
+}
+.login-loader div:nth-child(7) {
+    animation-delay: -0.252s;
+}
+.login-loader div:nth-child(7):after {
+    top: 50px;
+    left: 14px;
+}
+.login-loader div:nth-child(8) {
+    animation-delay: -0.288s;
+}
+.login-loader div:nth-child(8):after {
+    top: 45px;
+    left: 10px;
+}
+@keyframes login-loader {
+    0% {
+        transform: rotate(0deg);
+   }
+    100% {
+        transform: rotate(360deg);
+   }
+}

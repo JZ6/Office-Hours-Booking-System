@@ -6,19 +6,26 @@ import "../css/LoginView.css";
 
 export default class LoginView extends React.Component {
     state = {
-        display: 'block'
+        display: 'block',
+        loading: false
     };
 
     tryToLogin() {
+
+        // Show loading animation
+        this.setState({
+            loading: true
+        })
 
         const authPromise = this.authenticate(1, 2)
         if (authPromise) {
             authPromise.then(result => {
                 this.setState({
-                    display: 'none'
+                    display: 'none',
+                    loading: false
                 })
             })
-            .catch(error => console.log(error))
+                .catch(error => console.log(error))
         }
     }
 
@@ -28,11 +35,31 @@ export default class LoginView extends React.Component {
         })
     }
 
+    getLoadingAnimation() {
+        return this.state.loading ? h("div", {
+            id: "login-LoadingOverlay",
+        }, [
+                h("div", {
+                    className: "login-loader"
+                }, [
+                        h("div", {}),
+                        h("div", {}),
+                        h("div", {}),
+                        h("div", {}),
+                        h("div", {}),
+                        h("div", {}),
+                        h("div", {}),
+                        h("div", {})
+                    ])
+            ]) : null
+    }
+
     render() {
         return this.state.display != 'none' ? h("div", { id: "loginView" },
             h("input", { className: 'inputField', type: "text", placeholder: "Name", name: "loginName" }),
             h("input", { className: 'inputField', type: "text", placeholder: "Password", name: "loginPass" }),
-            h("button", { name: "loginButton", onClick: () => this.tryToLogin() }, 'Login')
+            h("button", { name: "loginButton", onClick: () => this.tryToLogin() }, 'Login'),
+            this.getLoadingAnimation()
         ) : null
     }
 }
