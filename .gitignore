@@ -1,9 +1,12 @@
+# Node
 node_modules/
 WebAppService/internals/scripts/setup.js
 WebAppService/package-lock.json
 WebAppService/package.json
 
-
 # IDE & editor config folders
 .vscode
 .idea
+
+# Python
+__pycache__

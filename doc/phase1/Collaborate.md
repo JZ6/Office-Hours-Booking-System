@@ -46,9 +46,39 @@ We will be using Scrum with Kanban via Github's Projects feature. Due to the exp
 ### Git Workflow
 We will follow a pared-down variation of the GitFlow workflow, optimized for continuous deployment to a live test environment. In this variation, the top level (`master`) and release branches are truncated from the model, so our `master` will be equivalent to GitFlow's `develop` branch, and will be under continuous deployment to a live test environment. All branches off master will be working branches at the developers' discretion. This may include feature branches, or aggregate branches to tie features together before opening a pull request to master. All feature branches and commit messages should contain the feature/story's associated issue number. Feature requirements, test cases, and code will be reviewed by two other members.
 
+Some key git rules:
+1. Do not merge someone else's PR even if you've reviewed it.
+2. Merge your own PRs after they're approved.
+3. If you're merging someone else's feature branch into yours, notify them.
+4. Honour dependencies! If your feature branch depends on code from someone else's feature branch, do not merge a PR for your branch until theirs is merged.
+5. Include issue #s in commits, not just PRs.
+
 ### Member Workload
 Team members will not be restricted to specific domains. Instead, we will prioritize features that suit our learning goals while ensuring that all core features are finished. With that said, each service (as well as DevOps) will have primary contributors.
 * API Service: Abed, Grant, Asher
 * Web client: Pablo, Benson, Jay, Abed
 * Database: Grant, Asher, Jay
 * DevOps: Asher, Abed
+
+### Code Quality Guidelines
+Keep functionality modular, and logical layers disjoint. This code example illustrates a best practice approach for testable and debuggable API request handlers:
+```python
+class Identity(Resource):
+    def post(self, id):
+        # Convert request JSON into the document we want to store
+        identity = self.create_identity(request.get_json())
+        
+        try:
+            # Attempt to save the document (to db)
+            self.save_identity(identity)
+            
+        # Idiomatic python: ask for forgiveness, not permission
+        except DuplicateIdentity:
+            logger.exception("POST /identity")
+            # Use a DRY helper method to construct an error response
+            return self.error_response("Resource exists")
+            
+        # Use a DRY helper method to turn the new document into a response
+        # e.g. This can also be used in the GET method
+        return self.identity_response(identity)
+```
