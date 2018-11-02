@@ -23,9 +23,5 @@
     "jest": "^23.6.0",
     "jest-environment-enzyme": "^7.0.0",
     "jest-enzyme": "^7.0.0"
-  },
-  "jest": {
-    "setupTestFrameworkScriptFile": "jest-enzyme",
-    "testEnvironment": "enzyme"
   }
 }
