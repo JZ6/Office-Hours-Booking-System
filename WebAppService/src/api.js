@@ -3,7 +3,7 @@ import {UnauthorizedError} from "./error";
 export default class Api {
 	constructor(url) {
 		this.url = url;
-		this.session_token = "";
+		this.sessionToken = "";
 	}
 	
 	/**
@@ -15,12 +15,12 @@ export default class Api {
 	* @return {object} JSON response.
 	*/
 	call(endpoint, method) {
-		if (endpoint == "auth" || this.session_token != "") {
+		if (endpoint == "auth" || this.sessionToken != "") {
 			// Do API call.
 			console.log(`Successful ${method} to ${this.url}${endpoint}.`);
 			
 			if (endpoint == "auth" && method == "POST") {
-				this.session_token = "dummySessionToken123";
+				this.sessionToken = "dummySessionToken123";
 				return {sessionToken: "dummySessionToken123"};
 			}
 			

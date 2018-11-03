@@ -6,7 +6,7 @@ import {UnauthorizedError} from "../error";
 it("initializes with URL", () => {
 	const api = new Api("localhost/");
   expect(api.url).toBe("localhost/");
-	expect(api.session_token).toBe("");
+	expect(api.sessionToken).toBe("");
 });
 
 it("throws Error during unauthorized API call", () => {
@@ -20,8 +20,8 @@ it("throws Error during unauthorized API call", () => {
 
 it("POSTs to auth and sets session token", () => {
 	const api = new Api("localhost/");
-	expect(api.session_token).toBe("");
+	expect(api.sessionToken).toBe("");
 	const sessionToken = api.call("auth", "POST").sessionToken;
 	expect(sessionToken).not.toBe("");
-	expect(api.session_token).toBe(sessionToken);
+	expect(api.sessionToken).toBe(sessionToken);
 });
