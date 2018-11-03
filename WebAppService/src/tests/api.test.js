@@ -20,6 +20,8 @@ it("throws Error during unauthorized API call", () => {
 
 it("POSTs to auth and sets session token", () => {
 	const api = new Api("");
-	api.call("auth", "POST");
-	expect(api.session_token).toBe("dummySessionToken123");
+	expect(api.session_token).toBe("");
+	const sessionToken = api.call("auth", "POST").sessionToken;
+	expect(sessionToken).not.toBe("");
+	expect(api.session_token).toBe(sessionToken);
 });

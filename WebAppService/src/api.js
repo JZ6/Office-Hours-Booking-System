@@ -21,6 +21,7 @@ export default class Api {
 			
 			if (endpoint == "auth" && method == "POST") {
 				this.session_token = "dummySessionToken123";
+				return {sessionToken: "dummySessionToken123"};
 			}
 			
 			return {};
