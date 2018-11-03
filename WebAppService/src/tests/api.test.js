@@ -12,7 +12,7 @@ it("initializes with URL", () => {
 it("throws Error during unauthorized API call", () => {
 	const api = new Api("localhost/");
 	function unauthorizedCall () {
-		api.call("blocks", "POST");
+		api.call("blocks", "POST", {});
 	}
 	expect(unauthorizedCall).toThrowError(UnauthorizedError);
 	expect(unauthorizedCall).toThrowError("Unauthorized POST to localhost/blocks.");
@@ -21,7 +21,7 @@ it("throws Error during unauthorized API call", () => {
 it("POSTs to auth and sets session token", () => {
 	const api = new Api("localhost/");
 	expect(api.sessionToken).toBe("");
-	const sessionToken = api.call("auth", "POST").sessionToken;
+	const sessionToken = api.call("auth", "POST", {}).sessionToken;
 	expect(sessionToken).not.toBe("");
 	expect(api.sessionToken).toBe(sessionToken);
 });
