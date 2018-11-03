@@ -39,7 +39,7 @@ class App extends Component {
 				},
 			]
 		};
-		this.api = new Api("www.dummy.com/url/");
+		this.api = new Api("loclahost/");
 	}
   
 
