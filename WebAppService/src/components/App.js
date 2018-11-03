@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Calendar from "react-big-calendar";
 import moment from "moment";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
+import Api from "../api";
 
 import '../styles/App.css'
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
@@ -36,6 +37,8 @@ class App extends Component {
       },
     ]
   };
+	
+	api = new Api("www.dummy.com/url/");
 
   onEventResize = (type, { event, start, end, allDay }) => {
     this.setState(state => {
@@ -56,7 +59,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <LoginView />
+        <LoginView api={this.api}/>
         <div className="App-container">
           <DnDCalendar
             defaultDate={new Date()}
