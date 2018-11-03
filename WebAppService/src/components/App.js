@@ -23,22 +23,25 @@ Calendar.setLocalizer(Calendar.momentLocalizer(moment));
 const DnDCalendar = withDragAndDrop(Calendar);
 
 class App extends Component {
-  state = {
-    events: [
-      {
-        start: new Date(),
-        end: new Date(moment().add(1, "days")),
-        title: "Test Event"
-      },
-      {
-        start: new Date(moment().add(1, "days")),
-        end: new Date(moment().add(2, "days")),
-        title: "Test Event"
-      },
-    ]
-  };
-	
-	api = new Api("www.dummy.com/url/");
+	constructor(props) {
+		super(props);
+		this.state = {
+			events: [
+				{
+					start: new Date(),
+					end: new Date(moment().add(1, "days")),
+					title: "Test Event"
+				},
+				{
+					start: new Date(moment().add(1, "days")),
+					end: new Date(moment().add(2, "days")),
+					title: "Test Event"
+				},
+			]
+		};
+		this.api = new Api("www.dummy.com/url/");
+	}
+  
 
   onEventResize = (type, { event, start, end, allDay }) => {
     this.setState(state => {
