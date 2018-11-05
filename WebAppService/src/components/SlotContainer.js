@@ -19,6 +19,7 @@ export default class SlotContainer extends React.Component {
 					utorId={slot.utorId}
 					note={slot.note}
 					maxLength={50}
+					onChange=(this.handleChange(i)}
 					onSubmit={this.handleSubmit(i)}
 					onClick={this.handleClick(i)}
 				/>

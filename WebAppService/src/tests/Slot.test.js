@@ -1,9 +1,9 @@
 import React from "react";
-import {shallow} from "enzyme";
+import {shallow, mount} from "enzyme";
 import moment from "moment";
 import Slot from "../components/Slot";
 
-let wrapper, mockSubmit, mockClick;
+let wrapper, mockChange, mockSubmit, mockClick;
 const testNote =
 	`My Bonnie lies over the ocean
 	My Bonnie lies over the sea
@@ -11,6 +11,7 @@ const testNote =
 	Oh, bring back my Bonnie to me...`;
 
 beforeEach(() => {
+	mockChange = jest.fn();
 	mockSubmit = jest.fn();
 	mockClick = jest.fn();
 	wrapper = shallow(
@@ -21,6 +22,7 @@ beforeEach(() => {
 			utorId={"parkerpeter15"}
 			note={testNote}
 			maxLength={50}
+			onChange={mockChange}
 			onSubmit={mockSubmit}
 			onClick={mockClick}
 		/>
@@ -34,10 +36,13 @@ it("shows time, assignee, and note", () => {;
 });
 
 it("calls callbacks", () => {
+	expect(mockChange).toHaveBeenCalledTimes(0);
+	wrapper.find("input").find({type:"text"}).simulate("change");
+	expect(mockChange).toHaveBeenCalledTimes(1);
+	
 	expect(mockSubmit).toHaveBeenCalledTimes(0);
 	wrapper.find("form").simulate("submit", { preventDefault () {} });
 	expect(mockSubmit).toHaveBeenCalledTimes(1);
-	expect(mockSubmit).toHaveBeenCalledWith("parkerpeter15");
 
 	expect(mockClick).toHaveBeenCalledTimes(0);
 	wrapper.simulate("click");
