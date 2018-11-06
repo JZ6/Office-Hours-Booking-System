@@ -1,0 +1,292 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`instructor view handleEmpty empties slots 1`] = `
+<div
+  className="slot-container"
+>
+  <div
+    className="slot"
+    id="slot0"
+    onClick={undefined}
+  >
+    12:00AM - 
+    12:10AM
+    <input
+      className="text-input"
+      id="utorId0"
+      maxLength={50}
+      name="utorId0"
+      onChange={[Function]}
+      placeholder="Unassigned UtorID..."
+      type="text"
+      value=""
+    />
+    <input
+      className="text-input"
+      id="note0"
+      maxLength={280}
+      name="note0"
+      onChange={[Function]}
+      placeholder="Empty Note..."
+      type="text"
+      value=""
+    />
+  </div>
+  <div
+    className="slot"
+    id="slot1"
+    onClick={undefined}
+  >
+    12:10AM - 
+    12:20AM
+    <input
+      className="text-input"
+      id="utorId1"
+      maxLength={50}
+      name="utorId1"
+      onChange={[Function]}
+      placeholder="Unassigned UtorID..."
+      type="text"
+      value=""
+    />
+    <input
+      className="text-input"
+      id="note1"
+      maxLength={280}
+      name="note1"
+      onChange={[Function]}
+      placeholder="Empty Note..."
+      type="text"
+      value=""
+    />
+  </div>
+  <div
+    className="slot"
+    id="slot2"
+    onClick={undefined}
+  >
+    12:20AM - 
+    12:30AM
+    <input
+      className="text-input"
+      id="utorId2"
+      maxLength={50}
+      name="utorId2"
+      onChange={[Function]}
+      placeholder="Unassigned UtorID..."
+      type="text"
+      value=""
+    />
+    <input
+      className="text-input"
+      id="note2"
+      maxLength={280}
+      name="note2"
+      onChange={[Function]}
+      placeholder="Empty Note..."
+      type="text"
+      value=""
+    />
+  </div>
+  <button
+    id="empty-button"
+    onClick={[Function]}
+  >
+    Empty All Slots
+  </button>
+  <button
+    id="confirm-button"
+    onClick={[Function]}
+  >
+    Confirm
+  </button>
+  <button
+    id="cancel-button"
+    onClick={[Function]}
+  >
+    Cancel
+  </button>
+</div>
+`;
+
+exports[`instructor view render 1`] = `
+<div
+  className="slot-container"
+>
+  <div
+    className="slot"
+    id="slot0"
+    onClick={undefined}
+  >
+    12:00AM - 
+    12:10AM
+    <input
+      className="text-input"
+      id="utorId0"
+      maxLength={50}
+      name="utorId0"
+      onChange={[Function]}
+      placeholder="Unassigned UtorID..."
+      type="text"
+      value="parkerpeter15"
+    />
+    <input
+      className="text-input"
+      id="note0"
+      maxLength={280}
+      name="note0"
+      onChange={[Function]}
+      placeholder="Empty Note..."
+      type="text"
+      value="Everyone gets one."
+    />
+  </div>
+  <div
+    className="slot"
+    id="slot1"
+    onClick={undefined}
+  >
+    12:10AM - 
+    12:20AM
+    <input
+      className="text-input"
+      id="utorId1"
+      maxLength={50}
+      name="utorId1"
+      onChange={[Function]}
+      placeholder="Unassigned UtorID..."
+      type="text"
+      value="watsonmj25"
+    />
+    <input
+      className="text-input"
+      id="note1"
+      maxLength={280}
+      name="note1"
+      onChange={[Function]}
+      placeholder="Empty Note..."
+      type="text"
+      value="Face it Tiger... you just hit the jackpot!"
+    />
+  </div>
+  <div
+    className="slot"
+    id="slot2"
+    onClick={undefined}
+  >
+    12:20AM - 
+    12:30AM
+    <input
+      className="text-input"
+      id="utorId2"
+      maxLength={50}
+      name="utorId2"
+      onChange={[Function]}
+      placeholder="Unassigned UtorID..."
+      type="text"
+      value=""
+    />
+    <input
+      className="text-input"
+      id="note2"
+      maxLength={280}
+      name="note2"
+      onChange={[Function]}
+      placeholder="Empty Note..."
+      type="text"
+      value=""
+    />
+  </div>
+  <button
+    id="empty-button"
+    onClick={[Function]}
+  >
+    Empty All Slots
+  </button>
+  <button
+    id="confirm-button"
+    onClick={[Function]}
+  >
+    Confirm
+  </button>
+  <button
+    id="cancel-button"
+    onClick={[Function]}
+  >
+    Cancel
+  </button>
+</div>
+`;
+
+exports[`student view handleEmpty empties only own slots 1`] = `
+<div
+  className="slot-container"
+>
+  <div
+    className="slot"
+    id="slot0"
+    onClick={[Function]}
+  >
+    12:00AM - 
+    12:10AM
+    <div
+      id="utorId0"
+    >
+      Available
+    </div>
+    <div
+      id="note0"
+    />
+  </div>
+  <div
+    className="slot"
+    id="slot1"
+    onClick={[Function]}
+  >
+    12:10AM - 
+    12:20AM
+    <div
+      id="utorId1"
+    >
+      Not Available
+    </div>
+    <div
+      id="note1"
+    />
+  </div>
+  <div
+    className="slot"
+    id="slot2"
+    onClick={[Function]}
+  >
+    12:20AM - 
+    12:30AM
+    <div
+      id="utorId2"
+    >
+      Available
+    </div>
+    <div
+      id="note2"
+    />
+  </div>
+  <button
+    id="empty-button"
+    onClick={[Function]}
+  >
+    Empty My Slots
+  </button>
+  <button
+    id="confirm-button"
+    onClick={[Function]}
+  >
+    Confirm
+  </button>
+  <button
+    id="cancel-button"
+    onClick={[Function]}
+  >
+    Cancel
+  </button>
+</div>
+`;
