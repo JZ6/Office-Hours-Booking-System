@@ -39,21 +39,25 @@ it("shows slots with utorId and note", () => {;
 	]
 	
 	for (let i = 0; i < testSlots.length; i ++) {
-		let elem = wrapper.find(`#slot${i}`);
-		expect(elem.text()).toContain(times[i]);
-		expect(elem.find(`#utorId${i}`).props().value).toEqual(`student${i}`);
-		expect(elem.text()).toContain(`note${i}`);
+		let e = wrapper.find(`#slot${i}`);
+		expect(e.text()).toContain(times[i]);
+		expect(e.find(`#utorId${i}`).props().value).toEqual(`student${i}`);
+		expect(e.find(`#note${i}`).text()).toEqual(`note${i}`);
 	}
 });
 
 it("edits utorId and clears note", () => {;
 	const wrapper = mount(<SlotContainer {...testProps}/>);
 	for (let i = 0; i < testSlots.length; i ++) {
-		let input = wrapper.find(`#utorId${i}`);
-		input.instance().value = `changedName${i}`;
-		input.simulate("change");
-		expect(wrapper.state()[`utorId${i}`]).toBe(`changedName${i}`);
-		expect(wrapper.state()[`note${i}`]).toBe("");
+		let e = wrapper.find(`#slot${i}`);
+		e.find(`#utorId${i}`).instance().value = `changedName${i}`;
+		e.find(`#utorId${i}`).simulate("change");
+		
+		expect(wrapper.state().slots[i].utorId).toEqual(`changedName${i}`);
+		expect(wrapper.state().slots[i].note).toEqual("");
+		
+		expect(wrapper.find(`#utorId${i}`).props().value).toEqual(`changedName${i}`);
+		expect(e.find(`#note${i}`).text()).toEqual("");
 	}
 });
 

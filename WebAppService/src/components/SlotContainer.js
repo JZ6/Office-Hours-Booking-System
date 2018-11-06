@@ -18,8 +18,10 @@ export default class SlotContainer extends React.Component {
 	}
 	
 	handleUtorIdChange = (i) => (event) => {
-		this.setState({[`utorId${i}`]: event.target.value});
-		this.setState({[`note${i}`]: ""}); // Delete note to protect privacy
+		const newSlots = this.state.slots.slice();
+		newSlots[i].utorId = event.target.value;
+		newSlots[i].note = "";  // Delete note to protect privacy
+		this.setState({slots: newSlots});
 	}
 	
 	handleConfirm(event) {
@@ -35,7 +37,7 @@ export default class SlotContainer extends React.Component {
 	renderSlots() {
 		return (
 			this.state.slots.map((slot, i) => 
-				<div className="slot" id={`slot${i}`} onClick={this.handleClick} key={i}>
+				<div className="slot" id={`slot${i}`} key={i}>
 					{moment(this.props.startTime + this.props.slotDuration * i).format("h:mmA - ")}
 					{moment(this.props.startTime + this.props.slotDuration * (i + 1)).format("h:mmA")}
 					<input
@@ -48,7 +50,9 @@ export default class SlotContainer extends React.Component {
 						maxLength={50}
 						onChange={this.handleUtorIdChange(i)}
 					/>
-					{this.state.slots[i].note}
+					<div className="note" id={`note${i}`}>
+						{this.state.slots[i].note}
+					</div>
 				</div>
 			)
 		);
