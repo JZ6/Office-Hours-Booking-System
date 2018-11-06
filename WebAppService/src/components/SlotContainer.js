@@ -30,6 +30,15 @@ export default class SlotContainer extends React.Component {
 		this.setState({slots: newSlots});
 	}
 	
+	handleEmpty = () => {
+		const newSlots = this.state.slots.slice();
+		newSlots.map((slot, i) => {
+			newSlots[i].utorId = "";
+			newSlots[i].note = "";
+		});
+		this.setState({slots: newSlots});
+	}
+	
 	handleConfirm(event) {
 	}
 	
@@ -52,7 +61,7 @@ export default class SlotContainer extends React.Component {
 						id={`utorId${i}`}
 						type="text"
 						value={this.state.slots[i].utorId}
-						placeholder="UtorID..."
+						placeholder="Unassigned UtorID..."
 						maxLength={50}
 						onChange={this.handleUtorIdChange(i)}
 					/>
@@ -62,7 +71,7 @@ export default class SlotContainer extends React.Component {
 						id={`note${i}`}
 						type="text"
 						value={this.state.slots[i].note}
-						placeholder="UtorID..."
+						placeholder="Empty Note..."
 						maxLength={280}
 						onChange={this.handleNoteChange(i)}
 					/>
@@ -75,8 +84,9 @@ export default class SlotContainer extends React.Component {
 		return (
 			<div className="slot-container">
 				{this.renderSlots()}
-				<button onClick={this.handleConfirm}>Confirm</button>
-				<button onClick={this.handleCancel}>Cancel</button>
+				<button id="empty-button" onClick={this.handleEmpty}>Empty All Slots</button>
+				<button id="confirm-button" onClick={this.handleConfirm}>Confirm</button>
+				<button id="cancel-button" onClick={this.handleCancel}>Cancel</button>
 			</div>
 		);
 	}

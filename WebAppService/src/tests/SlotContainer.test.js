@@ -93,3 +93,14 @@ it("updates slots", () => {;
 		expect(e.find(`#note${i}`).props().value).toEqual(`newNote${i}`);
 	}
 });
+
+it("empties slots", () => {;
+	const wrapper = shallow(<SlotContainer {...testProps}/>);
+	wrapper.find("#empty-button").simulate("click");
+	wrapper.update();
+	for (let i = 0; i < testSlots.length; i ++) {
+		let e = wrapper.find(`#slot${i}`);
+		expect(e.find(`#utorId${i}`).props().value).toEqual("");
+		expect(e.find(`#note${i}`).props().value).toEqual("");
+	}
+});
