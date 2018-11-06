@@ -1,78 +1,57 @@
 import React from "react";
 import moment from "moment";
-import Slot from "./Slot";
 
 export default class SlotContainer extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			slotCount: this.props.slots.length
-		};
-		this.handleClick = this.handleClick.bind(this);
-		this.handleChange = this.handleChange.bind(this);
-		this.handleConfirm = this.handleConfirm.bind(this);
-		this.handleCancel = this.handleCancel.bind(this);
 		
-		for (let i = 0; i < this.props.slots.length; i ++) {
-			this.state[`utorId${i}`] = this.props.slots[i].utorId;
-			this.state[`note${i}`] = this.props.slots[i].note;
+		this.state = {
+			slots: this.props.slots
 		}
 	}
-
-	renderSlots() {
-		let output = [];
-		for (let i = 0; i < this.state.slotCount; i ++) {
-			output.push(
-				<div className="slot" onClick={this.handleClick} key={i}>
-					{moment(this.props.startTime + this.props.slotDuration * i).format("h:mmA - ")}
-					{moment(this.props.startTime + this.props.slotDuration * (i + 1)).format("h:mmA")}
-					<input
-						className="text-input"
-						name={`utorId${i}`}
-						type="text"
-						value={this.state[`utorId${i}`]}
-						placeholder="UtorID..."
-						maxLength={50}
-						onChange={this.handleChange}
-					/>
-					{this.state[`note${i}`]}
-				</div>
-			);
-		}
-		return output;
+	
+	update(slots) {
+		this.setState({slots: slots});
 	}
 	
 	handleClick(event) {
-		console.log(event.target.name);
 	}
 	
-	handleChange(event) {
-		console.log(event.target.value);
-		this.setState({[event.target.name]: event.target.value});
+	handleUtorIdChange = (i) => (event) => {
+		this.setState({[`utorId${i}`]: event.target.value});
+		this.setState({[`note${i}`]: ""}); // Delete note to protect privacy
 	}
 	
 	handleConfirm(event) {
-		let newSlots = this.state.slots.slice();  // Don't mutate state directly
-		newSlots[i] = {
-			utorId: value,
-			note: ""
-		};
-		console.log(newSlots)
-		this.setState({slots: newSlots});
-		console.log(this.state.slots)
 	}
 	
 	handleCancel(event) {
 	}
 
 	validate(input) {
-		if (input.length > this.props.maxLength) {
-			this.setState({warning: `UtorID exceeds ${this.props.maxLength} characters.`});
-			return false;
-		} else {
-			this.setState({warning: ""});
-			return true;
-		}
+		return true;
+	}
+	
+	renderSlots() {
+		return (
+			this.state.slots.map((slot, i) => 
+				<div className="slot" id={`slot${i}`} onClick={this.handleClick} key={i}>
+					{moment(this.props.startTime + this.props.slotDuration * i).format("h:mmA - ")}
+					{moment(this.props.startTime + this.props.slotDuration * (i + 1)).format("h:mmA")}
+					<input
+						className="text-input"
+						name={`utorId${i}`}
+						id={`utorId${i}`}
+						type="text"
+						value={this.state.slots[i].utorId}
+						placeholder="UtorID..."
+						maxLength={50}
+						onChange={this.handleUtorIdChange(i)}
+					/>
+					{this.state.slots[i].note}
+				</div>
+			)
+		);
 	}
 
 	render() {

@@ -35,27 +35,46 @@ it("shows slots with utorId and note", () => {;
 		"12:20AM - 12:30AM",
 		"12:30AM - 12:40AM",
 		"12:40AM - 12:50AM",
-		"12:50AM - 1:00AM",
+		"12:50AM - 1:00AM"
 	]
 	
 	for (let i = 0; i < testSlots.length; i ++) {
-		expect(wrapper.find(".slot-container").childAt(i).text()).toContain(times[i]);
-		expect(wrapper.find(".slot-container").childAt(i).find(".text-input").props().value).toContain(`student${i}`);
-		expect(wrapper.find(".slot-container").childAt(i).text()).toContain(`note${i}`);
+		let elem = wrapper.find(`#slot${i}`);
+		expect(elem.text()).toContain(times[i]);
+		expect(elem.find(`#utorId${i}`).props().value).toEqual(`student${i}`);
+		expect(elem.text()).toContain(`note${i}`);
 	}
 });
 
 it("edits utorId and clears note", () => {;
 	const wrapper = mount(<SlotContainer {...testProps}/>);
 	for (let i = 0; i < testSlots.length; i ++) {
-		let input = wrapper.find(".slot-container").childAt(i).find(".text-input")
+		let input = wrapper.find(`#utorId${i}`);
 		input.instance().value = `changedName${i}`;
 		input.simulate("change");
-		console.log(wrapper.state());
-		console.log(wrapper.html())
 		expect(wrapper.state()[`utorId${i}`]).toBe(`changedName${i}`);
-		expect(wrapper.state()[`note${i}`].note).toBe("");
-		break;
+		expect(wrapper.state()[`note${i}`]).toBe("");
 	}
+});
+
+it("updates slots", () => {;
+	const wrapper = shallow(<SlotContainer {...testProps}/>);
+	let times = [
+		"12:00AM - 12:10AM",
+		"12:10AM - 12:20AM",
+		"12:20AM - 12:30AM"
+	]
 	
+	let newSlots = [];
+	for (let i = 0; i < 3; i ++) {
+		newSlots.push({utorId: `newStudent${i}`, note: `newNote${i}`});
+	}
+	wrapper.instance().update(newSlots);
+	for (let i = 0; i < newSlots.length; i ++) {
+		let elem = wrapper.find(`#slot${i}`);
+		expect(elem.text()).toContain(times[i]);
+		wrapper.update();
+		expect(elem.find(`#utorId${i}`).props().value).toEqual(`newStudent${i}`);
+		expect(elem.text()).toContain(`newNote${i}`);
+	}
 });
