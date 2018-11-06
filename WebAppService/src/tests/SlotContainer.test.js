@@ -42,22 +42,33 @@ it("shows slots with utorId and note", () => {;
 		let e = wrapper.find(`#slot${i}`);
 		expect(e.text()).toContain(times[i]);
 		expect(e.find(`#utorId${i}`).props().value).toEqual(`student${i}`);
-		expect(e.find(`#note${i}`).text()).toEqual(`note${i}`);
+		expect(e.find(`#note${i}`).props().value).toEqual(`note${i}`);
 	}
 });
 
 it("edits utorId and clears note", () => {;
 	const wrapper = mount(<SlotContainer {...testProps}/>);
 	for (let i = 0; i < testSlots.length; i ++) {
-		let e = wrapper.find(`#slot${i}`);
-		e.find(`#utorId${i}`).instance().value = `changedName${i}`;
-		e.find(`#utorId${i}`).simulate("change");
+		wrapper.find(`#utorId${i}`).instance().value = `changedName${i}`;
+		wrapper.find(`#utorId${i}`).simulate("change");
 		
 		expect(wrapper.state().slots[i].utorId).toEqual(`changedName${i}`);
 		expect(wrapper.state().slots[i].note).toEqual("");
 		
 		expect(wrapper.find(`#utorId${i}`).props().value).toEqual(`changedName${i}`);
-		expect(e.find(`#note${i}`).text()).toEqual("");
+		expect(wrapper.find(`#note${i}`).props().value).toEqual("");
+	}
+});
+
+it("edits note", () => {;
+	const wrapper = mount(<SlotContainer {...testProps}/>);
+	for (let i = 0; i < testSlots.length; i ++) {
+		let e = wrapper.find(`#slot${i}`);
+		e.find(`#note${i}`).instance().value = `changedNote${i}`;
+		e.find(`#note${i}`).simulate("change");
+		
+		expect(wrapper.state().slots[i].note).toEqual(`changedNote${i}`);
+		expect(wrapper.find(`#note${i}`).props().value).toEqual(`changedNote${i}`);
 	}
 });
 
@@ -74,11 +85,11 @@ it("updates slots", () => {;
 		newSlots.push({utorId: `newStudent${i}`, note: `newNote${i}`});
 	}
 	wrapper.instance().update(newSlots);
+	wrapper.update();
 	for (let i = 0; i < newSlots.length; i ++) {
-		let elem = wrapper.find(`#slot${i}`);
-		expect(elem.text()).toContain(times[i]);
-		wrapper.update();
-		expect(elem.find(`#utorId${i}`).props().value).toEqual(`newStudent${i}`);
-		expect(elem.text()).toContain(`newNote${i}`);
+		let e = wrapper.find(`#slot${i}`);
+		expect(e.text()).toContain(times[i]);
+		expect(e.find(`#utorId${i}`).props().value).toEqual(`newStudent${i}`);
+		expect(e.find(`#note${i}`).props().value).toEqual(`newNote${i}`);
 	}
 });

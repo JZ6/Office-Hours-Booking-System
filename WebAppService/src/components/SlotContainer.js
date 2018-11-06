@@ -24,6 +24,12 @@ export default class SlotContainer extends React.Component {
 		this.setState({slots: newSlots});
 	}
 	
+	handleNoteChange = (i) => (event) => {
+		const newSlots = this.state.slots.slice();
+		newSlots[i].note = event.target.value;
+		this.setState({slots: newSlots});
+	}
+	
 	handleConfirm(event) {
 	}
 	
@@ -50,9 +56,16 @@ export default class SlotContainer extends React.Component {
 						maxLength={50}
 						onChange={this.handleUtorIdChange(i)}
 					/>
-					<div className="note" id={`note${i}`}>
-						{this.state.slots[i].note}
-					</div>
+					<input
+						className="text-input"
+						name={`note${i}`}
+						id={`note${i}`}
+						type="text"
+						value={this.state.slots[i].note}
+						placeholder="UtorID..."
+						maxLength={280}
+						onChange={this.handleNoteChange(i)}
+					/>
 				</div>
 			)
 		);
