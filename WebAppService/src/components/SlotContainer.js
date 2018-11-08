@@ -68,6 +68,60 @@ export default class SlotContainer extends React.Component {
 		return true;
 	}
 	
+	renderUtorId(i) {
+		if (this.props.isStudent) {
+			let name;
+			if (this.props.user == this.state.slots[i].utorId) {
+				// Student owns slot
+				name = this.props.user;
+			} else {
+				if (this.state.slots[i].utorId == "") {
+					// Slot is available
+					name = "Available";
+				} else {
+					// Slot is taken by someone else
+					name = "Not Available";
+				}
+			}
+			return <div id={`utorId${i}`}>{name}</div>;
+		} else {
+			return (
+				<input
+					className="text-input"
+					name={`utorId${i}`}
+					id={`utorId${i}`}
+					type="text"
+					value={this.state.slots[i].utorId}
+					placeholder="Unassigned UtorID..."
+					maxLength={50}
+					onChange={this.handleUtorIdChange(i)}
+				/>
+			);
+		}
+	}
+	
+	renderNote(i) {
+		if (!this.props.isStudent || 
+				this.props.user == this.state.slots[i].utorId) {
+			// Note editable by instructor or student author
+			return (
+				<input
+					className="text-input"
+					name={`note${i}`}
+					id={`note${i}`}
+					type="text"
+					value={this.state.slots[i].note}
+					placeholder="Empty Note..."
+					maxLength={280}
+					onChange={this.handleNoteChange(i)}
+				/>
+			);
+		} else {
+			// Note by someone else hidden
+			return <div id={`note${i}`} />;
+		}
+	}
+	
 	renderSlots() {
 		return (
 			this.state.slots.map((slot, i) => 
@@ -79,43 +133,8 @@ export default class SlotContainer extends React.Component {
 				>
 					{moment(this.props.startTime + this.props.slotDuration * i).format("h:mmA - ")}
 					{moment(this.props.startTime + this.props.slotDuration * (i + 1)).format("h:mmA")}
-					{this.props.isStudent ? (
-						<div id={`utorId${i}`}>
-						{(this.props.user == this.state.slots[i].utorId) ? (
-							this.props.user
-						) : (
-							this.state.slots[i].utorId == "" ? (
-								"Available"  // Hide utorId of other students
-							) : (
-								"Not Available"  // Hide utorId of other students
-							)
-						)}</div>
-					) : (
-						<input
-						className="text-input"
-						name={`utorId${i}`}
-						id={`utorId${i}`}
-						type="text"
-						value={this.state.slots[i].utorId}
-						placeholder="Unassigned UtorID..."
-						maxLength={50}
-						onChange={this.handleUtorIdChange(i)}
-						/>
-					)}
-					{(!this.props.isStudent || this.props.user == this.state.slots[i].utorId) ? (
-						<input
-							className="text-input"
-							name={`note${i}`}
-							id={`note${i}`}
-							type="text"
-							value={this.state.slots[i].note}
-							placeholder="Empty Note..."
-							maxLength={280}
-							onChange={this.handleNoteChange(i)}
-						/>
-					) : (
-						<div id={`note${i}`} />  // Hide notes that don't belong to student
-					)}
+					{this.renderUtorId(i)}
+					{this.renderNote(i)}
 				</div>
 			)
 		);
