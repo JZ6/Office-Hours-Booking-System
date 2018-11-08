@@ -15,24 +15,40 @@ export default class Api {
 	getBlocks(utorId) {
 		return this.call(`blocks/${utorId}`, "GET", {});
 	}
-	getBlock(utorId, startTime) {
-		return this.call(`blocks/${utorId}/${startTime}`, "GET", {});
+	getBlock(id) {
+		return this.call(`blocks/${id}`, "GET", {});
 	}
-	postBlock(utorId, startTime, block) {
-		return this.call(`blocks/${utorId}/${startTime}`, "POST", block);
+	postBlock(block) {
+		// id is given in block, to edit slots postSlots
+		let body = {
+			id: block.id,
+			author: block.author,
+			courseCodes: block.courseCodes,
+			comment: block.comment,
+			startTime: block.startTime,
+			slotDuration: block.slotDuration
+		};
+		return this.call(`blocks/${id}`, "POST", body);
 	}
-	deleteBlock(utorId, startTime, block) {
-		return this.call(`blocks/${utorId}/${startTime}`, "POST", block);
+	deleteBlock(id) {
+		return this.call(`blocks/${id}`, "DELETE");
 	}
 	
-	getSlots(utorId, startTime) {
-		return this.call(`blocks/${utorId}/${startTime}/slots`, "GET", {});
+	getSlots(id) {
+		return this.call(`blocks/${id}/slots`, "GET", {});
 	}
-	getSlot(utorId, startTime, index) {
-		return this.call(`blocks/${utorId}/${startTime}/slots/${index}`, "GET", {});
+	postSlots(id, slots) {
+		return this.call(`blocks/${id}/slots`, "POST", slots);
 	}
-	postSlot(utorId, startTime, index, slot) {
-		return this.call(`blocks/${utorId}/${startTime}/slots/${index}`, "POST", slot);
+	getSlot(id, index) {
+		return this.call(`blocks/${id}/slots/${index}`, "GET", {});
+	}
+	postSlot(id, index, slot) {
+		let body = {
+			utorId: slot.utorId,
+			note: slot.note
+		};
+		return this.call(`blocks/${id}/slots/${index}`, "POST", body);
 	}
 	
 	/**
