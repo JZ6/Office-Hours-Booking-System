@@ -56,9 +56,7 @@ export default class SlotContainer extends React.Component {
 	
 	handleSlotConfirm = (i) => (event) => {
 		let updatedSlot = this.props.api.getSlot(this.props.blockId, i);
-		console.log(updatedSlot)
 		if (!this.slotsEqual(this.prevslots[i], updatedSlot)) {
-			console.log("deep")
 			// Slot has changed since last update from server
 			if (this.props.api.user.role == "student") {
 				// TODO: Notify student that this slot has been taken already and abort
@@ -70,7 +68,6 @@ export default class SlotContainer extends React.Component {
 		} else {
 			if (!this.slotsEqual(this.state.slots[i], updatedSlot)) {
 				// Slot is different from one on server, post new slot
-				console.log("indeep")
 				this.props.api.postSlot(this.props.blockId, i, this.state.slots[i]);
 			}
 		}
@@ -85,10 +82,9 @@ export default class SlotContainer extends React.Component {
 	}
 	
 	handleEmpty = () => {
-		//const newSlots = this.copySlots(this.state.slots);
 		let newSlots = this.state.slots.map((slot, i) => {
 			if ((this.props.api.user.role !== "student") ||
-					(this.props.api.user.role == "student" && this.props.api.user.utorId == newSlots[i].utorId)){
+					(this.props.api.user.role == "student" && this.props.api.user.utorId == this.state.slots[i].utorId)){
 				return {utorId: "", note: ""};
 			} else {
 				return {utorId: this.state.slots[i].utorId, note: this.state.slots[i].note};
