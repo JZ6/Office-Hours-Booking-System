@@ -4,22 +4,34 @@ import {shallow, mount} from "enzyme";
 import moment from "moment";
 import SlotContainer from "../components/SlotContainer";
 
-let testProps, testSlots;
+function testGetSlots() {
+	return [
+		{utorId: "parkerpeter15", note: "Everyone gets one."},
+		{utorId: "watsonmj25", note: "Face it Tiger... you just hit the jackpot!"},
+		{utorId: "", note: ""}
+	];
+}
+
+let testProps, testSlots, mockPost, mockApi;
+beforeEach(() => {
+	testSlots = 
+	mockPost = jest.fn();
+	mockApi = {
+		getSlots: (id) => {return testGetSlots()},
+		getSlot: (id, i) => {return testGetSlots()[i]},
+		postSlot: mockPost
+		};
+	testProps = {
+		api: mockApi,
+		blockId: "someId123",
+		startTime: moment("2077/01/01 00:00", "YYYY-MM-DD HH:mm"),
+		slotDuration: 600000,
+	};
+});
 
 describe("instructor view", () => {
 	beforeEach(() => {
-		testSlots = [
-			{utorId: "parkerpeter15", note: "Everyone gets one."},
-			{utorId: "watsonmj25", note: "Face it Tiger... you just hit the jackpot!"},
-			{utorId: "", note: ""}
-		];
-		testProps = {
-			slots: testSlots.slice(),
-			startTime: moment("2077/01/01 00:00", "YYYY-MM-DD HH:mm"),
-			slotDuration: 600000,
-			isStudent: false,
-			user: "octaviusotto3"
-		};
+		mockApi.user = {utorId: "octaviusotto3", role: "instructor"};
 	});
 	
 	test("render", () => {
@@ -53,9 +65,19 @@ describe("instructor view", () => {
 		expect(wrapper.find("#note0").props().value).toEqual("Honor is for fools.");
 	});
 	
+	test("handleSlotConfirm applies slot changes", () => {
+		const wrapper = shallow(<SlotContainer {...testProps}/>);
+		// Submit normally
+		wrapper.find("#utorId0").simulate("change", {target: {value: "osbornharry31"}});
+		wrapper.find("#note0").simulate("change", {target: {value: "Honor is for fools."}});
+		wrapper.find("#confirm0").simulate("click");
+		expect(mockPost).toHaveBeenCalledTimes(1);
+	});
+	
 	test("handleEmpty empties slots", () => {
 		const wrapper = shallow(<SlotContainer {...testProps}/>);
 		wrapper.find("#empty-button").simulate("click");
+		console.log(wrapper.html())
 		const tree = renderer.create(<SlotContainer {...testProps}/>).toJSON();
 		expect(tree).toMatchSnapshot();
 	});
@@ -63,18 +85,7 @@ describe("instructor view", () => {
 
 describe("student view", () => {
 	beforeEach(() => {
-		testSlots = [
-			{utorId: "parkerpeter15", note: "Everyone gets one."},
-			{utorId: "watsonmj25", note: "Face it Tiger... you just hit the jackpot!"},
-			{utorId: "", note: ""}
-		];
-		testProps = {
-			slots: testSlots.slice(),
-			startTime: moment("2077/01/01 00:00", "YYYY-MM-DD HH:mm"),
-			slotDuration: 600000,
-			isStudent: true,
-			user: "parkerpeter15"
-		};
+		mockApi.user = {utorId: "parkerpeter15", role: "student"};
 	});
 	
 	test("handleSlotClick assigns slot", () => {

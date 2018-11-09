@@ -9,6 +9,18 @@ exports[`instructor view handleEmpty empties slots 1`] = `
     id="slot0"
     onClick={undefined}
   >
+    <button
+      id="confirm0"
+      onClick={[Function]}
+    >
+      ✎
+    </button>
+    <button
+      id="cancel0"
+      onClick={[Function]}
+    >
+      ❌
+    </button>
     12:00AM - 
     12:10AM
     <input
@@ -37,6 +49,18 @@ exports[`instructor view handleEmpty empties slots 1`] = `
     id="slot1"
     onClick={undefined}
   >
+    <button
+      id="confirm1"
+      onClick={[Function]}
+    >
+      ✎
+    </button>
+    <button
+      id="cancel1"
+      onClick={[Function]}
+    >
+      ❌
+    </button>
     12:10AM - 
     12:20AM
     <input
@@ -65,6 +89,18 @@ exports[`instructor view handleEmpty empties slots 1`] = `
     id="slot2"
     onClick={undefined}
   >
+    <button
+      id="confirm2"
+      onClick={[Function]}
+    >
+      ✎
+    </button>
+    <button
+      id="cancel2"
+      onClick={[Function]}
+    >
+      ❌
+    </button>
     12:20AM - 
     12:30AM
     <input
@@ -118,6 +154,18 @@ exports[`instructor view render 1`] = `
     id="slot0"
     onClick={undefined}
   >
+    <button
+      id="confirm0"
+      onClick={[Function]}
+    >
+      ✎
+    </button>
+    <button
+      id="cancel0"
+      onClick={[Function]}
+    >
+      ❌
+    </button>
     12:00AM - 
     12:10AM
     <input
@@ -146,6 +194,18 @@ exports[`instructor view render 1`] = `
     id="slot1"
     onClick={undefined}
   >
+    <button
+      id="confirm1"
+      onClick={[Function]}
+    >
+      ✎
+    </button>
+    <button
+      id="cancel1"
+      onClick={[Function]}
+    >
+      ❌
+    </button>
     12:10AM - 
     12:20AM
     <input
@@ -174,6 +234,18 @@ exports[`instructor view render 1`] = `
     id="slot2"
     onClick={undefined}
   >
+    <button
+      id="confirm2"
+      onClick={[Function]}
+    >
+      ✎
+    </button>
+    <button
+      id="cancel2"
+      onClick={[Function]}
+    >
+      ❌
+    </button>
     12:20AM - 
     12:30AM
     <input
@@ -227,6 +299,18 @@ exports[`student view handleEmpty empties only own slots 1`] = `
     id="slot0"
     onClick={[Function]}
   >
+    <button
+      id="confirm0"
+      onClick={[Function]}
+    >
+      ✎
+    </button>
+    <button
+      id="cancel0"
+      onClick={[Function]}
+    >
+      ❌
+    </button>
     12:00AM - 
     12:10AM
     <div
@@ -243,6 +327,18 @@ exports[`student view handleEmpty empties only own slots 1`] = `
     id="slot1"
     onClick={[Function]}
   >
+    <button
+      id="confirm1"
+      onClick={[Function]}
+    >
+      ✎
+    </button>
+    <button
+      id="cancel1"
+      onClick={[Function]}
+    >
+      ❌
+    </button>
     12:10AM - 
     12:20AM
     <div
@@ -259,6 +355,18 @@ exports[`student view handleEmpty empties only own slots 1`] = `
     id="slot2"
     onClick={[Function]}
   >
+    <button
+      id="confirm2"
+      onClick={[Function]}
+    >
+      ✎
+    </button>
+    <button
+      id="cancel2"
+      onClick={[Function]}
+    >
+      ❌
+    </button>
     12:20AM - 
     12:30AM
     <div
