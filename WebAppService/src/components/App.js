@@ -29,7 +29,7 @@ class App extends Component {
 			events: [
 				{
 					start: new Date(),
-					end: new Date(moment().add(1, "days")),
+					end: new Date(moment().add(1, "hour")),
 					title: "Test Event"
 				},
 				{
@@ -78,7 +78,7 @@ class App extends Component {
             }}
           />
         </div>
-        <BlockView ref="blockView" />
+        <BlockView ref="blockView" permission={"instructor"}/>
         <SideBar />
       </div>
     );
