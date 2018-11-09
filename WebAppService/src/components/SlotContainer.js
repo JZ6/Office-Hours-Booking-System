@@ -164,7 +164,8 @@ export default class SlotContainer extends React.Component {
 					className="slot"
 					id={`slot${i}`}
 					key={i}
-					onClick={this.props.api.user.role == "student" ? this.handleSlotClick(i) : undefined}
+					// Only students can click to assign a free slot to themselves
+					onClick={this.props.api.user.role == "student" ? this.handleSlotClick(i) : () => {return false}}
 				>
 					<button id={`confirm${i}`} onClick={this.handleSlotConfirm(i)}>✎</button>
 					<button id={`cancel${i}`} onClick={this.handleSlotCancel(i)}>❌</button>

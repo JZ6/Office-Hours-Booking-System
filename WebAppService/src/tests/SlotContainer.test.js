@@ -38,9 +38,11 @@ describe("instructor view", () => {
 		expect(tree).toMatchSnapshot();
 	});
 	
-	test("handleSlotClick can't be called", () => {
+	test("handleSlotClick isn't called", () => {
 		const wrapper = shallow(<SlotContainer {...testProps}/>);
-		expect(wrapper.find("#slot0").props().onClick).toEqual(undefined);
+		wrapper.find("#slot2").props().onClick();
+		expect(wrapper.find("#utorId2").text()).toEqual("");
+		expect(wrapper.find("#note2").props().value).toEqual("");
 	});
 	
 	test("handleUtorIdChange changes utorId", () => {
@@ -93,6 +95,7 @@ describe("instructor view", () => {
 		wrapper.find("#note2").simulate("change", {target: {value: "Honor is for fools."}});
 		wrapper.find("#confirm2").simulate("click");
 		expect(mockPost).toHaveBeenCalledTimes(0);
+		// TODO: Test prompt asking instructor what to do
 	});
 	
 	test("handleSlotCancel cancels changes", () => {
@@ -127,6 +130,11 @@ describe("student view", () => {
 		mockApi.user = {utorId: "parkerpeter15", role: "student"};
 	});
 	
+	test("render", () => {
+		const tree = renderer.create(<SlotContainer {...testProps}/>).toJSON();
+		expect(tree).toMatchSnapshot();
+	});
+	
 	test("handleSlotClick assigns slot", () => {
 		const wrapper = shallow(<SlotContainer {...testProps}/>);
 		// Click on own slot (unregisters slot and deletes note)
@@ -139,7 +147,6 @@ describe("student view", () => {
 		expect(wrapper.find("#note1").text()).toEqual("");
 		// Click on empty slot (registers slot)
 		wrapper.find("#slot2").props().onClick();
-		
 		expect(wrapper.find("#utorId2").text()).toEqual("parkerpeter15");
 		expect(wrapper.find("#note2").props().value).toEqual("");
 	});
@@ -158,6 +165,60 @@ describe("student view", () => {
 		// Edit own
 		wrapper.find("#note0").simulate("change", {target: {value: "With great powers comes great responsibility."}});
 		expect(wrapper.find("#note0").props().value).toEqual("With great powers comes great responsibility.");
+	});
+	
+	test("handleSlotConfirm applies slot changes", () => {
+		const wrapper = shallow(<SlotContainer {...testProps}/>);
+		wrapper.find("#slot2").simulate("click");
+		wrapper.find("#note2").simulate("change", {target: {value: "With great powers..."}});
+		wrapper.find("#confirm2").simulate("click");
+		expect(mockPost).toHaveBeenCalledTimes(1);
+		expect(mockPost).toHaveBeenCalledWith("someId123", 2, {utorId: "parkerpeter15", note: "With great powers..."});
+	});
+	
+	test("handleSlotConfirm handles if slot changed by someone else", () => {
+		const wrapper = shallow(<SlotContainer {...testProps}/>);
+		testProps.api.getSlots = (id) => {
+			return [
+				{utorId: "parkerpeter15", note: "Everyone gets one."},
+				{utorId: "watsonmj25", note: "Face it Tiger... you just hit the jackpot!"},
+				{utorId: "osbornharry31", note: "It was me spidey! It was me all along spidey!"}
+			];
+		}
+		testProps.api.getSlot = (id, i) => {
+			return [
+				{utorId: "parkerpeter15", note: "Everyone gets one."},
+				{utorId: "watsonmj25", note: "Face it Tiger... you just hit the jackpot!"},
+				{utorId: "osbornharry31", note: "It was me spidey! It was me all along spidey!"}
+			][i];
+		}
+		wrapper.find("#slot2").simulate("click");
+		wrapper.find("#note2").simulate("change", {target: {value: "With great powers..."}});
+		wrapper.find("#confirm2").simulate("click");
+		expect(mockPost).toHaveBeenCalledTimes(0);
+		// It updates the slot if student after doing nothing
+		expect(wrapper.find("#utorId2").text()).toEqual("Not Available");
+		expect(wrapper.find("#note2").text()).toEqual("");
+	});
+	
+	test("handleSlotCancel cancels changes", () => {
+		const wrapper = shallow(<SlotContainer {...testProps}/>);
+		// Edit utorId and note
+		wrapper.find("#slot2").simulate("click");
+		wrapper.find("#note2").simulate("change", {target: {value: "With great powers..."}});
+		wrapper.find("#cancel2").simulate("click");
+		expect(wrapper.find("#utorId2").text()).toEqual("Available");
+		expect(wrapper.find("#note2").text()).toEqual("");
+		// Edit note only
+		wrapper.find("#note0").simulate("change", {target: {value: "With great powers..."}});
+		wrapper.find("#cancel0").simulate("click");
+		expect(wrapper.find("#note0").props().value).toEqual("Everyone gets one.");
+	});
+	
+	test("handleSlotConfirm doesn't change if identical to server", () => {
+		const wrapper = shallow(<SlotContainer {...testProps}/>);
+		wrapper.find("#confirm0").simulate("click");
+		expect(mockPost).toHaveBeenCalledTimes(0);
 	});
 	
 	test("handleEmpty empties only own slots", () => {
