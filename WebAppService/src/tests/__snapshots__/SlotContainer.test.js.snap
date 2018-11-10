@@ -131,16 +131,16 @@ exports[`instructor view render 1`] = `
     Empty All Slots
   </button>
   <button
-    id="confirm-button"
+    id="update-button"
     onClick={[Function]}
   >
-    Confirm
+    Refresh
   </button>
   <button
-    id="cancel-button"
+    id="undo-button"
     onClick={[Function]}
   >
-    Cancel
+    Undo Changes
   </button>
 </div>
 `;
@@ -247,16 +247,16 @@ exports[`student view render 1`] = `
     Empty My Slots
   </button>
   <button
-    id="confirm-button"
+    id="update-button"
     onClick={[Function]}
   >
-    Confirm
+    Refresh
   </button>
   <button
-    id="cancel-button"
+    id="undo-button"
     onClick={[Function]}
   >
-    Cancel
+    Undo Changes
   </button>
 </div>
 `;
