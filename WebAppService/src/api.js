@@ -2,10 +2,9 @@ export default class Api {
 	constructor(url) {
 		this.url = url;
 		this.sessionToken;
-		this.user;
 	}
 	
-	authorize(username, password) {
+	initSessionToken(username, password) {
 		// Special call bypassing sessionToken.
 		let fetchData = {
 			headers: new Headers({
@@ -14,15 +13,22 @@ export default class Api {
 			}),
 			method: "GET"
 		};
-		this.sessionToken = this.__callFetch(`${this.url}/auth`, fetchData).sessionToken;
-		this.__call("GET", `/identity/${username}`);
+		let promise = fetch(`${this.url}/auth`, fetchData);
+		promise.then((response) => {
+			this.sessionToken = response.json().sessionToken;
+		});
+		return promise;
+	}
+	
+	getIdentity(identity) {
+		return this.__call("GET", `/identity/${identity}`);
 	}
 	
 	getBlockIds(startDate, endDate) {
-		return this.__call("GET", `/block?from=${startDate}&to={endDate}`).blocks;
+		return this.__call("GET", `/block?from=${startDate}&to={endDate}`);
 	}
 	getBlock(blockId) {
-		return this.__call("GET", `/blocks/${blockId}`).block;
+		return this.__call("GET", `/blocks/${blockId}`);
 	}
 	addBlock(block) {
 		let body = {
@@ -32,7 +38,7 @@ export default class Api {
 			startTime: block.startTime,
 			appointmentDuration: block.appointmentDuration
 		};
-		this.__call("POST", "/block", body);
+		return this.__call("POST", "/block", body);
 	}
 	editBlock(blockId, block) {
 		let body = {
@@ -42,10 +48,10 @@ export default class Api {
 			startTime: block.startTime,
 			appointmentDuration: block.appointmentDuration
 		};
-		this.__call("POST", `/blocks/${blockId}`, body);
+		return this.__call("POST", `/blocks/${blockId}`, body);
 	}
 	deleteBlock(blockId) {
-		this.__call("DELETE", `/blocks/${blockId}`);
+		return this.__call("DELETE", `/blocks/${blockId}`);
 	}
 	
 	getSlots(blockId) {
@@ -57,13 +63,13 @@ export default class Api {
 			identity: slot.identity,
 			note: slot.note
 		}
-		this.__call("POST", `/blocks/${blockId}/booking`, body);
+		return this.__call("POST", `/blocks/${blockId}/booking`, body);
 	}
 	
 	__call(method, path, body) {
 		
 		if (!this.sessionToken) {
-			throw new UnauthorizedError("Please login first.");
+			throw new Error("Please login first.");
 		}
 		
 		let fetchData;
@@ -86,29 +92,7 @@ export default class Api {
 				method: method,
 			};
 		}
-		this.__callFetch(`${this.url}${path}`, fetchData);
+		// Return a Promise
+		return fetch(`${this.url}${path}`, fetchData);
 	}
-
-  __callFetch(url, fetchData) {
-    fetch(url, fetchData)
-    .then((response) => {
-      switch(response.status) {
-        case "200":
-          console.log("Success:", response);
-          return response.json();
-        case "401":
-          console.log("Failure:", response);
-          throw new Error(response.statusText);
-        case "409":
-          console.log("Failure:", response);
-          throw new Error(response.statusText);
-        default:
-          console.log("Failure:", response);
-          throw new Error(response.statusText);
-      }
-    })
-    .catch((error) => {
-      throw new Error(error);
-    })
-  }
 }
