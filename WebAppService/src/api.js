@@ -8,11 +8,11 @@ export default class Api {
 	authorize(username, password) {
 		// Special call bypassing sessionToken.
 		let fetchData = {
-			headers = new Headers({
+			headers: new Headers({
 				"Accept": "application/json",
 				"Authorization": `Basic ${username}:${password}`.toString("base64")
 			}),
-			method = "GET"
+			method: "GET"
 		};
 		this.sessionToken = this.__callFetch(`${this.url}/auth`, fetchData).sessionToken;
 		this.__call("GET", `/identity/${username}`);
@@ -52,7 +52,7 @@ export default class Api {
 		return this.__call("GET", `/blocks/${blockId}`).block.appointmentSlots;
 	}
 	editSlot(blockId, slotId, slot) {
-		let body {
+		let body = {
 			startTime: slotId,
 			identity: slot.identity,
 			note: slot.note
@@ -74,10 +74,7 @@ export default class Api {
 		headers.append("Authorization", `Bearer ${this.sessionToken}`);
 		
 		if (body) {
-			headers.append(
-				"Content-Type", 
-				"application/json",
-			};
+			headers.append("Content-Type", "application/json");
 			fetchData = {
 				headers: headers,
 				method: method,
@@ -91,27 +88,27 @@ export default class Api {
 		}
 		this.__callFetch(`${this.url}${path}`, fetchData);
 	}
-}
 
-__callFetch(url, fetchData) {
-	fetch(url, fetchData)
-	.then((response) => {
-		switch(response.status) {
-			case "200":
-				console.log("Success:", response);
-				return response.json();
-			case "401":
-				console.log("Failure:", response);
-				throw new Error(response.statusText);
-			case "409":
-				console.log("Failure:", response);
-				throw new Error(response.statusText);
-			default:
-				console.log("Failure:", response);
-				throw new Error(response.statusText);
-		}
-	})
-	.catch((error) => {
-		throw new Error(error);
-	})
+  __callFetch(url, fetchData) {
+    fetch(url, fetchData)
+    .then((response) => {
+      switch(response.status) {
+        case "200":
+          console.log("Success:", response);
+          return response.json();
+        case "401":
+          console.log("Failure:", response);
+          throw new Error(response.statusText);
+        case "409":
+          console.log("Failure:", response);
+          throw new Error(response.statusText);
+        default:
+          console.log("Failure:", response);
+          throw new Error(response.statusText);
+      }
+    })
+    .catch((error) => {
+      throw new Error(error);
+    })
+  }
 }
