@@ -150,8 +150,8 @@ paths:
       summary: Return all blocks. Filtered based on identity of the session token -- includes blocks from all courses the identity is associated with (either as a student or instructor). Further filtering through query parameters is available.
       parameters:
       - in: query
-        name: author
-        description: UtorID of the author of the block (e.g. "rossbob2").
+        name: owner
+        description: UtorID of one of the owners of the block (e.g. "rossbob2").
         schema:
           type: string
       - in: query
@@ -296,10 +296,12 @@ components:
       type: object
       description: Office hours section.
       properties:
-        author:
-          type: string
-          description: UtorId of the instructor/TA author.
-          example: rossbob2
+        owners:
+          type: array
+          description: UtorIds of the instructors/TAs assigned to this block.
+          items:
+            type: string
+          example: [rossbob2, atat4]
         courseCodes:
           type: array
           description: All relevant courses.
