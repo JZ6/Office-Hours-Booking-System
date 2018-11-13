@@ -9,21 +9,12 @@ security: # Session token AND API key required in general.
   apiKeyAuth: []
 
 paths:
-  /auth/{id}:
-    post:
+  /auth:
+    get:
       security:
       - apiKeyAuth: []  # API key is required to request login.
-      - HMAC: []
+      - identityAuth: []  # Identity credentials (username/password) required to get a session token
       summary: Returns a session token for a given identity. Password required for authorization.
-      parameters:
-      - name: id
-        in: path
-        required: true
-        description: the id to be authorized
-        schema:
-          type: string
-      requestBody:
-        $ref: '#/components/requestBodies/LoginBody'
       responses:
         '200':
           description: >
@@ -32,17 +23,16 @@ paths:
           content:
             application/json:
               schema:
-                type: string
-                example: XXXFUNKYTOKEN123XXX
+                $ref: '#/components/schemas/Authorization'
   
-  /identity/{id}:
+  /identity:
     post:
       summary: Add/edit an identity.
       parameters:
       - name: id
         in: path
         required: true
-        description: the id representing the new identity
+        description: The unique id representing the new identity (e.g. "rossbob2")
         schema:
           type: string
       requestBody:
@@ -53,6 +43,7 @@ paths:
         '401':
           $ref: '#/components/responses/UnauthorizedError'
   
+  /identity/{id}:
     get:
       summary: Access information about an identity.
       parameters:
@@ -136,7 +127,7 @@ paths:
         '401':
           $ref: '#/components/responses/UnauthorizedError'
 
-  /block:
+  /blocks:
     post:
       summary: Add/edit a block. Editing is only available to the original creator of the block or the instructor assigned to it. Blocks with the same instructor cannot overlap.
       requestBody:
@@ -169,7 +160,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Block'
+                $ref: '#/components/schemas/Blocks'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
 
@@ -243,8 +234,31 @@ components:
       type: apiKey
       in: header
       name: X-API-Key
+    identityAuth:
+      type: http
+      scheme: basic
 
   schemas:
+    Authorization:
+      type: object
+      properties:
+        id:
+          type: string
+          example: rossbob2
+        token-auth:
+          type: string
+          example: '8d9e9086f897a08e'
+        expires:
+          type: string
+          format: datetime
+        roles:
+          type: object
+          properties:
+            student:
+              type: boolean
+            instructor:
+              type: boolean
+  
     Identity:
       type: object
       properties:
@@ -292,13 +306,25 @@ components:
             description: UtorID.
           example: [parkerpeter15, watsonmary25]
 
+    Blocks:
+      type: object
+      description: A collection of scheduled blocks.
+      properties:
+        blocks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Block'
+
     Block:
       type: object
-      description: Office hours section.
+      description: A scheduled block of appointment slots.
       properties:
+        blockId:
+          type: string
+          description: A unique global identifier for this block
         owners:
           type: array
-          description: UtorIds of the instructors/TAs assigned to this block.
+          description: Identities of the instructor/TA block owner(s).
           items:
             type: string
           example: [rossbob2, atat4]
@@ -311,7 +337,7 @@ components:
         comment:
           type: string
           description: Comment left by instructor/TA.
-          example: We don't make mistakes, just happy little accidents.
+          example: "We don't make mistakes, just happy little accidents."
         startTime:
           type: string
           description: ISO 8601 formatted time in UTC.
@@ -322,13 +348,16 @@ components:
           example: 300000
         appointmentSlots:
           type: array
-          description: A chronologically sorted dense array of slots. startTime + index * slotDuration = slot start time in ISO 8601 time.
+          description: A chronologically sorted dense array of appointment slots. \
+            startTime + index * appointmentDuration = appointment slot start time in ISO 8601 time.
           items:
             type: object
             properties:
-              utorId:
+              identity:
                 type: string
-                description: UtorId of the assigned student (can be empty).
+                nullable: true
+                description: Identity of the assigned student (can be empty). \
+                  Only visible to block owner or the booking identity.
                 example: parkerpeter15
               courseCode:
                 type: string
@@ -336,14 +365,9 @@ components:
                 example: csc302
               note:
                 type: string
-                description: Note left by student. Should be deleted on updating student. Only viewable by TAs, Instructors, and relevant student.
+                description: Note left by student. Should be deleted on updating student. \
+                  Only viewable by TAs, Instructors, and relevant student.
                 example: Everybody gets one.
-    Login:
-      type: object
-      properties:
-        identity:
-          type: string
-          example: rossbob2
           
     Booking:
       type: object
@@ -351,18 +375,14 @@ components:
         identity:
           type: string
           example: rossbob2
-        startTime:
+        slotNum:
           type: integer
           example: 3
+        note:
+          type: string
+          example: 'We need to talk about Kevin'
 
   requestBodies:
-    LoginBody:
-      description: A JSON containing an id string and an authentication string (e.g. password).
-      required: false
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Login'
     IdentityBody:
       description: A JSON Identity object.
       required: true
