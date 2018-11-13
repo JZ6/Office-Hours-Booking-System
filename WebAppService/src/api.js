@@ -1,77 +1,117 @@
-import {UnauthorizedError} from "./error";
-
 export default class Api {
 	constructor(url) {
 		this.url = url;
-		this.sessionToken = "";
+		this.sessionToken;
+		this.user;
 	}
 	
-	authenticate(username, password) {
-		this.call("auth", "POST", {username: username, password: password});
-		this.sessionToken = "dummySessionToken123";
-		return {sessionToken: "dummySessionToken123"};
+	authorize(username, password) {
+		// Special call bypassing sessionToken.
+		let fetchData = {
+			headers = new Headers({
+				"Accept": "application/JSON",
+				"Authorization": `Basic ${username}:${password}`.toString("base64")
+			}),
+			method = "GET"
+		};
+		this.sessionToken = this.__callFetch(`${this.url}/auth`, fetchData);
+		this.__call("GET", `/identity/${username}`);
 	}
 	
-	getBlocks(utorId) {
-		return this.call(`blocks/${utorId}`, "GET", {});
+	getBlockIds(startDate, endDate) {
+		return this.__call("GET", `/block?from=${startDate}&to={endDate}`);
 	}
-	getBlock(id) {
-		return this.call(`blocks/${id}`, "GET", {});
+	getBlock(blockId) {
+		return this.__call("GET", `/blocks/${blockId}`);
 	}
-	postBlock(block) {
-		// id is given in block, to edit slots postSlots
+	addBlock(block) {
 		let body = {
-			id: block.id,
-			author: block.author,
+			owners: block.owners,
 			courseCodes: block.courseCodes,
 			comment: block.comment,
 			startTime: block.startTime,
-			slotDuration: block.slotDuration
+			appointmentDuration: block.appointmentDuration
 		};
-		return this.call(`blocks/${id}`, "POST", body);
+		this.__call("POST", "/block", body);
 	}
-	deleteBlock(id) {
-		return this.call(`blocks/${id}`, "DELETE");
-	}
-	
-	getSlots(id) {
-		return this.call(`blocks/${id}/slots`, "GET", {});
-	}
-	postSlots(id, slots) {
-		return this.call(`blocks/${id}/slots`, "POST", slots);
-	}
-	getSlot(id, index) {
-		return this.call(`blocks/${id}/slots/${index}`, "GET", {});
-	}
-	postSlot(id, index, slot) {
+	editBlock(blockId, block) {
 		let body = {
-			utorId: slot.utorId,
-			note: slot.note
+			owners: block.owners,
+			courseCodes: block.courseCodes,
+			comment: block.comment,
+			startTime: block.startTime,
+			appointmentDuration: block.appointmentDuration
 		};
-		return this.call(`blocks/${id}/slots/${index}`, "POST", body);
+		this.__call("POST", `/blocks/${blockId}`, body);
+	}
+	deleteBlock(blockId) {
+		this.__call("DELETE", `/blocks/${blockId}`);
 	}
 	
-	/**
-	* Makes an API call. Authenticate first before making other 
-	* API calls. Header is exclusively for authenticating requests.
-	* @param {string} path The path to send the request to, appended to url. 
-	* @param {string} method HTTP request method.
-	* @param {object} body HTTP request body.
-	* @return {object} JSON response.
-	*/
-	call(path, method, body) {
-		if (path == "auth" || this.sessionToken) {
-			let header = {};
-			if (path != "auth") {
-				header = {Authorization: `Basic ${this.sessionToken}`};
-			}
-			
-			// TODO: Do API call, throw error if unsuccessful.
-			
-			console.log(`Successful ${method} to ${this.url}${path}.`);
-			return {};
-		} else {
-			throw new UnauthorizedError(`Unauthorized ${method} to ${this.url}${path}.`);
-		}
+	getSlots(blockId) {
+		return this.__call("GET", `/blocks/${blockId}`).appointmentSlots;
 	}
+	editSlot(blockId, slotId, slot) {
+		let body {
+			startTime: slotId,
+			identity: slot.identity,
+			note: slot.note
+		}
+		return this.__call("POST", `/blocks/${blockId}/booking`, body);
+	}
+	
+	__call(method, path, body) {
+		
+		if (!this.sessionToken) {
+			throw new UnauthorizedError("Please login first.");
+		}
+		
+		let fetchData;
+		let headers = new Headers({
+			"Accept": "*/*",
+		});
+		
+		headers.append("Authorization", `Bearer ${this.sessionToken}`);
+		
+		if (body) {
+			headers.append(
+				"Content-Type", 
+				"application/json",
+			};
+			fetchData = {
+				headers: headers,
+				method: method,
+				body: body
+			};
+		} else {
+			fetchData = {
+				headers: headers,
+				method: method,
+			};
+		}
+		this.__callFetch(`${this.url}${path}`, fetchData);
+	}
+}
+
+__callFetch(url, fetchData) {
+	fetch(url, fetchData)
+	.then((response) => {
+		switch(response.status) {
+			case "200":
+				console.log("Success:", response);
+				return response.json();
+			case "401":
+				console.log("Failure:", response);
+				throw new Error(response.statusText);
+			case "409":
+				console.log("Failure:", response);
+				throw new Error(response.statusText);
+			default:
+				console.log("Failure:", response);
+				throw new Error(response.statusText);
+		}
+	})
+	.catch((error) => {
+		throw new Error(error);
+	})
 }
