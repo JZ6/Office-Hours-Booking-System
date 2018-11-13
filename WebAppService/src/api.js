@@ -9,20 +9,20 @@ export default class Api {
 		// Special call bypassing sessionToken.
 		let fetchData = {
 			headers = new Headers({
-				"Accept": "application/JSON",
+				"Accept": "application/json",
 				"Authorization": `Basic ${username}:${password}`.toString("base64")
 			}),
 			method = "GET"
 		};
-		this.sessionToken = this.__callFetch(`${this.url}/auth`, fetchData);
+		this.sessionToken = this.__callFetch(`${this.url}/auth`, fetchData).sessionToken;
 		this.__call("GET", `/identity/${username}`);
 	}
 	
 	getBlockIds(startDate, endDate) {
-		return this.__call("GET", `/block?from=${startDate}&to={endDate}`);
+		return this.__call("GET", `/block?from=${startDate}&to={endDate}`).blocks;
 	}
 	getBlock(blockId) {
-		return this.__call("GET", `/blocks/${blockId}`);
+		return this.__call("GET", `/blocks/${blockId}`).block;
 	}
 	addBlock(block) {
 		let body = {
@@ -49,7 +49,7 @@ export default class Api {
 	}
 	
 	getSlots(blockId) {
-		return this.__call("GET", `/blocks/${blockId}`).appointmentSlots;
+		return this.__call("GET", `/blocks/${blockId}`).block.appointmentSlots;
 	}
 	editSlot(blockId, slotId, slot) {
 		let body {
@@ -57,7 +57,7 @@ export default class Api {
 			identity: slot.identity,
 			note: slot.note
 		}
-		return this.__call("POST", `/blocks/${blockId}/booking`, body);
+		this.__call("POST", `/blocks/${blockId}/booking`, body);
 	}
 	
 	__call(method, path, body) {
@@ -68,7 +68,7 @@ export default class Api {
 		
 		let fetchData;
 		let headers = new Headers({
-			"Accept": "*/*",
+			"Accept": "application/json",
 		});
 		
 		headers.append("Authorization", `Bearer ${this.sessionToken}`);
