@@ -41,6 +41,6 @@ docker build -t api-service:dev --rm .
 
 ### Run Docker Container
 ```
-docker run -p 5000:5000 --name=api-service api-service
+docker run -p 5000:5000 --name=api-service api-service:dev
 ```
 Application will be available at `http://localhost:5000`

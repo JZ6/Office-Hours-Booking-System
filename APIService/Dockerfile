@@ -2,14 +2,14 @@
 
 FROM python:3.7
 
-MAINTAINER Asher Minden-Webb "amindenwebb@gmail.com"
+LABEL MAINTAINER_NAME="Asher Minden-Webb" MAINTAINER_EMAIL="amindenwebb@gmail.com"
 
 ENV FLASK_ENV=${FLASK_ENV} \
 API_PORT=${API_PORT}
 
 RUN apt-get update -y
 
-CMD set -ex && mkdir /app
+RUN set -ex && mkdir /app
 
 WORKDIR /app
 
@@ -24,5 +24,7 @@ RUN ["/bin/bash", "-c", \
 "pipenv install $(test ${FLASK_ENV:-'dev'} == 'production' || echo '--dev') --deploy --system"]
 
 COPY . /app
+COPY docker-scripts/wait-for-it.sh /
+RUN chmod +x /wait-for-it.sh
 
-ENTRYPOINT ["python", "run.py"]
+ENTRYPOINT ["/wait-for-it.sh", "-t", "0", "mongodb:27017", "--", "python", "run.py"]

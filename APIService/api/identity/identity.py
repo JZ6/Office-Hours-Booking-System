@@ -8,8 +8,7 @@ class Identity(Resource):
     # TODO: log request
     def post(self, id):
         # TODO: implement
-        data = request.get_json()
-        return data
+        return mongo.db.list_collection_names()
 
     # TODO: log request
     def get(self, id):
