@@ -25,9 +25,9 @@ exports[`instructor view render 1`] = `
     12:10AM
     <input
       className="text-input"
-      id="utorId0"
+      id="identity0"
       maxLength={50}
-      name="utorId0"
+      name="identity0"
       onChange={[Function]}
       placeholder="Unassigned UtorID..."
       type="text"
@@ -65,9 +65,9 @@ exports[`instructor view render 1`] = `
     12:20AM
     <input
       className="text-input"
-      id="utorId1"
+      id="identity1"
       maxLength={50}
-      name="utorId1"
+      name="identity1"
       onChange={[Function]}
       placeholder="Unassigned UtorID..."
       type="text"
@@ -105,9 +105,9 @@ exports[`instructor view render 1`] = `
     12:30AM
     <input
       className="text-input"
-      id="utorId2"
+      id="identity2"
       maxLength={50}
-      name="utorId2"
+      name="identity2"
       onChange={[Function]}
       placeholder="Unassigned UtorID..."
       type="text"
@@ -169,7 +169,7 @@ exports[`student view render 1`] = `
     12:00AM - 
     12:10AM
     <div
-      id="utorId0"
+      id="identity0"
     >
       parkerpeter15
     </div>
@@ -204,7 +204,7 @@ exports[`student view render 1`] = `
     12:10AM - 
     12:20AM
     <div
-      id="utorId1"
+      id="identity1"
     >
       Not Available
     </div>
@@ -232,7 +232,7 @@ exports[`student view render 1`] = `
     12:20AM - 
     12:30AM
     <div
-      id="utorId2"
+      id="identity2"
     >
       Available
     </div>

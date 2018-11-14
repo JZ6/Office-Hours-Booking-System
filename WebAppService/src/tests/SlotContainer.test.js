@@ -5,11 +5,13 @@ import moment from "moment";
 import SlotContainer from "../components/SlotContainer";
 
 function testGetSlots() {
-	return [
-		{utorId: "parkerpeter15", note: "Everyone gets one."},
-		{utorId: "watsonmj25", note: "Face it Tiger... you just hit the jackpot!"},
-		{utorId: "", note: ""}
-	];
+	return new Promise((resolve, reject) => {
+		resolve([
+			{identity: "parkerpeter15", note: "Everyone gets one."},
+			{identity: "watsonmj25", note: "Face it Tiger... you just hit the jackpot!"},
+			{identity: "", note: ""}
+		]);
+	});
 }
 
 let testProps, testSlots, mockPostSlot, mockPostSlots, mockApi;
@@ -17,8 +19,7 @@ beforeEach(() => {
 	mockPostSlot = jest.fn();
 	mockPostSlots = jest.fn();
 	mockApi = {
-		getSlots: (id) => {return testGetSlots()},
-		getSlot: (id, i) => {return testGetSlots()[i]},
+		getSlots: (blockId) => testGetSlots(),
 		postSlot: mockPostSlot,
 		postSlots: mockPostSlots
 		};
@@ -32,7 +33,8 @@ beforeEach(() => {
 
 describe("instructor view", () => {
 	beforeEach(() => {
-		mockApi.user = {utorId: "octaviusotto3", role: "instructor"};
+		testProps.id = "octaviusotto3";
+		testProps.role = "instructor";
 	});
 	
 	test("render", () => {
@@ -43,18 +45,18 @@ describe("instructor view", () => {
 	test("handleSlotClick isn't called", () => {
 		const wrapper = shallow(<SlotContainer {...testProps}/>);
 		wrapper.find("#slot2").props().onClick();
-		expect(wrapper.find("#utorId2").text()).toEqual("");
+		expect(wrapper.find("#identity2").text()).toEqual("");
 		expect(wrapper.find("#note2").props().value).toEqual("");
 	});
 	
-	test("handleUtorIdChange changes utorId", () => {
+	test("handleIdentityChange changes identity", () => {
 		const wrapper = shallow(<SlotContainer {...testProps}/>);
 		// Edit empty
-		wrapper.find("#utorId2").simulate("change", {target: {value: "osbornharry31"}});
-		expect(wrapper.find("#utorId2").props().value).toEqual("osbornharry31");
+		wrapper.find("#identity2").simulate("change", {target: {value: "osbornharry31"}});
+		expect(wrapper.find("#identity2").props().value).toEqual("osbornharry31");
 		// Edit occupied (should clear note)
-		wrapper.find("#utorId0").simulate("change", {target: {value: "osbornharry31"}});
-		expect(wrapper.find("#utorId0").props().value).toEqual("osbornharry31");
+		wrapper.find("#identity0").simulate("change", {target: {value: "osbornharry31"}});
+		expect(wrapper.find("#identity0").props().value).toEqual("osbornharry31");
 		expect(wrapper.find("#note0").props().value).toEqual("");
 	});
 	
@@ -70,11 +72,11 @@ describe("instructor view", () => {
 	
 	test("handleSlotConfirm applies slot changes", () => {
 		const wrapper = shallow(<SlotContainer {...testProps}/>);
-		wrapper.find("#utorId0").simulate("change", {target: {value: "osbornharry31"}});
+		wrapper.find("#identity0").simulate("change", {target: {value: "osbornharry31"}});
 		wrapper.find("#note0").simulate("change", {target: {value: "Honor is for fools."}});
 		wrapper.find("#confirm0").simulate("click");
 		expect(mockPostSlot).toHaveBeenCalledTimes(1);
-		expect(mockPostSlot).toHaveBeenCalledWith("someId123", 0, {utorId: "osbornharry31", note: "Honor is for fools."});
+		expect(mockPostSlot).toHaveBeenCalledWith("someId123", 0, {identity: "osbornharry31", note: "Honor is for fools."});
 	});
 	
 	test("handleSlotConfirm handles if slot changed by someone else", () => {
@@ -82,19 +84,19 @@ describe("instructor view", () => {
 		// Simulate change in server slots
 		testProps.api.getSlots = (id) => {
 			return [
-				{utorId: "parkerpeter15", note: "Everyone gets one."},
-				{utorId: "watsonmj25", note: "Face it Tiger... you just hit the jackpot!"},
-				{utorId: "parkerpeter15", note: "Sneaky spidey sneaks in."}
+				{identity: "parkerpeter15", note: "Everyone gets one."},
+				{identity: "watsonmj25", note: "Face it Tiger... you just hit the jackpot!"},
+				{identity: "parkerpeter15", note: "Sneaky spidey sneaks in."}
 			];
 		};
 		testProps.api.getSlot = (id, i) => {
 			return [
-				{utorId: "parkerpeter15", note: "Everyone gets one."},
-				{utorId: "watsonmj25", note: "Face it Tiger... you just hit the jackpot!"},
-				{utorId: "parkerpeter15", note: "Sneaky spidey sneaks in."}
+				{identity: "parkerpeter15", note: "Everyone gets one."},
+				{identity: "watsonmj25", note: "Face it Tiger... you just hit the jackpot!"},
+				{identity: "parkerpeter15", note: "Sneaky spidey sneaks in."}
 			][i];
 		};
-		wrapper.find("#utorId2").simulate("change", {target: {value: "osbornharry31"}});
+		wrapper.find("#identity2").simulate("change", {target: {value: "osbornharry31"}});
 		wrapper.find("#note2").simulate("change", {target: {value: "Honor is for fools."}});
 		wrapper.find("#confirm2").simulate("click");
 		expect(mockPostSlot).toHaveBeenCalledTimes(0);
@@ -103,10 +105,10 @@ describe("instructor view", () => {
 	
 	test("handleSlotCancel cancels changes", () => {
 		const wrapper = shallow(<SlotContainer {...testProps}/>);
-		wrapper.find("#utorId0").simulate("change", {target: {value: "osbornharry31"}});
+		wrapper.find("#identity0").simulate("change", {target: {value: "osbornharry31"}});
 		wrapper.find("#note0").simulate("change", {target: {value: "Honor is for fools."}});
 		wrapper.find("#cancel0").simulate("click");
-		expect(wrapper.find("#utorId0").props().value).toEqual("parkerpeter15");
+		expect(wrapper.find("#identity0").props().value).toEqual("parkerpeter15");
 		expect(wrapper.find("#note0").props().value).toEqual("Everyone gets one.");
 	});
 	
@@ -119,17 +121,17 @@ describe("instructor view", () => {
 	test("handleEmpty empties slots", () => {
 		const wrapper = shallow(<SlotContainer {...testProps}/>);
 		wrapper.find("#empty-button").simulate("click");
-		expect(wrapper.find("#utorId0").props().value).toEqual("");
+		expect(wrapper.find("#identity0").props().value).toEqual("");
 		expect(wrapper.find("#note0").props().value).toEqual("");
-		expect(wrapper.find("#utorId1").props().value).toEqual("");
+		expect(wrapper.find("#identity1").props().value).toEqual("");
 		expect(wrapper.find("#note1").props().value).toEqual("");
-		expect(wrapper.find("#utorId2").props().value).toEqual("");
+		expect(wrapper.find("#identity2").props().value).toEqual("");
 		expect(wrapper.find("#note2").props().value).toEqual("");
 		expect(mockPostSlots).toHaveBeenCalledTimes(1);
 		expect(mockPostSlots).toHaveBeenCalledWith("someId123", 
-			[{utorId: "", note: ""},
-			{utorId: "", note: ""},
-			{utorId: "", note: ""}]);
+			[{identity: "", note: ""},
+			{identity: "", note: ""},
+			{identity: "", note: ""}]);
 	});
 	
 	test("handleUpdate updates all slots", () => {
@@ -137,27 +139,32 @@ describe("instructor view", () => {
 		// Simulate change in server slots
 		testProps.api.getSlots = (id) => {
 			return [
-				{utorId: "Everything", note: "you"},
-				{utorId: "know", note: "is"},
-				{utorId: "wrong", note: "!"}
+				{identity: "Everything", note: "you"},
+				{identity: "know", note: "is"},
+				{identity: "wrong", note: "!"}
 			];
 		};
 		wrapper.find("#update-button").simulate("click");
-		expect(wrapper.find("#utorId0").props().value).toEqual("Everything");
+		expect(wrapper.find("#identity0").props().value).toEqual("Everything");
 		expect(wrapper.find("#note0").props().value).toEqual("you");
-		expect(wrapper.find("#utorId1").props().value).toEqual("know");
+		expect(wrapper.find("#identity1").props().value).toEqual("know");
 		expect(wrapper.find("#note1").props().value).toEqual("is");
-		expect(wrapper.find("#utorId2").props().value).toEqual("wrong");
+		expect(wrapper.find("#identity2").props().value).toEqual("wrong");
 		expect(wrapper.find("#note2").props().value).toEqual("!");
 	});
 });
 
 describe("student view", () => {
 	beforeEach(() => {
-		mockApi.user = {utorId: "parkerpeter15", role: "student"};
+		testProps.id = "parkerpeter15";
+		testProps.role = "student";
 	});
 	
-	test("render", () => {
+	test("render", async () => {
+		const wrapper = shallow(<SlotContainer {...testProps}/>);
+		await wrapper.instance().componentDidMount();
+		console.log(wrapper.html());
+		
 		const tree = renderer.create(<SlotContainer {...testProps}/>).toJSON();
 		expect(tree).toMatchSnapshot();
 	});
@@ -166,21 +173,21 @@ describe("student view", () => {
 		const wrapper = shallow(<SlotContainer {...testProps}/>);
 		// Click on own slot (unregisters slot and deletes note)
 		wrapper.find("#slot0").props().onClick();
-		expect(wrapper.find("#utorId0").text()).toEqual("Available");
+		expect(wrapper.find("#identity0").text()).toEqual("Available");
 		expect(wrapper.find("#note0").text()).toEqual("");
 		// Click on occupied slot (does nothing)
 		wrapper.find("#slot1").props().onClick();
-		expect(wrapper.find("#utorId1").text()).toEqual("Not Available");
+		expect(wrapper.find("#identity1").text()).toEqual("Not Available");
 		expect(wrapper.find("#note1").text()).toEqual("");
 		// Click on empty slot (registers slot)
 		wrapper.find("#slot2").props().onClick();
-		expect(wrapper.find("#utorId2").text()).toEqual("parkerpeter15");
+		expect(wrapper.find("#identity2").text()).toEqual("parkerpeter15");
 		expect(wrapper.find("#note2").props().value).toEqual("");
 	});
 	
-	test("handleUtorIdChange can't be called", () => {
+	test("handleIdentityChange can't be called", () => {
 		const wrapper = shallow(<SlotContainer {...testProps}/>);
-		expect(wrapper.find("#utorId0").props().onClick).toEqual(undefined);
+		expect(wrapper.find("#identity0").props().onClick).toEqual(undefined);
 	});
 	
 	test("handleNoteChange changes only own notes", () => {
@@ -200,7 +207,7 @@ describe("student view", () => {
 		wrapper.find("#note2").simulate("change", {target: {value: "With great powers..."}});
 		wrapper.find("#confirm2").simulate("click");
 		expect(mockPostSlot).toHaveBeenCalledTimes(1);
-		expect(mockPostSlot).toHaveBeenCalledWith("someId123", 2, {utorId: "parkerpeter15", note: "With great powers..."});
+		expect(mockPostSlot).toHaveBeenCalledWith("someId123", 2, {identity: "parkerpeter15", note: "With great powers..."});
 	});
 	
 	test("handleSlotConfirm handles if slot changed by someone else", () => {
@@ -208,16 +215,16 @@ describe("student view", () => {
 		// Simulate change in server slots
 		testProps.api.getSlots = (id) => {
 			return [
-				{utorId: "parkerpeter15", note: "Everyone gets one."},
-				{utorId: "watsonmj25", note: "Face it Tiger... you just hit the jackpot!"},
-				{utorId: "osbornharry31", note: "It was me spidey! It was me all along spidey!"}
+				{identity: "parkerpeter15", note: "Everyone gets one."},
+				{identity: "watsonmj25", note: "Face it Tiger... you just hit the jackpot!"},
+				{identity: "osbornharry31", note: "It was me spidey! It was me all along spidey!"}
 			];
 		};
 		testProps.api.getSlot = (id, i) => {
 			return [
-				{utorId: "parkerpeter15", note: "Everyone gets one."},
-				{utorId: "watsonmj25", note: "Face it Tiger... you just hit the jackpot!"},
-				{utorId: "osbornharry31", note: "It was me spidey! It was me all along spidey!"}
+				{identity: "parkerpeter15", note: "Everyone gets one."},
+				{identity: "watsonmj25", note: "Face it Tiger... you just hit the jackpot!"},
+				{identity: "osbornharry31", note: "It was me spidey! It was me all along spidey!"}
 			][i];
 		};
 		wrapper.find("#slot2").simulate("click");
@@ -225,17 +232,17 @@ describe("student view", () => {
 		wrapper.find("#confirm2").simulate("click");
 		expect(mockPostSlot).toHaveBeenCalledTimes(0);
 		// It updates the slot if student after doing nothing
-		expect(wrapper.find("#utorId2").text()).toEqual("Not Available");
+		expect(wrapper.find("#identity2").text()).toEqual("Not Available");
 		expect(wrapper.find("#note2").text()).toEqual("");
 	});
 	
 	test("handleSlotCancel cancels changes", () => {
 		const wrapper = shallow(<SlotContainer {...testProps}/>);
-		// Edit utorId and note
+		// Edit identity and note
 		wrapper.find("#slot2").simulate("click");
 		wrapper.find("#note2").simulate("change", {target: {value: "With great powers..."}});
 		wrapper.find("#cancel2").simulate("click");
-		expect(wrapper.find("#utorId2").text()).toEqual("Available");
+		expect(wrapper.find("#identity2").text()).toEqual("Available");
 		expect(wrapper.find("#note2").text()).toEqual("");
 		// Edit note only
 		wrapper.find("#note0").simulate("change", {target: {value: "With great powers..."}});
@@ -252,13 +259,13 @@ describe("student view", () => {
 	test("handleEmpty empties only own slots", () => {
 		const wrapper = shallow(<SlotContainer {...testProps}/>);
 		wrapper.find("#empty-button").simulate("click");
-		expect(wrapper.find("#utorId0").text()).toEqual("Available");
+		expect(wrapper.find("#identity0").text()).toEqual("Available");
 		expect(wrapper.find("#note0").text()).toEqual("");
-		expect(wrapper.find("#utorId1").text()).toEqual("Not Available");
+		expect(wrapper.find("#identity1").text()).toEqual("Not Available");
 		expect(wrapper.find("#note1").text()).toEqual("");
-		expect(wrapper.find("#utorId2").text()).toEqual("Available");
+		expect(wrapper.find("#identity2").text()).toEqual("Available");
 		expect(wrapper.find("#note2").text()).toEqual("");
 		expect(mockPostSlot).toHaveBeenCalledTimes(1);
-		expect(mockPostSlot).toHaveBeenCalledWith("someId123", 0, {utorId: "", note: ""});
+		expect(mockPostSlot).toHaveBeenCalledWith("someId123", 0, {identity: "", note: ""});
 	});
 });

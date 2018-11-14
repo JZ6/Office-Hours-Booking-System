@@ -6,121 +6,164 @@ export default class SlotContainer extends React.Component {
 		super(props);
 		
 		this.state = {
-			slots: this.props.api.getSlots(this.props.blockId)
+			enabled: false,
+			slots: []
 		}
 		this.prevSlots = this.copySlots(this.state.slots);
 		
 		this.handleUpdate = this.handleUpdate.bind(this);
 		this.handleUndo = this.handleUndo.bind(this);
+		
+		/*
+		Props:
+		this.props.id = "rossbob2";
+		this.props.role = "instructor";  // for the current class
+		this.props.blockId = "someblock123";
+		*/
+	}
+	
+	componentDidMount() {
+		// Initialize slots on load.
+		this.updateSlots();
 	}
 	
 	handleSlotClick = (i) => () => {
-		if (this.state.slots[i].utorId === "") {
-			// Click on empty slot to assign
-			this.editSlot(i, this.props.api.user.utorId, "");
-		} else {
-			if (this.props.api.user.utorId === this.state.slots[i].utorId) {
-				// Click on own slot to delete
-				this.editSlot(i, "", "");
+		if (this.state.enabled) {
+			if (this.state.slots[i].identity === "") {
+				// Click on empty slot to assign
+				this.editSlot(i, this.props.id, "");
+			} else {
+				if (this.props.id === this.state.slots[i].identity) {
+					// Click on own slot to delete
+					this.editSlot(i, "", "");
+				}
+				//Click on occupied slot to do nothing
 			}
-			//Click on occupied slot to do nothing
 		}
 	}
 	
-	handleUtorIdChange = (i) => (event) => {
-		// Delete note to protect privacy
-		this.editSlot(i, event.target.value, "");
+	handleIdentityChange = (i) => (event) => {
+		if (this.state.enabled) {
+			// Delete note to protect privacy
+			this.editSlot(i, event.target.value, "");
+		}
 	}
 	
 	handleNoteChange = (i) => (event) => {
-		// Can't edit note that belongs to nobody
-		if (this.state.slots[i].utorId !== "") {
-			this.editSlot(i, this.state.slots[i].utorId, event.target.value);
+		if (this.state.enabled) {
+			// Can't edit note that belongs to nobody
+			if (this.state.slots[i].identity !== "") {
+				this.editSlot(i, this.state.slots[i].identity, event.target.value);
+			}
 		}
 	}
 	
-	editSlot(i, utorId, note) {
+	handleSlotConfirm = (i) => () => {
+		if (this.state.enabled) {
+			if (!this.slotsEqual(this.state.slots[i], updatedSlot)) {
+				this.setState({enabled: false});
+				this.props.api.editSlot(this.props.blockId, i, this.state.slots[i])
+				.then((response) => {
+					this.setState({enabled: true});
+				})
+				.catch((error) => {
+					window.alert(error.message);
+					this.setState({enabled: true});
+				});
+			}
+		}
+	}
+	
+	handleSlotCancel = (i) => () => {
+		if (this.state.enabled) {
+			this.editSlot(i, this.prevSlots[i].identity, this.prevSlots[i].note);
+		}
+	}
+	
+	handleEmpty = () => {
+		if (this.state.enabled) {
+			this.setState({enabled: false});
+			let promises = [];
+			
+			if (this.props.role === "student") {
+				// Student clears only their own
+				for (let i = 0; i < this.state.slots.length; i++) {
+					if (this.props.id === this.state.slots[i].identity) {
+						promises.push(this.props.api.editSlot(this.props.blockId, i, {identity: "", note: ""}));
+					}
+				}
+			} else {
+				// Instructor clears all
+				for (let i = 0; i < this.state.slots.length; i++) {
+					promises.push(this.props.api.editSlot(this.props.blockId, i, {identity: "", note: ""}));
+				}
+			}
+			
+			Promise.all(promises)
+			.then(([response]) => {
+				// Update slots to match server's emptied slots (or not, if failed)
+				this.updateSlots();
+				this.setState({enabled: true});
+			})
+			.catch((error) => {
+				window.alert(error.message);
+				this.setState({enabled: true});
+			})
+		}
+	}
+	
+	handleUpdate() {
+		if (this.state.enabled) {
+			this.updateSlots();
+		}
+	}
+	
+	handleUndo() {
+		if (this.state.enabled) {
+			this.setState({slots: this.copySlots(this.prevSlots)});
+		}
+	}
+	
+	editSlot(i, identity, note) {
 		const newSlots = this.copySlots(this.state.slots);
-		newSlots[i].utorId = utorId;
+		newSlots[i].identity = identity;
 		newSlots[i].note = note;
 		this.setState({slots: newSlots});
 	}
 	
 	copySlots(slots) {
 		return slots.map(slot => {
-			return {utorId: slot.utorId, note: slot.note}
+			return {identity: slot.identity, note: slot.note}
 		});
 	}
 	
-	handleSlotConfirm = (i) => () => {
-		let updatedSlot = this.props.api.getSlot(this.props.blockId, i);
-		if (!this.slotsEqual(this.prevSlots[i], updatedSlot)) {
-			// Slot has changed since last update from server
-			if (this.props.api.user.role === "student") {
-				// TODO: Notify student that this slot has been taken already and abort
-				this.editSlot(i, updatedSlot.utorId, updatedSlot.note);
-			} else {
-				// TODO: Notify instructor that someone has taken this slot and 
-				// ask if they want to overwrite that anyway
-			}
-		} else {
-			if (!this.slotsEqual(this.state.slots[i], updatedSlot)) {
-				// Slot is different from one on server, post new slot
-				this.props.api.postSlot(this.props.blockId, i, this.state.slots[i]);
-			}
-		}
-	}
-	
 	slotsEqual(a, b) {
-		return (a.utorId === b.utorId && a.note === b.note);
+		return (a.identity === b.identity && a.note === b.note);
 	}
 	
-	handleSlotCancel = (i) => () => {
-		this.editSlot(i, this.prevSlots[i].utorId, this.prevSlots[i].note);
+	updateSlots() {
+		this.setState({enabled: false});
+		this.props.api.getSlots(this.props.blockId)
+		.then((data) => {
+			this.prevSlots = data;
+			this.setState({slots: this.copySlots(this.prevSlots)});
+			this.setState({enabled: true});
+		})
+		.catch((error) => {
+			window.alert(error.message);
+			this.setState({enabled: true});
+		});
+		
 	}
 	
-	handleEmpty = () => {
-		// Ensure slots match server's
-		this.handleUpdate();
-		if (this.props.api.user.role === "student") {
-			// Student clears only their own
-			for (let i = 0; i < this.state.slots.length; i++) {
-				if (this.props.api.user.utorId === this.state.slots[i].utorId) {
-					this.editSlot(i, "", "");
-					this.props.api.postSlot(this.props.blockId, i, this.state.slots[i]);
-				}
-			}
-		} else {
-			// Instructor clears all
-			let newSlots = this.state.slots.map((slot, i) => {
-				return {utorId: "", note: ""}
-			});
-			this.setState({slots: newSlots});
-			this.props.api.postSlots(this.props.blockId, this.state.slots);
-		}
-	}
-	
-	handleUpdate() {
-		this.prevSlots = this.props.api.getSlots(this.props.blockId);
-		this.setState({slots: this.copySlots(this.prevSlots)});
-	}
-	
-	handleUndo() {
-		this.setState({slots: this.copySlots(this.prevSlots)});
-	}
-
-	validate(input) {
-		return true;
-	}
-	
-	renderUtorId(i) {
-		if (this.props.api.user.role === "student") {
+	renderIdentity(i) {
+		if (this.props.role === "student") {
 			let name;
-			if (this.props.api.user.utorId === this.state.slots[i].utorId) {
+			if (this.props.id === this.state.slots[i].identity) {
 				// Student owns slot
-				name = this.props.api.user.utorId;
+				name = this.props.id;
 			} else {
-				if (this.state.slots[i].utorId === "") {
+				if (this.state.slots[i].identity === "") {
 					// Slot is available
 					name = "Available";
 				} else {
@@ -128,26 +171,26 @@ export default class SlotContainer extends React.Component {
 					name = "Not Available";
 				}
 			}
-			return <div id={`utorId${i}`}>{name}</div>;
+			return <div id={`identity${i}`}>{name}</div>;
 		} else {
 			return (
 				<input
 					className="text-input"
-					name={`utorId${i}`}
-					id={`utorId${i}`}
+					name={`identity${i}`}
+					id={`identity${i}`}
 					type="text"
-					value={this.state.slots[i].utorId}
+					value={this.state.slots[i].identity}
 					placeholder="Unassigned UtorID..."
 					maxLength={50}
-					onChange={this.handleUtorIdChange(i)}
+					onChange={this.handleIdentityChange(i)}
 				/>
 			);
 		}
 	}
 	
 	renderNote(i) {
-		if (this.props.api.user.role !== "student" || 
-				this.props.api.user.utorId === this.state.slots[i].utorId) {
+		if (this.props.role !== "student" || 
+				this.props.id === this.state.slots[i].identity) {
 			// Note editable by instructor or student author
 			return (
 				<input
@@ -175,13 +218,13 @@ export default class SlotContainer extends React.Component {
 					id={`slot${i}`}
 					key={i}
 					// Only students can click to assign a free slot to themselves
-					onClick={this.props.api.user.role === "student" ? this.handleSlotClick(i) : () => {return false}}
+					onClick={this.props.role === "student" ? this.handleSlotClick(i) : () => {return false}}
 				>
 					<button id={`confirm${i}`} onClick={this.handleSlotConfirm(i)}>✎</button>
 					<button id={`cancel${i}`} onClick={this.handleSlotCancel(i)}>❌</button>
 					{moment(this.props.startTime + this.props.slotDuration * i).format("h:mmA - ")}
 					{moment(this.props.startTime + this.props.slotDuration * (i + 1)).format("h:mmA")}
-					{this.renderUtorId(i)}
+					{this.renderIdentity(i)}
 					{this.renderNote(i)}
 				</div>
 			)
@@ -193,7 +236,7 @@ export default class SlotContainer extends React.Component {
 			<div className="slot-container">
 				{this.renderSlots()}
 				<button id="empty-button" onClick={this.handleEmpty}>
-					{this.props.api.user.role === "student" ? (
+					{this.props.role === "student" ? (
 						"Empty My Slots"
 					):(
 						"Empty All Slots"
