@@ -1,5 +1,7 @@
 FROM ubuntu:xenial
 
+LABEL MAINTAINER_NAME="Grant Wong" MAINTAINER_EMAIL="grant.hj.wong@gmail.com"
+
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
 RUN groupadd -r mongodb && useradd -r -g mongodb mongodb
 
@@ -68,9 +70,10 @@ ENV MONGO_VERSION 4.0.3
 
 # For now we'll be using a local development database on port 27017.
 ENV MONGO_IP=127.0.0.1
-ENV MONGO_PORT=27017
+ENV MONGO_INIT_PORT=27018
+ENV MONGO_SERVICE_PORT=27017
 ENV MONGO_DBNAME=DevDB
-ENV MONGO_URI=mongodb://${MONGO_IP}:${MONGO_PORT}/${MONGO_DBNAME}
+ENV MONGO_CONTAINER_NAME=mongodb
 
 RUN echo "deb http://$MONGO_REPO/apt/ubuntu xenial/${MONGO_PACKAGE%-unstable}/$MONGO_MAJOR multiverse" | tee "/etc/apt/sources.list.d/${MONGO_PACKAGE%-unstable}.list"
 
@@ -92,6 +95,7 @@ VOLUME /data/db /data/configdb
 
 RUN mkdir -p /docker-entrypoint-initdb.d
 
+
 # Shove all the setup scripts into the container.
 COPY docker-scripts/docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
@@ -99,6 +103,6 @@ ADD validators /docker-entrypoint-initdb.d/
 ADD mongo-scripts/create_db_dev.js /docker-entrypoint-initdb.d/
 RUN chmod +x /docker-entrypoint-initdb.d/create_db_dev.js
 
-EXPOSE ${MONGO_PORT}
+EXPOSE ${MONGO_SERVICE_PORT}
 
 ENTRYPOINT ["docker-entrypoint.sh"]
