@@ -1,4 +1,4 @@
-{
+const blocksValidator = {
     "title": "Block structure where each block belongs to a course.",
     "bsonType": "object",
     "required": [
@@ -69,4 +69,4 @@
             }
         }
     }
-}
+};

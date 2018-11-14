@@ -1,4 +1,4 @@
-{
+const tokensValidator = {
     "title": "utorId and token association.",
     "bsonType": "object",
     "required": [
@@ -27,4 +27,4 @@
             "title": "The expiration datetime for this token."
         }
     }
-}
+};
