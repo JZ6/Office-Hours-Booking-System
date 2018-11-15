@@ -1,4 +1,4 @@
-import storage from "../storage";
+// import storage from "./storage";
 
 const APIFunctions = {
 
@@ -24,11 +24,12 @@ const APIFunctions = {
     },
 
     login: creditials => {
+        // save token to local or session storage
         // return APIFunctions.makeAPICall("Get", creditials);
     },
 
     getSchedule: token => {
-
+        // save to storage.
         // return APIFunctions.makeAPICall("Get", parameters);
     },
 
