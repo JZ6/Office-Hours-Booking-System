@@ -2,6 +2,8 @@ import React, {
     createElement as h
 } from "react"
 
+import api from './common/api'
+
 import "../styles/LoginView.css";
 import '../styles/common.css'
 
@@ -34,6 +36,8 @@ export default class LoginView extends React.Component {
         return new Promise((resolve, reject) => {
             setTimeout(() => resolve(), 1000);
         })
+
+        // api.login();
     }
 
     getLoadingAnimation() {
