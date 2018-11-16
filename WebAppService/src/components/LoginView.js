@@ -82,7 +82,7 @@ export default class LoginView extends React.Component {
     render() {
         return (this.state.display !== 'none') ?
             h("div", { id: "loginView" },
-                h("p", { id: "loginText" }, 'Login as'),
+                h("p", { id: "loginText", className: 'lightText' }, 'Login as'),
                 this.getLoginButtons(),
                 this.getLoadingAnimation()
             ) : null
