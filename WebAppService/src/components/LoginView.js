@@ -59,12 +59,30 @@ export default class LoginView extends React.Component {
             ]) : null
     }
 
+    // Old login fields with username and password.
+    getLoginInput() {
+        return !this.state.loading ? [
+            h("input", { className: 'inputField', type: "text", placeholder: "Name", name: "loginName" }),
+            h("input", { className: 'inputField', type: "text", placeholder: "Password", name: "loginPass" }),
+            h("button", { className: "loginButton", onClick: () => this.tryToLogin() }, 'Login')
+        ] : null
+    }
+
+    getLoginButtons() {
+        return !this.state.loading ?
+            h("div", {},
+                [
+                    h("button", { id: "studentLoginButton", className: 'loginButton', onClick: () => this.tryToLogin() }, 'Student'),
+                    h("button", { id: "instructorLoginButton", className: 'loginButton', onClick: () => this.tryToLogin() }, 'Instructor')
+                ]
+            )
+            : null
+    }
+
     render() {
         return (this.state.display !== 'none') ?
             h("div", { id: "loginView" },
-                !this.state.loading ? h("input", { className: 'inputField', type: "text", placeholder: "Name", name: "loginName" }) : null,
-                !this.state.loading ? h("input", { className: 'inputField', type: "text", placeholder: "Password", name: "loginPass" }) : null,
-                !this.state.loading ? h("button", { id: "loginButton", onClick: () => this.tryToLogin() }, 'Login'): null,
+                this.getLoginButtons(),
                 this.getLoadingAnimation()
             ) : null
     }

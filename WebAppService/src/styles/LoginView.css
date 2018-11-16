@@ -16,13 +16,14 @@
     margin: 0.5em;
 }
 
-#loginButton {
+.loginButton {
     margin: 1em;
-    background-color: royalblue;
+    background-color: lightblue;
     border-radius: 36px;
-    padding: 1em 2em
+    border-color: #11ccee;
+    padding: 1em 2em;
 }
 
-#loginButton:hover {
+.loginButton:hover {
     box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.6), 0 17px 50px 0 rgba(0, 0, 0, 0.6);
 }
