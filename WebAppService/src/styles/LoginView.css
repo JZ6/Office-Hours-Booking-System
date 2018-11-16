@@ -11,7 +11,11 @@
     margin: 0;
     padding: 0;
 }
-
+#loginText{
+    font-size: 1.8em;
+    color: whitesmoke;
+	text-shadow: 0 0 3px lightblue;
+}
 .inputField {
     margin: 0.5em;
 }
@@ -21,6 +25,7 @@
     background-color: lightblue;
     border-radius: 36px;
     border-color: #11ccee;
+    text-shadow: 0 0 3px #11ccee;
     padding: 1em 2em;
 }
 
