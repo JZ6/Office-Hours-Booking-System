@@ -33,12 +33,15 @@ export default class LoginView extends React.Component {
                     }
                 )
 
+                //Add token to session storage
+                // sessionStorage.setItem('token', 0);
+
                 this.setState({
                     display: 'none',
                     loading: false
                 })
 
-                console.log(storage);
+                // console.log(storage);
             })
                 .catch(error => console.log(error))
         }
@@ -57,7 +60,8 @@ export default class LoginView extends React.Component {
             className: "login-LoadingOverlay",
         }, [
                 h("div", {
-                    className: "login-loader"
+                    className: "login-loader",
+                    key: 'loginLoaderContainer'
                 }, [
                         h("div", { key: 'LoadingOverlay0' }),
                         h("div", { key: 'LoadingOverlay1' }),
@@ -74,9 +78,26 @@ export default class LoginView extends React.Component {
     // Old login fields with username and password.
     getLoginInput() {
         return !this.state.loading ? [
-            h("input", { className: 'inputField', type: "text", placeholder: "Name", name: "loginName" }),
-            h("input", { className: 'inputField', type: "text", placeholder: "Password", name: "loginPass" }),
-            h("button", { className: "loginButton", onClick: () => this.tryToLogin() }, 'Login')
+
+            h("input", {
+                placeholder: "Name",
+                className: 'inputField',
+                type: "text",
+                name: "loginName"
+            }),
+
+            h("input", {
+                placeholder: "Password",
+                className: 'inputField',
+                type: "text",
+                name: "loginPass"
+            }),
+
+            h("button", {
+                className: "loginButton",
+                onClick: () => this.tryToLogin()
+            }, 'Login')
+
         ] : null
     }
 
@@ -84,8 +105,19 @@ export default class LoginView extends React.Component {
         return !this.state.loading ?
             h("div", { id: 'loginButtonsContainer' },
                 [
-                    h("button", { id: "studentLoginButton", className: 'loginButton', onClick: () => this.tryToLogin(0),key: 'loginButton0' }, 'Student'),
-                    h("button", { id: "instructorLoginButton", className: 'loginButton', onClick: () => this.tryToLogin(1),key: 'loginButton1' }, 'Instructor')
+                    h("button", {
+                        id: "studentLoginButton",
+                        key: 'loginButton0',
+                        className: 'loginButton',
+                        onClick: () => this.tryToLogin(0),
+                    }, 'Student'),
+
+                    h("button", {
+                        id: "instructorLoginButton",
+                        key: 'loginButton1',
+                        className: 'loginButton',
+                        onClick: () => this.tryToLogin(1),
+                    }, 'Instructor')
                 ]
             )
             : null
@@ -93,10 +125,17 @@ export default class LoginView extends React.Component {
 
     render() {
         return (this.state.display !== 'none') ?
-            h("div", { id: "loginView" },
-                h("p", { id: "loginText", className: 'lightText' }, 'Login as'),
+            h("div", {
+                id: "loginView"
+            },
+                h("p", {
+                    id: "loginText",
+                    className: 'lightText'
+                }, 'Login as'),
+
                 this.getLoginButtons(),
                 this.getLoadingAnimation()
+
             ) : null
     }
 }
