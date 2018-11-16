@@ -3,6 +3,7 @@ import React, {
 } from "react"
 
 // import api from './common/api'
+import storage from './common/storage'
 
 import "../styles/LoginView.css";
 import '../styles/common.css'
@@ -13,7 +14,7 @@ export default class LoginView extends React.Component {
         loading: false
     };
 
-    tryToLogin() {
+    tryToLogin(permissions) {
 
         // Show loading animation
         this.setState({
@@ -23,10 +24,21 @@ export default class LoginView extends React.Component {
         const authPromise = this.authenticate(1, 2)
         if (authPromise) {
             authPromise.then(result => {
+
+                //Store current info to storage.
+                Object.assign(storage,
+                    {
+                        currentUserType: permissions,
+                        loggedIn: true
+                    }
+                )
+
                 this.setState({
                     display: 'none',
                     loading: false
                 })
+
+                console.log(storage);
             })
                 .catch(error => console.log(error))
         }
@@ -47,14 +59,14 @@ export default class LoginView extends React.Component {
                 h("div", {
                     className: "login-loader"
                 }, [
-                        h("div", {}),
-                        h("div", {}),
-                        h("div", {}),
-                        h("div", {}),
-                        h("div", {}),
-                        h("div", {}),
-                        h("div", {}),
-                        h("div", {})
+                        h("div", { key: 'LoadingOverlay0' }),
+                        h("div", { key: 'LoadingOverlay1' }),
+                        h("div", { key: 'LoadingOverlay2' }),
+                        h("div", { key: 'LoadingOverlay3' }),
+                        h("div", { key: 'LoadingOverlay4' }),
+                        h("div", { key: 'LoadingOverlay5' }),
+                        h("div", { key: 'LoadingOverlay6' }),
+                        h("div", { key: 'LoadingOverlay7' })
                     ])
             ]) : null
     }
@@ -70,10 +82,10 @@ export default class LoginView extends React.Component {
 
     getLoginButtons() {
         return !this.state.loading ?
-            h("div", {},
+            h("div", { id: 'loginButtonsContainer' },
                 [
-                    h("button", { id: "studentLoginButton", className: 'loginButton', onClick: () => this.tryToLogin() }, 'Student'),
-                    h("button", { id: "instructorLoginButton", className: 'loginButton', onClick: () => this.tryToLogin() }, 'Instructor')
+                    h("button", { id: "studentLoginButton", className: 'loginButton', onClick: () => this.tryToLogin(0),key: 'loginButton0' }, 'Student'),
+                    h("button", { id: "instructorLoginButton", className: 'loginButton', onClick: () => this.tryToLogin(1),key: 'loginButton1' }, 'Instructor')
                 ]
             )
             : null

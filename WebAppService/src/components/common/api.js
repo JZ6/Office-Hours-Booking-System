@@ -1,4 +1,4 @@
-// import storage from "./storage";
+import storage from "./storage";
 
 const APIFunctions = {
 
@@ -18,9 +18,13 @@ const APIFunctions = {
     // },
 
     makeAPICall: (call, parameters) => {
-        return new Promise((resolve, reject) => {
-            //TODO
-        })
+        if(storage.loggedIn){
+            return new Promise((resolve, reject) => {
+                //TODO
+            })
+        }else{
+            console.log('Not logged in!')
+        }
     },
 
     login: creditials => {
