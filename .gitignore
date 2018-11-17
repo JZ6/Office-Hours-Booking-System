@@ -7,6 +7,7 @@ WebAppService/package.json
 # IDE & editor config folders
 .vscode
 .idea
+*.code-workspace
 
 # Python
 __pycache__

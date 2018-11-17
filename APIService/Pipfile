@@ -8,6 +8,7 @@ flask = "*"
 flask-restful = "*"
 flask-pymongo = "*"
 dnspython = "*"
+requests = "*"
 
 [dev-packages]
 pytest = "*"

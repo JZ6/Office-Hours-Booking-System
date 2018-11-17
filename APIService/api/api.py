@@ -1,13 +1,10 @@
-from flask import Flask
 from flask_restful import Api
-from flask_pymongo import PyMongo
 
+from .app import app
 from api.identity import Identity
+from api.auth import Auth
 
-app = Flask(__name__)
 api = Api(app)
 
-app.config.from_pyfile('app_config.cfg')
-mongo = PyMongo(app)
-
 api.add_resource(Identity, '/identity/<string:id>')
+api.add_resource(Auth, '/auth', '/auth/<string:id>')
