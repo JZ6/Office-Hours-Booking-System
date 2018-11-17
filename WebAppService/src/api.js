@@ -3,7 +3,7 @@ export default class Api {
 		this.url = url;
 		this.sessionToken;
 	}
-	
+
 	login(username, password) {
 		// Special call bypassing sessionToken.
 		let fetchData = {
@@ -16,10 +16,13 @@ export default class Api {
 		let promise = fetch(`${this.url}/auth`, fetchData);
 		promise.then((response) => {
 			this.sessionToken = response.json().sessionToken;
+			if (typeof (Storage) !== "undefined") {
+				sessionStorage.setItem('sessionToken', this.sessionToken);
+			}
 		});
 		return promise;
 	}
-	
+
 	getIdentity(id) {
 		return this.__call("GET", `/identity/${id}`);
 	}
@@ -37,7 +40,7 @@ export default class Api {
 	deleteIdentity(id) {
 		return this.__call("DELETE", `/identity/${id}`);
 	}
-	
+
 	getCourse(courseCode) {
 		return this.__call("GET", `/course/${courseCode}`);
 	}
@@ -52,7 +55,7 @@ export default class Api {
 	deleteCourse(courseCode) {
 		return this.__call("DELETE", `/course/${courseCode}`);
 	}
-	
+
 	getBlockIds(startDate, endDate) {
 		return this.__call("GET", `/blocks?from=${startDate}&to=${endDate}`);
 	}
@@ -60,9 +63,9 @@ export default class Api {
 	getBlock(blockId) {
 		return this.__call("GET", `/blocks/${blockId}`);
 	}
-	
+
 	postBlock(block) {
-		let body = {
+		const body = {
 			blockId: block.blockId,  // if adding, use empty string ""
 			owners: block.owners,
 			courseCodes: block.courseCodes,
@@ -73,13 +76,13 @@ export default class Api {
 		};
 		return this.__call("POST", "/blocks", body);
 	}
-	
+
 	deleteBlock(blockId) {
 		return this.__call("DELETE", `/blocks/${blockId}`);
 	}
-	
+
 	editSlot(blockId, slotId, slot) {
-		let body = {
+		const body = {
 			startTime: slotId,
 			identity: slot.identity,
 			note: slot.note
@@ -93,20 +96,20 @@ export default class Api {
 		}
 		return this.__call("POST", `/blocks/${blockId}`, body);
 	}
-	
+
 	__call(method, path, body) {
-		
+
 		if (!this.sessionToken) {
 			throw new Error("Please login first.");
 		}
-		
+
 		let fetchData;
 		let headers = new Headers({
 			Accept: "application/json",
 		});
-		
+
 		headers.append("Authorization", `Bearer ${this.sessionToken}`);
-		
+
 		if (body) {
 			headers.append("Content-Type", "application/json");
 			fetchData = {
