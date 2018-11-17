@@ -63,13 +63,13 @@ export default class Api {
 	
 	postBlock(block) {
 		let body = {
-			blockId: block.blockId,  // Leave undefined if adding (will be ignored)
+			blockId: block.blockId,  // if adding, use empty string ""
 			owners: block.owners,
 			courseCodes: block.courseCodes,
 			comment: block.comment,
 			startTime: block.startTime,
 			appointmentDuration: block.appointmentDuration,
-			appointmentSlots: block.appointmentSlots  // Leave undefined to not edit
+			appointmentSlots: block.appointmentSlots
 		};
 		return this.__call("POST", "/blocks", body);
 	}
