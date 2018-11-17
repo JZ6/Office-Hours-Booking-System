@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Api from "../api";
-import {UnauthorizedError} from "../error";
+import Api from "../components/common/api";
+import {UnauthorizedError} from '../components/common/error';
 
 let api;
 
