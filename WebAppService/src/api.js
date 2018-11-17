@@ -27,7 +27,7 @@ export default class Api {
 		return this.__call("GET", `/identity/${id}`);
 	}
 	postIdentity(identity) {
-		let body = {
+		const body = {
 			id: identity.id,
 			studentNumber: identity.studentNumber,
 			firstName: identity.firstName,
@@ -45,7 +45,7 @@ export default class Api {
 		return this.__call("GET", `/course/${courseCode}`);
 	}
 	postCourse(courseCode, course) {
-		let body = {
+		const body = {
 			instructors: course.instructors,
 			tas: course.tas,
 			students: course.students
@@ -91,7 +91,7 @@ export default class Api {
 	}
 	// Edit slots en masse without editing block
 	editSlots(blockId, slots) {
-		let body = {
+		const body = {
 			appointmentSlots: slots.appointmentSlots
 		}
 		return this.__call("POST", `/blocks/${blockId}`, body);
