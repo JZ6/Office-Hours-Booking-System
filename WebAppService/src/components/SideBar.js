@@ -8,7 +8,7 @@ export default class Sidebar extends React.Component {
 	};
 	
 	handleClick() {
-		if (this.state.width == 0) {
+		if (this.state.width === 0) {
 			this.setState({width: 15});
 		} else {
 			this.setState({width: 0});

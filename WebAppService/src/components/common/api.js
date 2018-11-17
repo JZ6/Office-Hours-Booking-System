@@ -1,7 +1,7 @@
 export default class Api {
 	constructor(url) {
 		this.url = url;
-		this.sessionToken;
+		this.sessionToken = null;
 	}
 
 	login(username, password) {
