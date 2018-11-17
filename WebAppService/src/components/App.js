@@ -16,7 +16,7 @@ const {
   SideBar
 } = components
 
-console.log(LoginView)
+// console.log(LoginView)
 
 Calendar.setLocalizer(Calendar.momentLocalizer(moment));
 
