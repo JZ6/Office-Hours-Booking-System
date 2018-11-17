@@ -2,6 +2,8 @@ import React, {
     createElement as h
 } from "react"
 
+// import api from './common/api'
+
 import "../styles/LoginView.css";
 import '../styles/common.css'
 
@@ -34,6 +36,8 @@ export default class LoginView extends React.Component {
         return new Promise((resolve, reject) => {
             setTimeout(() => resolve(), 1000);
         })
+
+        // api.login();
     }
 
     getLoadingAnimation() {
@@ -56,7 +60,7 @@ export default class LoginView extends React.Component {
     }
 
     render() {
-        return (this.state.display != 'none') ?
+        return (this.state.display !== 'none') ?
             h("div", { id: "loginView" },
                 !this.state.loading ? h("input", { className: 'inputField', type: "text", placeholder: "Name", name: "loginName" }) : null,
                 !this.state.loading ? h("input", { className: 'inputField', type: "text", placeholder: "Password", name: "loginPass" }) : null,
