@@ -4,7 +4,7 @@ export default class Api {
 		this.sessionToken;
 	}
 	
-	initSessionToken(username, password) {
+	login(username, password) {
 		// Special call bypassing sessionToken.
 		let fetchData = {
 			headers: new Headers({
@@ -20,28 +20,44 @@ export default class Api {
 		return promise;
 	}
 	
-	getIdentity(identity) {
-		return this.__call("GET", `/identity/${identity}`);
+	getIdentity(id) {
+		return this.__call("GET", `/identity/${id}`);
+	}
+	addIdentity(identity) {
+		let body = {
+			id: identity.id,
+			studentNumber: identity.studentNumber,
+			firstName: identity.firstName,
+			lastName: identity.lastName,
+			role: identity.role,
+			courses: identity.courses
+		};
+		return this.__call("POST", "/identity", body);
 	}
 	
 	getBlockIds(startDate, endDate) {
-		return this.__call("GET", `/block?from=${startDate}&to={endDate}`);
+		return this.__call("GET", `/blocks?from=${startDate}&to=${endDate}`);
 	}
+	// Also use for getting slots en masse
 	getBlock(blockId) {
 		return this.__call("GET", `/blocks/${blockId}`);
 	}
 	addBlock(block) {
 		let body = {
+			// Leave blockId undefined
 			owners: block.owners,
 			courseCodes: block.courseCodes,
 			comment: block.comment,
 			startTime: block.startTime,
-			appointmentDuration: block.appointmentDuration
+			appointmentDuration: block.appointmentDuration,
+			appointmentSlots: block.appointmentSlots
 		};
-		return this.__call("POST", "/block", body);
+		return this.__call("POST", "/blocks", body);
 	}
+	// See editSlots for editing slots en masse
 	editBlock(blockId, block) {
 		let body = {
+			// Don't edit blockId
 			owners: block.owners,
 			courseCodes: block.courseCodes,
 			comment: block.comment,
@@ -54,9 +70,6 @@ export default class Api {
 		return this.__call("DELETE", `/blocks/${blockId}`);
 	}
 	
-	getSlots(blockId) {
-		return this.__call("GET", `/blocks/${blockId}`).block.appointmentSlots;
-	}
 	editSlot(blockId, slotId, slot) {
 		let body = {
 			startTime: slotId,
@@ -64,6 +77,13 @@ export default class Api {
 			note: slot.note
 		}
 		return this.__call("POST", `/blocks/${blockId}/booking`, body);
+	}
+	// Edit slots en masse without editing block
+	editSlots(blockId, slots) {
+		let body = {
+			appointmentSlots: slots.appointmentSlots
+		}
+		return this.__call("POST", `/blocks/${blockId}`, body);
 	}
 	
 	__call(method, path, body) {
@@ -74,7 +94,7 @@ export default class Api {
 		
 		let fetchData;
 		let headers = new Headers({
-			"Accept": "application/json",
+			Accept: "application/json",
 		});
 		
 		headers.append("Authorization", `Bearer ${this.sessionToken}`);
