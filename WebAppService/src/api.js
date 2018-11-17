@@ -23,7 +23,7 @@ export default class Api {
 	getIdentity(id) {
 		return this.__call("GET", `/identity/${id}`);
 	}
-	addIdentity(identity) {
+	postIdentity(identity) {
 		let body = {
 			id: identity.id,
 			studentNumber: identity.studentNumber,
@@ -34,6 +34,24 @@ export default class Api {
 		};
 		return this.__call("POST", "/identity", body);
 	}
+	deleteIdentity(id) {
+		return this.__call("DELETE", `/identity/${id}`);
+	}
+	
+	getCourse(courseCode) {
+		return this.__call("GET", `/course/${courseCode}`);
+	}
+	postCourse(courseCode, course) {
+		let body = {
+			instructors: course.instructors,
+			tas: course.tas,
+			students: course.students
+		};
+		return this.__call("POST", `/course/${courseCode}`, body);
+	}
+	deleteCourse(courseCode) {
+		return this.__call("DELETE", `/course/${courseCode}`);
+	}
 	
 	getBlockIds(startDate, endDate) {
 		return this.__call("GET", `/blocks?from=${startDate}&to=${endDate}`);
@@ -42,30 +60,20 @@ export default class Api {
 	getBlock(blockId) {
 		return this.__call("GET", `/blocks/${blockId}`);
 	}
-	addBlock(block) {
+	
+	postBlock(block) {
 		let body = {
-			// Leave blockId undefined
+			blockId: block.blockId,  // Leave undefined if adding (will be ignored)
 			owners: block.owners,
 			courseCodes: block.courseCodes,
 			comment: block.comment,
 			startTime: block.startTime,
 			appointmentDuration: block.appointmentDuration,
-			appointmentSlots: block.appointmentSlots
+			appointmentSlots: block.appointmentSlots  // Leave undefined to not edit
 		};
 		return this.__call("POST", "/blocks", body);
 	}
-	// See editSlots for editing slots en masse
-	editBlock(blockId, block) {
-		let body = {
-			// Don't edit blockId
-			owners: block.owners,
-			courseCodes: block.courseCodes,
-			comment: block.comment,
-			startTime: block.startTime,
-			appointmentDuration: block.appointmentDuration
-		};
-		return this.__call("POST", `/blocks/${blockId}`, body);
-	}
+	
 	deleteBlock(blockId) {
 		return this.__call("DELETE", `/blocks/${blockId}`);
 	}
