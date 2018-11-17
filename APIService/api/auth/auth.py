@@ -1,7 +1,7 @@
 from hashlib import sha256
 from datetime import datetime
 
-from flask_restful import Resource, ResponseBase
+from flask_restful import Resource
 from flask import request
 
 from api import mongo
@@ -16,7 +16,7 @@ def deny_authorization(reason=None):
 
 class Auth(Resource):
     # TODO: log request
-    def get(self, id):
+    def get(self):
         # TODO: implement real auth
         if request.authorization is None:
             return deny_authorization("No credentials provided")
@@ -24,9 +24,9 @@ class Auth(Resource):
         username = request.authorization.username
         if not self.check_password(username, password):
             return deny_authorization("Invalid credentials")
-        token = self.generate_token(id)
-        # TODO: save id/token/expiry
-        return {'id': id, 'auth-token': token}
+        token = self.generate_token(username)
+        # TODO: save hashed token w/ id, permissions, expiry
+        return {'id': username, 'token': token}, 200
 
     @staticmethod
     def generate_token(id):
@@ -39,10 +39,12 @@ class Auth(Resource):
     def check_password(username, password):
         # TODO: actually check tho
         return True
-
-
-class Token(Resource):
-    # TODO: log request
+    
     def delete(self, id):
-        # TODO: delete id/token/expiry
+        # TODO: delete all tokens for id
         return {'status': "success"}
+
+
+def authenticate(token):
+    # Verify token
+    return {'identity': {'id': 'identityX'}}
