@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Calendar from "react-big-calendar";
 import moment from "moment";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
+import Api from "../api";
 
 import '../styles/App.css'
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
@@ -22,20 +23,25 @@ Calendar.setLocalizer(Calendar.momentLocalizer(moment));
 const DnDCalendar = withDragAndDrop(Calendar);
 
 class App extends Component {
-  state = {
-    events: [
-      {
-        start: new Date(),
-        end: new Date(moment().add(1, "days")),
-        title: "Test Event"
-      },
-      {
-        start: new Date(moment().add(1, "days")),
-        end: new Date(moment().add(2, "days")),
-        title: "Test Event"
-      },
-    ]
-  };
+	constructor(props) {
+		super(props);
+		this.state = {
+			events: [
+				{
+					start: new Date(),
+					end: new Date(moment().add(1, "days")),
+					title: "Test Event"
+				},
+				{
+					start: new Date(moment().add(1, "days")),
+					end: new Date(moment().add(2, "days")),
+					title: "Test Event"
+				},
+			]
+		};
+		this.api = new Api("localhost/");
+	}
+  
 
   onEventResize = (type, { event, start, end, allDay }) => {
     this.setState(state => {
@@ -56,7 +62,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <LoginView />
+        <LoginView api={this.api}/>
         <div className="App-container">
           <DnDCalendar
             defaultDate={new Date()}

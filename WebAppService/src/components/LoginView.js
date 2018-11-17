@@ -35,6 +35,7 @@ export default class LoginView extends React.Component {
     authenticate(username, password) {
         return new Promise((resolve, reject) => {
             setTimeout(() => resolve(), 1000);
+						this.props.api.call("auth", "POST");
         })
 
         // api.login();
