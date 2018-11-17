@@ -1,4 +1,14 @@
 
+.lightText{
+    color: whitesmoke;
+	text-shadow: 0 0 3px lightblue;
+}
+
+.darkText{
+    color: darkslategray;
+	text-shadow: 0 0 3px #11ccee;
+}
+
 .login-LoadingOverlay {
     margin: auto;
     width: 100%;
