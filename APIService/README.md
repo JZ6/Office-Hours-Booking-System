@@ -33,14 +33,22 @@ Service runs on `http://localhost:5000`
 
 ## Build/Run With Docker
 
-Install Docker. In this directory, execute command:
+Install Docker. If running linux, you'll need to install docker-compose separately as well.
 
+To build container(s) with your changes, run (in this directory):
 ```
-docker build -t api-service:dev --rm .
+docker-compose build
 ```
 
-### Run Docker Container
+And to start the service,
 ```
-docker run -p 5000:5000 --name=api-service api-service:dev
+docker-compose up
 ```
-Application will be available at `http://localhost:5000`
+
+Application will be available at `http://localhost:5001`
+
+### Data Volume
+On the first run, a docker volume `mongo` will be created. If you wish to clear the data and start fresh, run command:
+```
+docker volume rm mongo
+```
