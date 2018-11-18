@@ -1,5 +1,5 @@
 node {
-   def version = env.VERSION.replace('origin/', '')
+   def version = env.VERSION.replace('origin/', '').toLowerCase().replace('/', '-')
    stage('Preparation') { // for display purposes
       // Get some code from a GitHub repository
       git branch: 'iss-43-45-DockerizeDBService-DockerComposeAPI/DB',
@@ -7,8 +7,8 @@ node {
           url: 'https://github.com/csc302-fall-2018/proj-koolaid'
    }
    stage('Build') {
-     def image_name = mongodb_dev
-      dir("VerifyCDFService") {
+     def image_name = 'mongodb_dev'
+      dir('DBService') {
          try {
             sh "docker build . -t ${image_name}:${version}"
             slackSend channel: '#jenkins',
@@ -30,7 +30,7 @@ node {
       echo 'This build cannot continue'
    } else {
       stage('Deploy') {
-        sh "docker service update koolaid_verification --image ${image_name}:${version} --force"
+        sh "docker service update koolaid_${image_name} --image ${image_name}:${version} --force"
          slackSend channel: '#jenkins',
                    color: 'good',
                    message: "`${image_name}:${version}` deployed successfully",
