@@ -60,23 +60,28 @@ export default class SlotContainer extends React.Component {
 	
 	handleSlotConfirm = (i) => () => {
 		if (this.state.enabled) {
-			if (!this.slotsEqual(this.state.slots[i], updatedSlot)) {
-				this.setState({enabled: false});
-				this.props.api.editSlot(this.props.blockId, i, this.state.slots[i])
-				.then((response) => {
-					this.setState({enabled: true});
-				})
-				.catch((error) => {
-					window.alert(error.message);
-					this.setState({enabled: true});
-				});
-			}
+			this.setState({enabled: false});
+			this.props.api.editSlot(this.props.blockId, i, this.state.slots[i])
+			.then((response) => {
+				if (response.status === 200) {
+					this.updateSlot(i);
+				} else {
+					window.alert(response.status, response.statusText);
+					this.updateSlot(i);
+				}
+				
+			})
+			.catch((error) => {
+				window.alert(error.message);
+				this.setState({enabled: true});
+			});
 		}
 	}
 	
 	handleSlotCancel = (i) => () => {
 		if (this.state.enabled) {
 			this.editSlot(i, this.prevSlots[i].identity, this.prevSlots[i].note);
+			this.updateSlot(i);
 		}
 	}
 	
@@ -98,12 +103,14 @@ export default class SlotContainer extends React.Component {
 					promises.push(this.props.api.editSlot(this.props.blockId, i, {identity: "", note: ""}));
 				}
 			}
-			
 			Promise.all(promises)
 			.then(([response]) => {
-				// Update slots to match server's emptied slots (or not, if failed)
-				this.updateSlots();
-				this.setState({enabled: true});
+				if (response.status === 200) {
+					this.updateSlots();
+				} else {
+					window.alert(response.status, response.statusText);
+					this.updateSlots();
+				}
 			})
 			.catch((error) => {
 				window.alert(error.message);
@@ -144,16 +151,53 @@ export default class SlotContainer extends React.Component {
 	updateSlots() {
 		this.setState({enabled: false});
 		this.props.api.getSlots(this.props.blockId)
+		.then((response) => {
+			if (response.status === 200) {
+				// Successful, return json promise to next .then
+				return response.json();
+			} else {
+				window.alert(response.status, response.statusText);
+			}
+			this.setState({enabled: true});
+		})
 		.then((data) => {
-			this.prevSlots = data;
-			this.setState({slots: this.copySlots(this.prevSlots)});
+			if (data) {
+				// Extract data from json promise, undefined if failure
+				this.prevSlots = data;
+				this.setState({slots: this.copySlots(this.prevSlots)});
+			}
 			this.setState({enabled: true});
 		})
 		.catch((error) => {
 			window.alert(error.message);
 			this.setState({enabled: true});
 		});
-		
+	}
+	
+	updateSlot(i) {
+		this.setState({enabled: false});
+		this.props.api.getSlots(this.props.blockId)
+		.then((data) => {
+			if (response.status === 200) {
+				// Successful, return json promise to next .then
+				return response.json();
+			} else {
+				window.alert(response.status, response.statusText);
+			}
+			this.setState({enabled: true});
+		})
+		.then((data) => {
+			if (data) {
+				// Extract data from json promise, undefined if failure
+				this.prevSlots[i] = data[i]
+				this.editSlot(i, prevSlots[i].identity, prevSlots[i].note);
+			}
+			this.setState({enabled: true});
+		})
+		.catch((error) => {
+			window.alert(error.message);
+			this.setState({enabled: true});
+		});
 	}
 	
 	renderIdentity(i) {
