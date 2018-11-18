@@ -264,11 +264,24 @@ export default class SlotContainer extends React.Component {
 		return <span />
 	}
 	
+	getSlotClass(i) {
+		if (this.props.role !== "student") {
+			return "slot";
+		}
+		if (this.state.slots[i].identity === this.props.id) {
+			return "slot--mine";
+		} else if (this.state.slots[i].identity === "") {
+			return "slot";
+		} else {
+			return "slot--taken";
+		}
+	}
+	
 	renderSlots() {
 		return (
 			this.state.slots.map((slot, i) => 
 				<div 
-					className="slot"
+					className={this.getSlotClass(i)}
 					id={`slot${i}`}
 					key={i}
 					// Only students can click to assign a free slot to themselves
