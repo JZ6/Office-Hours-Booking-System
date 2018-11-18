@@ -33,13 +33,14 @@ export default class BlockView extends React.Component {
 
         const target = event.target;
         const name = target.name;
+        var newEvent;
         if(name==='slotDuration'){ //also update the number of slots
             this.setState({numberOfSlots: Math.floor(this.state.blockDuration/target.value)});
         }else if(name === 'startTime'){ 
 
             //change internal representation of the event
             //setHours, setMinutes instantly modifies the event state so no need to this.setState 
-            var newEvent = this.state.event;
+            newEvent = this.state.event;
             newEvent.start.setHours(target.value.substr(0,2));
             newEvent.start.setMinutes(target.value.substr(3,2));
 
@@ -58,7 +59,7 @@ export default class BlockView extends React.Component {
         }else if(name === 'endTime'){ 
             //change internal representation of the event.
             //setHours, setMinutes instantly modifies the event state so no need to this.setState 
-            var newEvent = this.state.event;
+            newEvent = this.state.event;
             newEvent.end.setHours(target.value.substr(0,2));
             newEvent.end.setMinutes(target.value.substr(3,2));
 
@@ -75,7 +76,7 @@ export default class BlockView extends React.Component {
         }else if(name === 'date'){
 
             //change internal representation of the event
-            var newEvent = this.state.event;
+            newEvent = this.state.event;
             newEvent.start.setYear(target.value.substr(0,4));
             newEvent.end.setYear(target.value.substr(0,4));
 
@@ -158,8 +159,8 @@ export default class BlockView extends React.Component {
                         <CourseSelection courses = {this.state.courseList}/>
                     <br />
                     Block Description   
-                    <textarea  name = "blockDescription" onChange={this.handleInputChange} rows="4" cols="50" placeholder="Enter block description...">
-                        {this.state.blockDescription}
+                    <textarea  value =  {this.state.blockDescription} name = "blockDescription" onChange={this.handleInputChange} rows="4" cols="50" placeholder="Enter block description...">
+                       
                     </textarea>
 
                     
@@ -185,7 +186,6 @@ class CourseSelection extends React.Component {
         <label>
           <input
             id = {course}
-            name="isGoing"
             type="checkbox"
             // checked={this.state.selected}
             onChange={this.handleCourseSelection} />
@@ -220,155 +220,16 @@ class CourseSelection extends React.Component {
         }
         console.log(this.state.selectedCourses)
 
-
-
-        var newSelectedCourses=this.state.selectedCourses;
-        //if the course is not already selected, add it to selected courses and update courseCheckBoxes
-
-
         
     }
     render(){
         return(
-            <form>
+            <label>
             {this.state.courseCheckBoxes}
-            </form>
+            </label>
         );
 
     }
 
 }
 
-//FUNCTIONALITY: you can either write comma separated courses or choose them from a drop down list
-//The dropdown list will display courses that match the last course being typed
-class ComplexCourseSelection extends React.Component {
-    //need to implement dynamic creation of courses from props.courses array
-    constructor(props) { //props are either student or instructor. Will render differently depending which is passed
-        super(props);
-        this.state = {
-          selectedCourses: [],
-          stringCourseList: ""
-        };
-
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleCourseSelection = this.handleCourseSelection.bind(this);
-    }
- 
-    //updates both the course input and the selected list of courses    
-    updateSelectedCourses(courseInput){
-        var courseArray =courseInput.split(",");
-        var updatedInput="";
-
-        this.setState({selectedCourses:[]})
-        var newSelectedCourses =[]
-        for (let i = 0; i < courseArray.length; i++) {
-            if(this.props.courses.includes(courseArray[i])&&!newSelectedCourses.includes(courseArray[i])){
-                //update input
-                updatedInput=updatedInput + courseArray[i] + ',';
-                //keep track of courses scanned
-                newSelectedCourses.push(courseArray[i]);
-            }else if((i===courseArray.length-1)){ //dont trim the last course while being inputed
-                updatedInput=updatedInput + courseArray[i];
-                
-            } 
-        }
-        //avoid deleting the course that's currently being edited
-        if(updatedInput.charAt(updatedInput.length-1)===',' && !(courseInput.charAt(courseInput.length-1)===',')){
-            updatedInput=updatedInput.substr(0,updatedInput.length-1);
-        }
-
-
-        this.setState({selectedCourses:newSelectedCourses})
-        this.setState({stringCourseList:updatedInput})
-    }
-
-    //perform relevant actions when course search box receives input
-    handleInputChange(event){
-        //update input text
-        var target = event.target;
-        var fullInput = target.value.toUpperCase();
-
-
-        //creates a filter variable used to only display courses that match that filter
-        //the filter corresponds to the last unfinished course entry
-        var filter = fullInput;
-        if(filter.lastIndexOf(",")!==-1){
-            filter = filter.substr(filter.lastIndexOf(",")+1,filter.length-1);
-        }
-
-        //update courses
-        this.updateSelectedCourses(fullInput);
-
-        
-        //removes courses that don't match the input name from dropdown menu
-        var ul = this.refs.courseList;
-        var li = ul.getElementsByTagName("li");
-        var a, i;
-        
-        for (i = 0; i < li.length; i++) {
-            a = li[i].getElementsByTagName("a")[0];
-            if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                li[i].style.display = "";
-            } else {
-                li[i].style.display = "none";
-            }
-        }
-
-    }
-    dummy(){
-        return false;
-    }
-    
-    //update relevant variables when a course is selected
-    handleCourseSelection(event){
-        var selectedCourses = this.state.selectedCourses;
-        var course = event.target.id;
-        var courseString = this.state.stringCourseList;
-
-        if(selectedCourses.includes(course)){ //if the course is already selected
-            return;
-        }
-
-        //update the string representation of the course state variable
-
-        if(courseString==="" || courseString.charAt(courseString.length-1)===','){
-            courseString=courseString+course + ",";
-
-            
-        } else{ //delete the last course currently being input and replace it by the clicked course
-            if(courseString.indexOf(',')===-1){//first course being input
-                courseString=course+','
-            }else{
-                courseString=courseString.substr(0, courseString.lastIndexOf(',')+1)+course + ',';
-            }
-
-            
-        }
-        this.setState({stringCourseList:courseString});
-        
-        //update the selected courses state variable
-        var updatedCourses = selectedCourses;
-        updatedCourses.push(course);
-        console.log(updatedCourses);
-        this.setState({selectedCourses:updatedCourses})
-        
-    }
-    render(){
-        return (
-            <div>
-                <label>
-        <input type="text" value = {this.state.stringCourseList} onChange={this.handleInputChange} placeholder="Search for courses..."/>
-                </label>
-        <br/>
-        Use commas to separate courses
-            <ul ref="courseList">
-            <li ><a id = "MAT321" onClick={this.handleCourseSelection} href="#">MAT321</a></li>
-            <li ><a id = "CSC302" onClick={this.handleCourseSelection} href="#">CSC302</a></li>
-            <li ><a id = "CSC401" onClick={this.handleCourseSelection} href="#">CSC401</a></li>
-            </ul>
-
-            </div>
-
-        );
-    }
-}
