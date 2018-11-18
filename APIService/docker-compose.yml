@@ -1,0 +1,36 @@
+version: '3'
+services:
+  api:
+    container_name: apiservice
+    build: .
+    image: apiservice
+    ports:
+      - 5001:5000
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_CONTAINER_NAME=mongoservice
+      - MONGO_PORT=27017
+      - MONGO_DBNAME=dev_db
+    networks:
+      - api-network
+  mongodb:
+    container_name: mongoservice
+    image: mongo:xenial
+    volumes:
+      - 'mongo:/data/db'
+      - '${PWD}/mongo_config:/docker-entrypoint-initdb.d'
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_SERVICE_PORT=27017
+      - MONGO_INITDB_DATABASE=dev_db
+      - PWDVAR=${PWD}
+    networks:
+      - api-network
+
+volumes:
+  mongo:
+
+networks:
+  api-network:

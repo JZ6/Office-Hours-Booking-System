@@ -1,7 +1,7 @@
-load("/docker-entrypoint-initdb.d/identity_validator.js");
-load("/docker-entrypoint-initdb.d/courses_validator.js");
-load("/docker-entrypoint-initdb.d/blocks_validator.js");
-load("/docker-entrypoint-initdb.d/tokens_validator.js");
+load("/docker-entrypoint-initdb.d/validators/identity_validator.js");
+load("/docker-entrypoint-initdb.d/validators/courses_validator.js");
+load("/docker-entrypoint-initdb.d/validators/blocks_validator.js");
+load("/docker-entrypoint-initdb.d/validators/tokens_validator.js");
 
 db.createCollection("identities", {
     "validator": identityValidator
