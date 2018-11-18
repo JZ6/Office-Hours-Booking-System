@@ -6,36 +6,99 @@ export default class BlockView extends React.Component {
     constructor(props) { //props are either student or instructor. Will render differently depending which is passed
         super(props);
         this.state = {
-          display: 'none',
-          startTime: 'HH:mm',
-          endTime: 'HH:mm',
-          date: "yyy-MM-dd",
-          numberOfSlots: 12,
-          slotDuration: 5,
-          blockDuration: 60,
-          instructorName: "Bob Ross",
-          courseList: ["CSC302","CSC401","MAT321"],
-          blockDescription: ""
+            event: "", //data that holds the time of the event. The rest of the state variables regarding time are just for display
+            display: 'none',
+            startTime: 'HH:mm',
+            endTime: 'HH:mm',
+            date: "yyyy-MM-dd", //events can only span over 1 day
+            numberOfSlots: 12,
+            slotDuration: 5,
+            blockDuration: 60,
+            instructorName: "Bob Ross",
+            courseList: ["CSC302","CSC401","MAT321"],
+            blockDescription: ""
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
     }
   
-    handleInputChange(event) {
+    updateNumberOfSlots(event){
+        var diffMs=(event.end-event.start);
+        var diffMins = Math.round((diffMs / 1000) / 60);   
+        this.setState({blockDuration:diffMins});
+        this.setState({numberOfSlots: Math.floor(diffMins/this.state.slotDuration)});
+    }
+
+    handleInputChange(event){
 
         const target = event.target;
         const name = target.name;
         if(name==='slotDuration'){ //also update the number of slots
-            this.setState({numberOfSlots: this.state.blockDuration/target.value});
+            this.setState({numberOfSlots: Math.floor(this.state.blockDuration/target.value)});
+        }else if(name === 'startTime'){ 
+
+            //change internal representation of the event
+            //setHours, setMinutes instantly modifies the event state so no need to this.setState 
+            var newEvent = this.state.event;
+            newEvent.start.setHours(target.value.substr(0,2));
+            newEvent.start.setMinutes(target.value.substr(3,2));
+
+            //if start time is later than endTime then return
+            if(newEvent.start>=newEvent.end){
+                console.log("NEGATIVE LENGTH")
+                //reset changes
+                newEvent.start.setHours(this.state.startTime.substr(0,2));
+                newEvent.start.setMinutes(this.state.startTime.substr(3,2));
+                return;
+            }
+            this.updateNumberOfSlots(newEvent);
+
+
+           
+        }else if(name === 'endTime'){ 
+            //change internal representation of the event.
+            //setHours, setMinutes instantly modifies the event state so no need to this.setState 
+            var newEvent = this.state.event;
+            newEvent.end.setHours(target.value.substr(0,2));
+            newEvent.end.setMinutes(target.value.substr(3,2));
+
+            //if start time is later than endTime then return
+            if(newEvent.start>=newEvent.end){
+                console.log("NEGATIVE LENGTH")
+                //reset changes
+                newEvent.end.setHours(this.state.endTime.substr(0,2));
+                newEvent.end.setMinutes(this.state.endTime.substr(3,2));
+                return;
+            }
+            this.updateNumberOfSlots(newEvent);
+
+        }else if(name === 'date'){
+
+            //change internal representation of the event
+            var newEvent = this.state.event;
+            newEvent.start.setYear(target.value.substr(0,4));
+            newEvent.end.setYear(target.value.substr(0,4));
+
+            newEvent.start.setMonth(target.value.substr(5,2));
+            newEvent.end.setMonth(target.value.substr(5,2));
+
+            newEvent.start.setDate(target.value.substr(8,2));
+            newEvent.end.setDate(target.value.substr(8,2));
+            this.setState({event:newEvent})
+
+            this.updateNumberOfSlots(newEvent);
         }
+
         this.setState({
             [name]: target.value
         });
 
-      }
-
+    }
+    
+    
+    //displays and initializes the block view when an event is clicked
     onSelectEvent(e) {
-        //displays and initializes the block view
+        this.setState({event:e});
         this.setState({display: 'block'});
         this.setState({startTime: ("0" + e.start.getHours()).slice(-2) + ":" + ("0" + e.start.getMinutes()).slice(-2)});
         this.setState({endTime: ("0" + e.end.getHours()).slice(-2) + ":" + ("0" + e.end.getMinutes()).slice(-2)});
@@ -47,6 +110,7 @@ export default class BlockView extends React.Component {
         var diffMins = Math.round((diffMs / 1000) / 60);   
         this.setState({blockDuration:diffMins});
     }
+
 
     close(){
         console.log('close');
@@ -107,9 +171,77 @@ export default class BlockView extends React.Component {
    
 }
 
+class CourseSelection extends React.Component {
+    constructor(props) { //props are either student or instructor. Will render differently depending which is passed
+        super(props);
+        this.state = {
+          selectedCourses: [],
+          courseCheckBoxes: [], //list of checkboxes corresponding to courses
+        };
+        this.handleCourseSelection = this.handleCourseSelection.bind(this);
+
+        //create checkboxes for courses
+        var courses = this.props.courses.map((course) =>
+        <label>
+          <input
+            id = {course}
+            name="isGoing"
+            type="checkbox"
+            // checked={this.state.selected}
+            onChange={this.handleCourseSelection} />
+            {course}
+            <br></br>
+        </label>
+        );
+
+        this.state.courseCheckBoxes=courses;
+        }
+    
+    //update relevant selectedCourses when a course is selected
+    handleCourseSelection(event){
+        var newSelectedCourses = this.state.selectedCourses;
+        var course = event.target.id;
+
+        var target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        //add course to course list if checked
+        if(value===true){
+            if(!newSelectedCourses.includes(course)){
+                //add course to selected courses
+                newSelectedCourses.push(course);
+                this.setState({selectedCourses:newSelectedCourses});
+            }
+
+        }else{ //remove course from selected courses
+            var index = newSelectedCourses.indexOf(course);
+            if (index > -1) {
+            newSelectedCourses.splice(index, 1);
+            }
+        }
+        console.log(this.state.selectedCourses)
+
+
+
+        var newSelectedCourses=this.state.selectedCourses;
+        //if the course is not already selected, add it to selected courses and update courseCheckBoxes
+
+
+        
+    }
+    render(){
+        return(
+            <form>
+            {this.state.courseCheckBoxes}
+            </form>
+        );
+
+    }
+
+}
+
 //FUNCTIONALITY: you can either write comma separated courses or choose them from a drop down list
 //The dropdown list will display courses that match the last course being typed
-class CourseSelection extends React.Component {
+class ComplexCourseSelection extends React.Component {
     //need to implement dynamic creation of courses from props.courses array
     constructor(props) { //props are either student or instructor. Will render differently depending which is passed
         super(props);
@@ -226,14 +358,15 @@ class CourseSelection extends React.Component {
             <div>
                 <label>
         <input type="text" value = {this.state.stringCourseList} onChange={this.handleInputChange} placeholder="Search for courses..."/>
+                </label>
         <br/>
-        Use commas to sepparate courses
+        Use commas to separate courses
             <ul ref="courseList">
             <li ><a id = "MAT321" onClick={this.handleCourseSelection} href="#">MAT321</a></li>
             <li ><a id = "CSC302" onClick={this.handleCourseSelection} href="#">CSC302</a></li>
             <li ><a id = "CSC401" onClick={this.handleCourseSelection} href="#">CSC401</a></li>
             </ul>
-            </label>
+
             </div>
 
         );
