@@ -1,0 +1,41 @@
+node {
+   def version = env.VERSION.replace('origin/', '')
+   stage('Preparation') { // for display purposes
+      // Get some code from a GitHub repository
+      git branch: 'iss-43-45-DockerizeDBService-DockerComposeAPI/DB',
+          credentialsId: '6c28ccdf-abb9-4d7c-b262-147e630ba989',
+          url: 'https://github.com/csc302-fall-2018/proj-koolaid'
+   }
+   stage('Build') {
+     def image_name = mongodb_dev
+      dir("VerifyCDFService") {
+         try {
+            sh "docker build . -t ${image_name}:${version}"
+            slackSend channel: '#jenkins',
+                      color: 'good',
+                      message: "`${image_name}:${version}` image built successfully",
+                      teamDomain: 'csc302-18',
+                      token: 'xoxp-446649518151-453446716356-480101894181-01de2997b31ad6f1475f50beef4aaf01'
+         } catch (error) {
+            currentBuild.result = 'FAILURE'
+            slackSend channel: '#jenkins',
+                      color: 'bad',
+                      message: "`${image_name}:${version}` image failed to build",
+                      teamDomain: 'csc302-18',
+                      token: 'xoxp-446649518151-453446716356-480101894181-01de2997b31ad6f1475f50beef4aaf01'
+         }
+      }
+   }
+   if (currentBuild.result.equals('FAILURE')) {
+      echo 'This build cannot continue'
+   } else {
+      stage('Deploy') {
+        sh "docker service update koolaid_verification --image ${image_name}:${version} --force"
+         slackSend channel: '#jenkins',
+                   color: 'good',
+                   message: "`${image_name}:${version}` deployed successfully",
+                   teamDomain: 'csc302-18',
+                   token: 'xoxp-446649518151-453446716356-480101894181-01de2997b31ad6f1475f50beef4aaf01'
+      }
+   }
+}
