@@ -1,11 +1,8 @@
-import moment from "moment";
-
 export default class DummyApi {
 	constructor(url) {
 		this.url = url;
 		this.sessionToken = null;
 		this.delay = 500;
-		this.anchorDate = moment().day();
 	}
 
 	login(username, password) {
@@ -184,7 +181,7 @@ export default class DummyApi {
 								"csc302"
 							],
 							"comment": "We don't make mistakes, just happy little accidents.",
-							"startTime": moment(this.startDate).add(9, 'hours').toISOString(),
+							"startTime": "2018-11-18T12:00:00",
 							"appointmentDuration": 300000,
 							"appointmentSlots": [
 								{
@@ -215,7 +212,7 @@ export default class DummyApi {
 								"csc302"
 							],
 							"comment": "Birds!",
-							"startTime": moment(this.startDate).add(12, 'hours').toISOString(),
+							"startTime": "2018-11-18T16:00:00",
 							"appointmentDuration": 600000,
 							"appointmentSlots": [
 								{"identity": "", "courseCode": "", "note": ""},
@@ -273,7 +270,7 @@ export default class DummyApi {
 							"csc302"
 						],
 						"comment": "We don't make mistakes, just happy little accidents.",
-						"startTime": moment(this.startDate).add(9, 'hours').toISOString(),
+						"startTime": "2018-11-18T12:00:00",
 						"appointmentDuration": 300000,
 						"appointmentSlots": [
 							{
@@ -307,7 +304,7 @@ export default class DummyApi {
 							"csc302"
 						],
 						"comment": "Birds!",
-						"startTime": moment(this.startDate).add(12, 'hours').toISOString(),
+						"startTime": "2018-11-18T16:00:00",
 						"appointmentDuration": 600000,
 						"appointmentSlots": [
 							{"identity": "", "courseCode": "", "note": ""},
