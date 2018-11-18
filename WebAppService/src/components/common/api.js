@@ -56,11 +56,11 @@ export default class Api {
 		return this.__call("DELETE", `/course/${courseCode}`);
 	}
 
-	getBlockIds(startDate, endDate) {
+	getBlocks(startDate, endDate) {
 		return this.__call("GET", `/blocks?from=${startDate}&to=${endDate}`);
 	}
-	// Also use for getting slots en masse
-	getBlock(blockId) {
+	
+	getBlock(blockId) {  // Also use for getting slots en masse
 		return this.__call("GET", `/blocks/${blockId}`);
 	}
 
@@ -89,8 +89,8 @@ export default class Api {
 		}
 		return this.__call("POST", `/blocks/${blockId}/booking`, body);
 	}
-	// Edit slots en masse without editing block
-	editSlots(blockId, slots) {
+	
+	editSlots(blockId, slots) {  // Edit slots en masse without editing block
 		const body = {
 			appointmentSlots: slots.appointmentSlots
 		}
