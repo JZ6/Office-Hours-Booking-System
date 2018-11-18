@@ -160,17 +160,13 @@ describe("student view", () => {
 		expect(mockEditSlot).toHaveBeenCalledWith("someId123", 2, {identity: "parkerpeter15", note: "With great powers..."});
 	});
 	
-	test("handleSlotCancel cancels changes", () => {
+	test("handleSlotCancel cancels changes", async () => {
 		// Edit identity and note
 		wrapper.find("#slot2").simulate("click");
 		wrapper.find("#note2").simulate("change", {target: {value: "With great powers..."}});
 		wrapper.find("#cancel2").simulate("click");
 		expect(wrapper.find("#identity2").text()).toEqual("Available");
 		expect(wrapper.find("#note2").text()).toEqual("");
-		// Edit note only
-		wrapper.find("#note0").simulate("change", {target: {value: "With great powers..."}});
-		wrapper.find("#cancel0").simulate("click");
-		expect(wrapper.find("#note0").props().value).toEqual("Everyone gets one.");
 	});
 	
 	test("handleEmpty empties only own slots", async () => {

@@ -215,7 +215,7 @@ export default class SlotContainer extends React.Component {
 					name = "Not Available";
 				}
 			}
-			return <div id={`identity${i}`}>{name}</div>;
+			return <span id={`identity${i}`}>{name}</span>;
 		} else {
 			return (
 				<input
@@ -250,8 +250,18 @@ export default class SlotContainer extends React.Component {
 			);
 		} else {
 			// Note by someone else hidden
-			return <div id={`note${i}`} />;
+			return <span id={`note${i}`} />;
 		}
+	}
+	
+	renderSlotButtons(i) {
+		if (!this.slotsEqual(this.state.slots[i], this.prevSlots[i])) {
+			return <span>
+				<button id={`confirm${i}`} onClick={this.handleSlotConfirm(i)}>✎</button>
+				<button id={`cancel${i}`} onClick={this.handleSlotCancel(i)}>❌</button>
+			</span>;
+		}
+		return <span />
 	}
 	
 	renderSlots() {
@@ -264,8 +274,7 @@ export default class SlotContainer extends React.Component {
 					// Only students can click to assign a free slot to themselves
 					onClick={this.props.role === "student" ? this.handleSlotClick(i) : () => {return false}}
 				>
-					<button id={`confirm${i}`} onClick={this.handleSlotConfirm(i)}>✎</button>
-					<button id={`cancel${i}`} onClick={this.handleSlotCancel(i)}>❌</button>
+				{this.renderSlotButtons(i)}
 					{moment(this.props.startTime + this.props.slotDuration * i).format("h:mmA - ")}
 					{moment(this.props.startTime + this.props.slotDuration * (i + 1)).format("h:mmA")}
 					{this.renderIdentity(i)}
