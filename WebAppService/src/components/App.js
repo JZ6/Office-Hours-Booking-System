@@ -88,8 +88,10 @@ class App extends Component {
 			startTime
 		} = block;
 
+		const totalSeconds = appointmentSlots.length * appointmentDuration / 1000;
+
 		const endTime = new Date(startTime)
-		endTime.setSeconds(endTime.getSeconds() + appointmentDuration);
+		endTime.setSeconds(endTime.getSeconds() + totalSeconds);
 
 		const newBlockEvent = {
 			start: new Date(startTime),
@@ -103,6 +105,8 @@ class App extends Component {
 			}
 		}
 		console.log(newBlockEvent);
+
+		this.setState({ events: [...this.state.events, newBlockEvent] });
 	}
 
 	onEventResize = (type, { event, start, end, allDay }) => {
