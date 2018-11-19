@@ -65,10 +65,9 @@ class App extends Component {
 
 				jsonPromise.then(
 					result => {
-						const {blocks} = result;
+						const { blocks } = result;
 						console.log(blocks)
 						for (var i = 0; i < blocks.length; i++) {
-							// console.log(blocks[i])
 							this.addNewBlock(blocks[i]);
 						}
 					}
@@ -78,7 +77,32 @@ class App extends Component {
 	}
 
 	addNewBlock(block) {
+		console.log(block)
+		const {
+			appointmentDuration,
+			appointmentSlots,
+			blockId,
+			comment,
+			courseCodes,
+			owners,
+			startTime
+		} = block;
 
+		const endTime = new Date(startTime)
+		endTime.setSeconds(endTime.getSeconds() + appointmentDuration);
+
+		const newBlockEvent = {
+			start: new Date(startTime),
+			end: endTime,
+			title: courseCodes.toString(),
+			details: {
+				appointmentSlots: appointmentSlots,
+				blockId: blockId,
+				comment: comment,
+				owners: owners,
+			}
+		}
+		console.log(newBlockEvent);
 	}
 
 	onEventResize = (type, { event, start, end, allDay }) => {
