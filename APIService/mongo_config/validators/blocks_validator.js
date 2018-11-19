@@ -1,72 +1,77 @@
 const blocksValidator = {
-    "title": "Block structure where each block belongs to a course.",
-    "bsonType": "object",
-    "required": [
-        "courseCode",
-        "author",
-        "comment",
-        "startTime",
-        "endTime",
-        "slotDuration",
-        "slots"
-    ],
-    "additionalProperties": false,
-    "properties": {
-        "courseCode": {
-            "bsonType": "string",
-            "pattern": "[A-Z]{3}[0-9]{3}",
-            "title": "The course code of this block's course (e.g. CSC302)."
-        },
-        "author": {
-            "bsonType": "string",
-            "title": "The utorId of the block's author."
-        },
-        "comment": {
-            "bsonType": "string",
-            "title": "A comment made by the author about this section."
-        },
-        "startTime": {
-            "bsonType": "date",
-            "title": "The start time for the block."
-        },
-        "endTime": {
-            "bsonType": "date",
-            "title": "The end time for the block."
-        },
-        "slotDuration": {
-            "bsonType": "int",
-            "minimum": 30000,
-            "multipleOf": 30000,
-            "title": "The millisecond duration of a slot."
-        },
-        "slots": {
-            "bsonType": "array",
-            "uniqueItems": true,
-            "items": {
-                "bsonType": "object",
-                "required": [
-                    "utorId",
-                    "courseCode",
-                    "note"
-                ],
-                "additionalProperties": false,
-                "properties": {
-                    "utorId": {
-                        "bsonType": "string",
-                        "pattern": "[a-z0-9]+",
-                        "title": "The utorId of the student who booked this slot."
-                    },
-                    "courseCode": {
-                        "bsonType": "string",
-                        "pattern": "[A-Z]{3}[0-9]{3}",
-                        "title": "The course code of this slot's course."
-                    },
-                    "note": {
-                        "bsonType": "string",
-                        "title": "The student written note for their slot."
+    "$jsonSchema": {
+        "bsonType": "object",
+        "required": [
+            "blockId",
+            "courseCodes",
+            "owners",
+            "comment",
+            "startTime",
+            "endTime",
+            "slotDuration",
+            "slots"
+        ],
+        "additionalProperties": false,
+        "properties": {
+            "_id": {
+                "bsonType": "objectId",
+            },
+            "blockId": {
+                "bsonType": "string"
+            },
+            "courseCodes": {
+                "bsonType": "array",
+                "minItems": 1,
+                "items": {
+                    "bsonType": "string",
+                    "pattern": "[A-Z]{3}[0-9]{3}"
+                }
+            },
+            "owners": {
+                "bsonType": "array",
+                "minItems": 1,
+                "items": {
+                    "bsonType": "string",
+                    "pattern": "[a-z0-9]+"
+                }
+            },
+            "comment": {
+                "bsonType": "string"
+            },
+            "startTime": {
+                "bsonType": "date"
+            },
+            "endTime": {
+                "bsonType": "date"
+            },
+            "slotDuration": {
+                "bsonType": "int"
+            },
+            "slots": {
+                "bsonType": "array",
+                "items": {
+                    "bsonType": "object",
+                    "required": [
+                        "utorId",
+                        "courseCode",
+                        "note"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                        "utorId": {
+                            "bsonType": "string",
+                            "pattern": "[a-z0-9]+"
+                        },
+                        "courseCode": {
+                            "bsonType": "string",
+                            "pattern": "[A-Z]{3}[0-9]{3}"
+                        },
+                        "note": {
+                            "bsonType": "string"
+                        }
                     }
                 }
             }
         }
     }
-};
+}
