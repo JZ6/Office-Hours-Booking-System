@@ -6,21 +6,21 @@ export default class DummyApi {
 	}
 
 	login(username, password) {
-		jsonPromise = new Promise((resolve, reject) => {
+		const jsonPromise = new Promise((resolve, reject) => {
 			resolve({sessionToken: "dummysessiontoken"});
 		});
-		promise = new Promise((resolve, reject) => {
-			setTimeout(() => resolve(
+		const promise = new Promise((resolve, reject) => {
+			setTimeout(() => resolve({
 				status: 200,
 				statusText: "OK",
 				json: jsonPromise
-			), this.delay);
+			}), this.delay);
 		});
 		return promise;
 	}
 
 	getIdentity(id) {
-		jsonPromise = new Promise((resolve, reject) => {
+		const jsonPromise = new Promise((resolve, reject) => {
 			if (id === "rossbob2") {
 				resolve({
 					"id": "rossbob2",
@@ -62,37 +62,37 @@ export default class DummyApi {
 				resolve({});
 			}
 		});
-		promise = new Promise((resolve, reject) => {
-			setTimeout(() => resolve(
+		const promise = new Promise((resolve, reject) => {
+			setTimeout(() => resolve({
 				status: 200,
 				statusText: "OK",
 				json: jsonPromise
-			), this.delay);
+			}), this.delay);
 		});
 		
 		return promise;
 	}
 	postIdentity(identity) {
-		promise = new Promise((resolve, reject) => {
-			setTimeout(() => resolve(
+		const promise = new Promise((resolve, reject) => {
+			setTimeout(() => resolve({
 				status: 200,
 				statusText: "OK"
-			), this.delay);
+			}), this.delay);
 		});
 		return promise;
 	}
 	deleteIdentity(id) {
-		promise = new Promise((resolve, reject) => {
-			setTimeout(() => resolve(
+		const promise = new Promise((resolve, reject) => {
+			setTimeout(() => resolve({
 				status: 200,
 				statusText: "OK"
-			), this.delay);
+			}), this.delay);
 		});
 		return promise;
 	}
 
 	getCourse(courseCode) {
-		jsonPromise = new Promise((resolve, reject) => {
+		const jsonPromise = new Promise((resolve, reject) => {
 			if (courseCode === "csc300") {
 				resolve({
 					"instructors": [
@@ -137,36 +137,36 @@ export default class DummyApi {
 				});
 			}
 		});
-		promise = new Promise((resolve, reject) => {
-			setTimeout(() => resolve(
+		const promise = new Promise((resolve, reject) => {
+			setTimeout(() => resolve({
 				status: 200,
 				statusText: "OK",
 				json: jsonPromise
-			), this.delay);
+			}), this.delay);
 		});
 		return promise;
 	}
 	postCourse(courseCode, course) {
-		promise = new Promise((resolve, reject) => {
-			setTimeout(() => resolve(
+		const promise = new Promise((resolve, reject) => {
+			setTimeout(() => resolve({
 				status: 200,
 				statusText: "OK"
-			), this.delay);
+			}), this.delay);
 		});
 		return promise;
 	}
 	deleteCourse(courseCode) {
-		promise = new Promise((resolve, reject) => {
-			setTimeout(() => resolve(
+		const promise = new Promise((resolve, reject) => {
+			setTimeout(() => resolve({
 				status: 200,
 				statusText: "OK"
-			), this.delay);
+			}), this.delay);
 		});
 		return promise;
 	}
 
 	getBlocks(startDate, endDate) {
-		jsonPromise = new Promise((resolve, reject) => {
+		const jsonPromise = new Promise((resolve, reject) => {
 			resolve(
 				{
 					"blocks": [
@@ -245,18 +245,18 @@ export default class DummyApi {
 				}
 			);
 		});
-		promise = new Promise((resolve, reject) => {
-			setTimeout(() => resolve(
+		const promise = new Promise((resolve, reject) => {
+			setTimeout(() => resolve({
 				status: 200,
 				statusText: "OK",
 				json: jsonPromise
-			), this.delay);
+			}), this.delay);
 		});
 		return promise;
 	}
 	// Also use for getting slots en masse
 	getBlock(blockId) {
-		jsonPromise = new Promise((resolve, reject) => {
+		const jsonPromise = new Promise((resolve, reject) => {
 			if (blockId === "blockid0") {
 				resolve(
 					{
@@ -338,52 +338,52 @@ export default class DummyApi {
 				resolve({});
 			}
 		});
-		promise = new Promise((resolve, reject) => {
-			setTimeout(() => resolve(
+		const promise = new Promise((resolve, reject) => {
+			setTimeout(() => resolve({
 				status: 200,
 				statusText: "OK",
 				json: jsonPromise
-			), this.delay);
+			}), this.delay);
 		});
 		return promise;
 	}
 
 	postBlock(block) {
-		promise = new Promise((resolve, reject) => {
-			setTimeout(() => resolve(
+		const promise = new Promise((resolve, reject) => {
+			setTimeout(() => resolve({
 				status: 200,
 				statusText: "OK"
-			), this.delay);
+			}), this.delay);
 		});
 		return promise;
 	}
 
 	deleteBlock(blockId) {
-		promise = new Promise((resolve, reject) => {
-			setTimeout(() => resolve(
+		const promise = new Promise((resolve, reject) => {
+			setTimeout(() => resolve({
 				status: 200,
 				statusText: "OK"
-			), this.delay);
+			}), this.delay);
 		});
 		return promise;
 	}
 
 	editSlot(blockId, slotId, slot) {
-		promise = new Promise((resolve, reject) => {
-			setTimeout(() => resolve(
+		const promise = new Promise((resolve, reject) => {
+			setTimeout(() => resolve({
 				status: 200,
 				statusText: "OK"
-			), this.delay);
+			}), this.delay);
 		});
 		return promise;
 	}
 	// Edit slots en masse without editing block
 	editSlots(blockId, slots) {
-		promise = new Promise((resolve, reject) => {
-			setTimeout(() => resolve(
+		const promise = new Promise((resolve, reject) => {
+			setTimeout(() => resolve({
 				status: 200,
 				statusText: "OK"
-			), this.delay);
+			}), this.delay);
 		});
 		return promise;
 	}
