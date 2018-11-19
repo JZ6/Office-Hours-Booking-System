@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Calendar from "react-big-calendar";
 import moment from "moment";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
-import Api from "./common/api";
+import api from "./common/api";
 
 import '../styles/App.css'
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
@@ -10,10 +10,12 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 
 import components from './';
 
+import dummyAPI from './common/dummyApi'
+
 const {
-  LoginView,
-  BlockView,
-  SideBar
+	LoginView,
+	BlockView,
+	SideBar
 } = components
 
 // console.log(LoginView)
@@ -29,7 +31,7 @@ class App extends Component {
 			events: [
 				{
 					start: new Date(),
-					end: new Date(moment().add(1, "hour")),
+					end: new Date(moment().add(1, "days")),
 					title: "Test Event"
 				},
 				{
@@ -39,50 +41,65 @@ class App extends Component {
 				},
 			]
 		};
-		this.api = new Api("localhost/");
+		// this.api = new api("localhost/");
+
+		this.api = new dummyAPI('Test');
+		this.fetchBlocks('test');
 	}
-  
 
-  onEventResize = (type, { event, start, end, allDay }) => {
-    this.setState(state => {
-      state.events[0].start = start;
-      state.events[0].end = end;
-      return { events: state.events };
-    });
-  };
+	fetchBlocks() {
+		const startDate = new Date();
+		const endDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + 7);   //7 day week
+		const blocksPromise = this.api.getBlocks(startDate.toISOString(), endDate.toISOString());
+		blocksPromise.then(
+			(result) => {
+				console.log(result)
+			}
+		)
+	}
 
-  onEventDrop = ({ event, start, end, allDay }) => {
-    console.log(start);
-  };
 
-  onSelectEvent = (event, e) => {
-    this.refs.blockView.onSelectEvent(event);
-  };
 
-  render() {
-    return (
-      <div className="App">
-        <LoginView api={this.api}/>
-        <div className="App-container">
-          <DnDCalendar
-            defaultDate={new Date()}
-            defaultView="week"
-            events={this.state.events}
-            onEventDrop={this.onEventDrop}
-            onEventResize={this.onEventResize}
-            onSelectEvent={this.onSelectEvent}
-            resizable
-            style={{ 
-              height: "95vh",
-              paddingTop: '1em' 
-            }}
-          />
-        </div>
-        <BlockView ref="blockView" permission={"instructor"}/>
-        <SideBar />
-      </div>
-    );
-  }
+	onEventResize = (type, { event, start, end, allDay }) => {
+		this.setState(state => {
+			state.events[0].start = start;
+			state.events[0].end = end;
+			return { events: state.events };
+		});
+	};
+
+	onEventDrop = ({ event, start, end, allDay }) => {
+		console.log(start);
+	};
+
+	onSelectEvent = (event, e) => {
+		this.refs.blockView.onSelectEvent(event);
+	};
+
+	render() {
+		return (
+			<div className="App">
+				<LoginView api={this.api} />
+				<div className="App-container">
+					<DnDCalendar
+						defaultDate={new Date()}
+						defaultView="week"
+						events={this.state.events}
+						onEventDrop={this.onEventDrop}
+						onEventResize={this.onEventResize}
+						onSelectEvent={this.onSelectEvent}
+						resizable
+						style={{
+							height: "95vh",
+							paddingTop: '1em'
+						}}
+					/>
+				</div>
+				<BlockView ref="blockView" permission={"instructor"} />
+				<SideBar />
+			</div>
+		);
+	}
 }
 
 export default App;
