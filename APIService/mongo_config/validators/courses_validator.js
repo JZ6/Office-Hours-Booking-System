@@ -1,4 +1,4 @@
-{
+const coursesValidator = {
     "title": "Course structure. A course is uniquely identified by its courseCode",
     "bsonType": "object",
     "required": [
@@ -43,4 +43,4 @@
             "title": "All the utorId's of students in this course."
         }
     }
-}
+};

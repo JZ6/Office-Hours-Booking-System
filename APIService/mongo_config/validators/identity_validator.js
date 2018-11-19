@@ -1,4 +1,4 @@
-{
+const identityValidator = {
     "title": "User structure.",
     "bsonType": "object",
     "required": [
@@ -69,4 +69,4 @@
             }
         }
     }
-}
+};

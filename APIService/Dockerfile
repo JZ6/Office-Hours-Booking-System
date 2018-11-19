@@ -2,14 +2,14 @@
 
 FROM python:3.7
 
-MAINTAINER Asher Minden-Webb "amindenwebb@gmail.com"
+LABEL MAINTAINER_NAME="Asher Minden-Webb" MAINTAINER_EMAIL="amindenwebb@gmail.com"
 
 ENV FLASK_ENV=${FLASK_ENV} \
 API_PORT=${API_PORT}
 
-RUN apt-get update -y
+RUN apt-get update -y && apt-get clean && apt-get autoremove
 
-CMD set -ex && mkdir /app
+RUN set -ex && mkdir /app
 
 WORKDIR /app
 
