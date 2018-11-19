@@ -1,46 +1,45 @@
 const coursesValidator = {
-    "title": "Course structure. A course is uniquely identified by its courseCode",
-    "bsonType": "object",
-    "required": [
-        "courseCode",
-        "instructors",
-        "tas",
-        "students"
-    ],
-    "additionalProperties": false,
-    "properties": {
-        "courseCode": {
-            "bsonType": "string",
-            "pattern": "[A-Z]{3}[0-9]{3}",
-            "title": "The course code of this course (e.g. CSC302)."
-        },
-        "instructors": {
-            "bsonType": "array",
-            "minItems": 1,
-            "uniqueItems": true,
-            "items": {
-                "bsonType": "string",
-                "title": "The utorId of an instructors of this course."
+    "$jsonSchema": {
+        "bsonType": "object",
+        "required": [
+            "courseCode",
+            "instructors",
+            "tas",
+            "students"
+        ],
+        "additionalProperties": false,
+        "properties": {
+            "_id": {
+                "bsonType": "objectId",
             },
-            "title": "All the utorId's of instructors of this course."
-        },
-        "tas": {
-            "bsonType": "array",
-            "uniqueItems": true,
-            "items": {
+            "courseCode": {
                 "bsonType": "string",
-                "title": "The utorId of a TA of this course."
+                "pattern": "[A-Z]{3}[0-9]{3}"
             },
-            "title": "All the utorId's of TAs of this course."
-        },
-        "students": {
-            "bsonType": "array",
-            "uniqueItems": true,
-            "items": {
-                "bsonType": "string",
-                "title": "The utorId of a student in this course."
+            "instructors": {
+                "bsonType": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                    "bsonType": "string",
+                    "pattern": "[a-z0-9]+"
+                }
             },
-            "title": "All the utorId's of students in this course."
+            "tas": {
+                "bsonType": "array",
+                "uniqueItems": true,
+                "items": {
+                    "bsonType": "string"
+                }
+            },
+            "students": {
+                "bsonType": "array",
+                "uniqueItems": true,
+                "items": {
+                    "bsonType": "string",
+                    "pattern": "[a-z0-9]+"
+                }
+            }
         }
     }
-};
+}

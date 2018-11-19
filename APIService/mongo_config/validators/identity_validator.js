@@ -1,72 +1,48 @@
 const identityValidator = {
-    "title": "User structure.",
-    "bsonType": "object",
-    "required": [
-        "utorId",
-        "studentNumber",
-        "firstName",
-        "lastName",
-        "roles",
-        "courses"
-    ],
-    "additionalProperties": false,
-    "properties": {
-        "utorId": {
-            "bsonType": "string",
-            "pattern": "[a-z0-9]+",
-            "title": "The utorId of this user."
-        },
-        "studentNumber": {
-            "bsonType": "string",
-            "minLength": 9,
-            "maxLength": 10,
-            "title": "The student number of this user."
-        },
-        "firstName": {
-            "bsonType": "string",
-            "description": "The first name of this user."
-        },
-        "lastName": {
-            "bsonType": "string",
-            "title": "The last name of this user."
-        },
-        "roles": {
-            "bsonType": "array",
-            "uniqueItems": true,
-            "items": {
-                "bsonType": "object",
-                "required": [
-                    "role",
-                    "courseCode"
-                ],
-                "additionalProperties": false,
-                "properties": {
-                    "role": {
-                        "bsonType": "string",
-                        "enum": [
-                            "student",
-                            "ta",
-                            "instructor"
-                        ],
-                        "title": "The role this user has for a course they are in."
-                    },
-                    "courseCode": {
-                        "bsonType": "string",
-                        "pattern": "[A-Z]{3}[0-9]{3}",
-                        "title": "The course code of a the user is in."
-                    }
-                },
-                "title": "The role of this user in each of their courses."
-            }
-        },
-        "courses": {
-            "bsonType": "array",
-            "uniqueItems": true,
-            "items": {
+    "$jsonSchema": {
+        "bsonType": "object",
+        "required": [
+            "utorId",
+            "studentNumber",
+            "firstName",
+            "lastName",
+            "role",
+            "courses"
+        ],
+        "additionalProperties": false,
+        "properties": {
+            "_id": {
+                "bsonType": "objectId",
+            },
+            "utorId": {
                 "bsonType": "string",
-                "pattern": "[A-Z]{3}[0-9]{3}",
-                "title": "The course code of a course the user is in."
+                "pattern": "[a-z0-9]+"
+            },
+            "studentNumber": {
+                "bsonType": "string"
+            },
+            "firstName": {
+                "bsonType": "string"
+            },
+            "lastName": {
+                "bsonType": "string"
+            },
+            "role": {
+                "bsonType": "string",
+                "enum": [
+                    "student",
+                    "instructor",
+                    "ta"
+                ]
+            },
+            "courses": {
+                "bsonType": "array",
+                "uniqueItems": true,
+                "items": {
+                    "bsonType": "string",
+                    "pattern": "[A-Z]{3}[0-9]{3}",
+                }
             }
         }
     }
-};
+}
