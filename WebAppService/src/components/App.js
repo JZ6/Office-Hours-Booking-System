@@ -28,18 +28,7 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			events: [
-				{
-					start: new Date(),
-					end: new Date(moment().add(1, "days")),
-					title: "Test Event"
-				},
-				{
-					start: new Date(moment().add(1, "days")),
-					end: new Date(moment().add(2, "days")),
-					title: "Test Event"
-				},
-			]
+			events: []
 		};
 		// this.api = new api("localhost/");
 
