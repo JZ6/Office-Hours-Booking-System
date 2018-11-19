@@ -33,12 +33,12 @@ class App extends Component {
 		// this.api = new api("localhost/");
 
 		this.api = new dummyAPI('Test');
-		this.fetchBlocks('test');
+		this.fetchBlocks(7);
 	}
 
-	fetchBlocks() {
+	fetchBlocks(days) {
 		const startDate = new Date();
-		const endDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + 7);   //7 day week
+		const endDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + days);   
 		const blocksPromise = this.api.getBlocks(startDate.toISOString(), endDate.toISOString());
 
 		blocksPromise.then(
