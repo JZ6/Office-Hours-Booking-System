@@ -51,14 +51,35 @@ class App extends Component {
 		const startDate = new Date();
 		const endDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + 7);   //7 day week
 		const blocksPromise = this.api.getBlocks(startDate.toISOString(), endDate.toISOString());
+
 		blocksPromise.then(
-			(result) => {
-				console.log(result)
+			result => {
+
+				const {
+					status,
+					statusText,
+					json: jsonPromise
+				} = result
+
+				if (status !== 200 || statusText !== "OK") { return false };
+
+				jsonPromise.then(
+					result => {
+						const {blocks} = result;
+						console.log(blocks)
+						for (var i = 0; i < blocks.length; i++) {
+							// console.log(blocks[i])
+							this.addNewBlock(blocks[i]);
+						}
+					}
+				)
 			}
 		)
 	}
 
+	addNewBlock(block) {
 
+	}
 
 	onEventResize = (type, { event, start, end, allDay }) => {
 		this.setState(state => {

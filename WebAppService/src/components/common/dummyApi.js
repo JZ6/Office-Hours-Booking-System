@@ -2,7 +2,7 @@ export default class DummyApi {
 	constructor(url) {
 		this.url = url;
 		this.sessionToken = null;
-		this.delay = 500;
+		this.delay = 50;
 	}
 
 	login(username, password) {
