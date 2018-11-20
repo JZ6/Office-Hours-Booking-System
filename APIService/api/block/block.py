@@ -6,22 +6,9 @@ from flask import request
 
 from bson.json_util import dumps
 
-# from mongoengine import Document, StringField, ListField, DateTimeField, IntField, ObjectIdField, DictField
-
 from api import mongo
 
 # TODO: Add all the auth business
-
-# class BlockDocument(Document):
-#     id            = ObjectIdField(db_field='_id')
-#     block_id      = StringField(db_field='blockId')
-#     course_codes  = ListField(StringField(), db_field='courseCodes', default=list)
-#     owners        = ListField(StringField(), default=list)
-#     comment       = StringField()
-#     start_time    = DateTimeField(db_field='startTime')
-#     end_time      = DateTimeField(db_field='endTime') # TODO: Redundant field
-#     slot_duration = IntField(db_field='slotDuration')
-#     slots         = ListField(DictField(), default=list) # TODO: DictField values aren't checked
 
 # TODO: Can return some sort of nil value; should be handled
 # TODO: Assumes blockId is unique - make sure this assumption can be made
@@ -85,7 +72,7 @@ def upsert_block(block):
 
 # TODO: I'm not too familiar with Flask yet, would prefer to pair this part
 class Block(Resource):
-    # TODO: log request
+    # TODO: log requests
     def get(self, block_id=None):
         if False: # TODO: Bearer token and/or API key is missing or invalid.
             return {'blocks': []}, 401
@@ -94,13 +81,20 @@ class Block(Resource):
         owner = request.args.get('owner')
         start_time = request.args.get('startTime')
         course_code = request.args.get('courseCode')
+        
+        #############
+        # GET /blocks
+        if block_id is None:
+            blocks = filter_blocks(owner, start_time, course_code)
+            return {'blocks': dumps(blocks)}, 200
 
-        # TODO: Query appropriate MongoDB collection
-
-        return 'yes', 200
+        ########################
+        # GET /blocks/<block_id>
         return dumps(get_block_by_id(owner)), 200
 
+    # TODO: auth (return 'Bearer token and/or API key is missing or invalid.', 401)
     def post(self, block_id=None):
+        #################################
         # POST /blocks/<block_id>/booking
         if request.path.endswith('/booking'): # TODO: Map path properly with Flask
             if block_id is None or get_block_by_id(block_id) is None:
@@ -116,9 +110,14 @@ class Block(Resource):
             
             # TODO: Make sure block exists if previous check doesn't do the job
             block = get_block_by_id(block_id)
+            if False:
+                return 'OWNER PROBLEM', 401
 
-            # DO SHIT
+            # TODO: Fix API then fix logic
+            return 'NOT IMPLEMENTED', 200
+            return 'Appointment slot is already booked.', 409
         
+        ##############
         # POST /blocks
         block = request.get_json()
         if block is None:
@@ -143,8 +142,8 @@ class Block(Resource):
 
     # TODO: auth (return 'Bearer token and/or API key is missing or invalid.', 401)
     def delete(self, block_id=None):
+        ###########################
         # DELETE /blocks/<block_id>
-
         if block_id is None:
             return 'Block with given blockId not found.', 400
 
