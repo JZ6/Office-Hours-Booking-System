@@ -98,6 +98,15 @@ class App extends Component {
 		this.setState({ events: [...this.state.events, newBlockEvent] });
 	}
 
+	deleteBlock(blockId){
+
+	}
+
+	modifyBlock(blockId,block){
+		this.deleteBlock(blockId);
+		this.addNewBlock(block);
+	}
+
 	onEventResize = (type, { event, start, end, allDay }) => {
 		this.setState(state => {
 			state.events[0].start = start;
