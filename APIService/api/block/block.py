@@ -4,6 +4,10 @@ from flask_restful import Resource
 from flask import request
 
 # TODO: Add all the auth business
+# TODO: auth (return 'Bearer token and/or API key is missing or invalid.', 401)
+if False: # TODO: Bearer token and/or API key is missing or invalid.
+    return {'blocks': []}, 401
+# TODO: log requests
 
 # Return Block (dict) if it exists, None otherwise
 def get_block_by_id(block_id):
@@ -61,14 +65,11 @@ def book_slot(block_id, identity, slot_number, note):
 # Update given Block or insert it if it does not yet exist; return None
 def upsert_block(block):
     query = {'blockId': block['blockId']}
-    upsertion = mongo.db.blocks.replace_one(query, block, upsert=True)
+    mongo.db.blocks.replace_one(query, block, upsert=True)
 
 
 class Block(Resource):
-    # TODO: log requests
     def get(self, block_id=None):
-        if False: # TODO: Bearer token and/or API key is missing or invalid.
-            return {'blocks': []}, 401
 
         # The following can either be a string value or None
         owner = request.args.get('owner')
@@ -85,7 +86,6 @@ class Block(Resource):
         # GET /blocks/<block_id>
         return dumps(get_block_by_id(owner)), 200
 
-    # TODO: auth (return 'Bearer token and/or API key is missing or invalid.', 401)
     def post(self, block_id=None):
         #################################
         # POST /blocks/<block_id>/booking
@@ -133,7 +133,6 @@ class Block(Resource):
 
         return 'Successfully added block.', 200
 
-    # TODO: auth (return 'Bearer token and/or API key is missing or invalid.', 401)
     def delete(self, block_id=None):
         ###########################
         # DELETE /blocks/<block_id>
