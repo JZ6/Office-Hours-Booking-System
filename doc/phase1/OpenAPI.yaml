@@ -185,6 +185,8 @@ paths:
                 $ref: '#/components/schemas/Block'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '404':
+          description: Requested block not found.
     delete:
       summary: Delete a specific block.
       parameters:
