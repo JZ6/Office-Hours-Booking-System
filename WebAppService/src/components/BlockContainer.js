@@ -98,106 +98,117 @@ export default class BlockContainer extends React.Component {
 	}
 	
 	updateSlotNumber(start, end, appointmentDuration){
-		let slotNumber = Math.floor(
-			(moment(end, "HH:mm") - moment(start, "HH:mm")) / appointmentDuration);
-		if (slotNumber === 0) {
-			this.prevSlots = [];
-			this.setState({appointmentSlots: []})
-		} else {
-			let slots = [...Array(slotNumber)].map(() => 
-				({identity: "", courseCode: "", note: ""}));
-			this.prevSlots = this.copySlots(slots);
-			this.setState({appointmentSlots: slots});
-			
-			// Update End Time?
-			this.setState({
-				end: moment(start, "HH:mm").add(appointmentDuration * slotNumber).format("HH:mm")
-			});
-			
+		if (this.state.enabled) {
+			let slotNumber = Math.floor(
+				(moment(end, "HH:mm") - moment(start, "HH:mm")) / appointmentDuration);
+			if (slotNumber === 0) {
+				this.prevSlots = [];
+				this.setState({appointmentSlots: []})
+			} else {
+				let slots = [...Array(slotNumber)].map(() => 
+					({identity: "", courseCode: "", note: ""}));
+				this.prevSlots = this.copySlots(slots);
+				this.setState({appointmentSlots: slots});
+				
+				// Update End Time?
+				this.setState({
+					end: moment(start, "HH:mm").add(appointmentDuration * slotNumber).format("HH:mm")
+				});
+			}
 		}
 	}
 	
 	handleInputChange(event) {
-		const value = event.target.value;
-		const name = event.target.name;
-		
-		if (name==="appointmentDuration") {
-			this.updateSlotNumber(this.state.start, this.state.end, value);
-			this.setState({appointmentDuration: value});
-		} else if (name === "start") {
-			// Validate
-			let start = value;
-			if (moment(start, "HH:mm") > moment(this.state.end, "HH:mm")) {
-				start = this.state.end;
-			}
-			this.setState({start: start});
+		if (this.state.enabled) {
+			const value = event.target.value;
+			const name = event.target.name;
 			
-			// Need to update block's actual startTime which includes date
-			let newStartTime = this.state.startTime;  // String immutable
-			newStartTime = moment(newStartTime)
-				.hour(parseInt(start.slice(0, 2)))
-				.minute(parseInt(start.slice(3, 5)))
-				.second(0)
-				.millisecond(0)
-				.toISOString();
-			this.setState({startTime: newStartTime})
-			
-			// Changes number of slots
-			this.updateSlotNumber(start, this.state.end, this.state.appointmentDuration);
-		} else if (name === "end") { 
-			// Validate
-			let end = value;
-			if (moment(end) < moment(this.state.start)) {
-				end = this.state.start;
-			}
-			this.setState({end: end});
-			
-			// Changes number of slots
-			this.updateSlotNumber(this.state.start, end, this.state.appointmentDuration);
-		} else if (name === "date") {
-			let date = value;
-			
-			let newStartTime = this.state.startTime;  // String immutable
-			newStartTime = moment(newStartTime)
-				.year(parseInt(date.slice(0, 4)))
-				.month(parseInt(date.slice(5, 7)))
-				.date(parseInt(date.slice(8, 10)))
-				.toISOString();
-			
-			this.setState({startTime:newStartTime})
+			if (name==="appointmentDuration") {
+				if (Number.isInteger(value) && value > 0) {
+					this.updateSlotNumber(this.state.start, this.state.end, value);
+					this.setState({appointmentDuration: value});
+				}
+			} else if (name === "start") {
+				// Validate
+				let start = value;
+				if (moment(start, "HH:mm").isValid()) {
+					if (moment(start, "HH:mm") > moment(this.state.end, "HH:mm")) {
+						start = this.state.end;
+					}
+					this.setState({start: start});
+					
+					// Need to update block's actual startTime which includes date
+					let newStartTime = this.state.startTime;  // String immutable
+					newStartTime = moment(newStartTime)
+						.hour(parseInt(start.slice(0, 2)))
+						.minute(parseInt(start.slice(3, 5)))
+						.second(0)
+						.millisecond(0)
+						.toISOString();
+					this.setState({startTime: newStartTime})
+					
+					// Changes number of slots
+					this.updateSlotNumber(start, this.state.end, this.state.appointmentDuration);
+				}
+			} else if (name === "end") { 
+				// Validate
+				let end = value;
+				if (moment(end, "HH:mm").isValid()) {
+					if (moment(end, "HH:mm") < moment(this.state.start, "HH:mm")) {
+						end = this.state.start;
+					}
+					this.setState({end: end});
+					
+					// Changes number of slots
+					this.updateSlotNumber(this.state.start, end, this.state.appointmentDuration);
+				}
+			} else if (name === "date") {
+				// ValiDATE
+				let date = value;
+				if (moment(date, "YYYY-MM-DD").isValid()) {
+					let newStartTime = moment(date, "YYYY-MM-DD")
+						.add(moment(this.state.startTime).hour(), "hours")
+						.add(moment(this.state.startTime).minute(), "minutes")
+						.add(moment(this.state.startTime).second(), "seconds")
+						.toISOString();
+					this.setState({startTime:newStartTime})
 
-			// Shouldn't change number of slots
-		} else if (
-			name === "owners" || 
-			name === "courseCodes" || 
-			name === "comment") {
-			this.setState({[name]: value});
+					// Shouldn't change number of slots
+				}
+			} else if (
+				name === "owners" || 
+				name === "courseCodes" || 
+				name === "comment") {
+				this.setState({[name]: value});
+			} else {
+				window.alert("Invalid form element name ", name);
+			}
 		}
-
-		
 	}
 
 	//update relevant selectedCourses when a course is selected
 	handleCourseSelection(event){
-		var newSelectedCourses = this.state.selectedCourses;
-		var course = event.target.id;
+		if (this.state.enabled) {
+			var newSelectedCourses = this.state.selectedCourses;
+			var course = event.target.id;
 
-		var target = event.target;
-		const value = target.type === 'checkbox' ? target.checked : target.value;
-		//add course to course list if checked
-		if (value === true){
-			if(!newSelectedCourses.includes(course)){
-				//add course to selected courses
-				newSelectedCourses.push(course);
-				this.setState({selectedCourses:newSelectedCourses});
+			var target = event.target;
+			const value = target.type === 'checkbox' ? target.checked : target.value;
+			//add course to course list if checked
+			if (value === true){
+				if(!newSelectedCourses.includes(course)){
+					//add course to selected courses
+					newSelectedCourses.push(course);
+					this.setState({selectedCourses:newSelectedCourses});
+				}
+			} else { //remove course from selected courses
+				var index = newSelectedCourses.indexOf(course);
+				if (index > -1) {
+					newSelectedCourses.splice(index, 1);
+				}
 			}
-		} else { //remove course from selected courses
-			var index = newSelectedCourses.indexOf(course);
-			if (index > -1) {
-				newSelectedCourses.splice(index, 1);
-			}
+			console.log(this.state.selectedCourses);
 		}
-		console.log(this.state.selectedCourses);
 	}
 	
 	submitBlock() {
@@ -242,7 +253,6 @@ export default class BlockContainer extends React.Component {
 	}
 	
 	handleIdentityChange = (i) => (event) => {
-		console.log("handleIdentityChange", i, event);
 		if (this.state.enabled) {
 			// Delete note to protect privacy
 			this.editSlot(i, event.target.value, "");
