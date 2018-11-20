@@ -2,7 +2,7 @@ export default class DummyApi {
 	constructor(url) {
 		this.url = url;
 		this.sessionToken = null;
-		this.delay = 500;
+		this.delay = 50;
 	}
 
 	login(username, password) {
@@ -214,6 +214,45 @@ export default class DummyApi {
 							"comment": "Birds!",
 							"startTime": "2018-11-18T16:00:00",
 							"appointmentDuration": 600000,
+							"appointmentSlots": [
+								{"identity": "", "courseCode": "", "note": ""},
+								{"identity": "", "courseCode": "", "note": ""},
+								{"identity": "", "courseCode": "", "note": ""},
+								{"identity": "", "courseCode": "", "note": ""},
+								{"identity": "", "courseCode": "", "note": ""},
+								{"identity": "", "courseCode": "", "note": ""},
+								{"identity": "", "courseCode": "", "note": ""},
+								{"identity": "", "courseCode": "", "note": ""},
+								{"identity": "", "courseCode": "", "note": ""},
+								{"identity": "", "courseCode": "", "note": ""},
+								{"identity": "", "courseCode": "", "note": ""},
+								{"identity": "", "courseCode": "", "note": ""},
+								{"identity": "", "courseCode": "", "note": ""},
+								{"identity": "", "courseCode": "", "note": ""},
+								{"identity": "", "courseCode": "", "note": ""},
+								{"identity": "", "courseCode": "", "note": ""},
+								{"identity": "", "courseCode": "", "note": ""},
+								{"identity": "", "courseCode": "", "note": ""},
+								{"identity": "", "courseCode": "", "note": ""},
+								{"identity": "", "courseCode": "", "note": ""},
+								{"identity": "", "courseCode": "", "note": ""},
+								{"identity": "", "courseCode": "", "note": ""},
+								{"identity": "", "courseCode": "", "note": ""},
+								{"identity": "", "courseCode": "", "note": ""}
+							]
+						},
+						{
+							"blockId": "blockid2",
+							"owners": [
+								"rossbob3",
+								"atst3"
+							],
+							"courseCodes": [
+								"csc402"
+							],
+							"comment": "TEST3!",
+							"startTime": "2018-11-21T09:00:00",
+							"appointmentDuration": 1200000,
 							"appointmentSlots": [
 								{"identity": "", "courseCode": "", "note": ""},
 								{"identity": "", "courseCode": "", "note": ""},
