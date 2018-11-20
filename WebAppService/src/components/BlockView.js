@@ -60,6 +60,7 @@ export default class BlockView extends React.Component {
 		} else {
 			return (
 				<div className="BlockTimes">
+					<div>Warning: Changing times will clear slots!</div>
 					<input
 						name="start"
 						type="time"
@@ -114,14 +115,13 @@ export default class BlockView extends React.Component {
 					Block Description
 					<textarea
 						value = {this.props.comment} 
-						name = "blockDescription" 
+						name = "comment" 
 						onChange={this.props.handleInputChange} 
 						rows="4" 
 						cols="50" 
 						placeholder="Enter block description..."
 					>
 					</textarea>
-					<button className="submit-button" onClick={this.props.submitBlock}>Submit</button>
 				</div>
 			);
 		}
@@ -133,6 +133,8 @@ export default class BlockView extends React.Component {
 				<div className="close-block" onClick={this.props.onClose}>Close</div>
 				{this.renderTimes(this.props.role)}
 				{this.renderInfo(this.props.role)}
+				<button className="submit-button" onClick={this.props.submitBlock}>Submit</button>
+				<button className="submit-button" onClick={this.props.updateBlock}>Cancel</button>
 			</div>
 		);
 	}

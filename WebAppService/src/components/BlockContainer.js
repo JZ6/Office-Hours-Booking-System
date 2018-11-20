@@ -17,7 +17,8 @@ export default class BlockContainer extends React.Component {
 		// Blocks
 		this.courseList = ["csc302","csc401","csc321"];
 		this.handleInputChange = this.handleInputChange.bind(this);
-		this.handleCourseSelection = this.handleCourseSelection.bind(this);
+		this.submitBlock = this.submitBlock.bind(this);
+		this.updateBlock = this.updateBlock.bind(this);
 		this.onClose = this.onClose.bind(this)
 		
 		// Slots
@@ -40,6 +41,49 @@ export default class BlockContainer extends React.Component {
 		this.setState({
 			visible: false,
 			enabled: false
+		});
+	}
+	
+	update(scope, i) {
+		this.setState({enabled: false});
+		this.props.api.getBlock(this.state.blockId)
+		.then((response) => {
+			if (response.status === 200) {
+				// Successful, return json promise to next .then
+				return response.json;
+			} else {
+				window.alert(response.status, response.statusText);
+			}
+			this.setState({enabled: true});
+		})
+		.then((data) => {
+			if (data.appointmentSlots) {
+				// Extract data from json promise, undefined if failure
+				if (scope === "block") {
+					this.prevSlots = data.appointmentSlots;
+					this.setState({...data});
+					
+					this.setState({
+						start: moment(data.startTime).format("HH:mm"),
+						end: this.getEnd(data)
+					});
+				} else if (scope === "slots") {
+					this.prevSlots = data.appointmentSlots;
+					this.setState({appointmentSlots: this.copySlots(this.prevSlots)});
+					
+					this.setState({end: this.getEnd(data)});
+				} else if (scope === "slot" && i) {
+					this.prevSlots[i] = data.appointmentSlots[i]
+					this.editSlot(i, this.prevSlots[i].identity, this.prevSlots[i].note);
+					
+					this.setState({end: this.getEnd(data)});
+				}
+			}
+			this.setState({enabled: true});
+		})
+		.catch((error) => {
+			window.alert(error.message);
+			this.setState({enabled: true});
 		});
 	}
 	
@@ -153,9 +197,17 @@ export default class BlockContainer extends React.Component {
 		}
 		console.log(this.state.selectedCourses);
 	}
+	
+	submitBlock() {
+		
+	}
+	
+	updateBlock() {
+		this.update("block");
+	}
 
 	//POSTs the edited block to the API and update calendar views
-	submitBlock(){
+	/* submitBlock(){
 
 			//create block using component state
 			let block = {
@@ -187,7 +239,7 @@ export default class BlockContainer extends React.Component {
 					window.alert(error.message);
 			});
 
-	}
+	} */
 	
 	//----------------------------------------------------------------------------
 	//---------------------------------- Slots -----------------------------------
@@ -221,6 +273,8 @@ export default class BlockContainer extends React.Component {
 			// Can't edit note that belongs to nobody
 			if (this.state.appointmentSlots[i].identity !== "") {
 				this.editSlot(i, this.state.appointmentSlots[i].identity, event.target.value);
+			} else {
+				window.alert("Can't edit note of an unregistered slot.");
 			}
 		}
 	}
@@ -247,7 +301,6 @@ export default class BlockContainer extends React.Component {
 	
 	handleSlotCancel = (i) => () => {
 		if (this.state.enabled) {
-			this.editSlot(i, this.prevSlots[i].identity, this.prevSlots[i].note);
 			this.updateSlot(i);
 		}
 	}
@@ -312,59 +365,11 @@ export default class BlockContainer extends React.Component {
 	}
 	
 	updateSlots() {
-		this.setState({enabled: false});
-		this.props.api.getBlock(this.state.blockId)
-		.then((response) => {
-			if (response.status === 200) {
-				// Successful, return json promise to next .then
-				return response.json;
-			} else {
-				window.alert(response.status, response.statusText);
-			}
-			this.setState({enabled: true});
-		})
-		.then((data) => {
-			if (data.appointmentSlots) {
-				// Extract data from json promise, undefined if failure
-				this.prevSlots = data.appointmentSlots;
-				this.setState({appointmentSlots: this.copySlots(this.prevSlots)});
-				// Also set end time to agree
-				this.setState({end: this.getEnd(data)});
-			}
-			this.setState({enabled: true});
-		})
-		.catch((error) => {
-			window.alert(error.message);
-			this.setState({enabled: true});
-		});
+		this.update("slots");
 	}
 	
 	updateSlot(i) {
-		this.setState({enabled: false});
-		this.props.api.getBlock(this.state.blockId)
-		.then((response) => {
-			if (response.status === 200) {
-				// Successful, return json promise to next .then
-				return response.json;
-			} else {
-				window.alert(response.status, response.statusText);
-			}
-			this.setState({enabled: true});
-		})
-		.then((data) => {
-			if (data.appointmentSlots) {
-				// Extract data from json promise, undefined if failure
-				this.prevSlots[i] = data.appointmentSlots[i]
-				this.editSlot(i, this.prevSlots[i].identity, this.prevSlots[i].note);
-				// Also set end time to agree
-				this.setState({end: this.getEnd(data)});
-			}
-			this.setState({enabled: true});
-		})
-		.catch((error) => {
-			window.alert(error.message);
-			this.setState({enabled: true});
-		});
+		this.update("slot", i);
 	}
 	
 	//----------------------------------------------------------------------------
@@ -376,6 +381,9 @@ export default class BlockContainer extends React.Component {
 			return <div className="BlockContainer">Loading: {(!this.state.enabled).toString()}
 				<BlockView 
 					handleInputChange={this.handleInputChange}
+					submitBlock={this.submitBlock}
+					updateBlock={this.updateBlock}
+					onClose={this.onClose}
 					
 					startTime={this.state.startTime}
 					appointmentDuration={this.state.appointmentDuration}
