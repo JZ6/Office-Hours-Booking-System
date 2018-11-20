@@ -124,9 +124,10 @@ export default class BlockContainer extends React.Component {
 			const name = event.target.name;
 			
 			if (name==="appointmentDuration") {
-				if (Number.isInteger(value) && value > 0) {
-					this.updateSlotNumber(this.state.start, this.state.end, value);
-					this.setState({appointmentDuration: value});
+				let duration = parseInt(value);
+				if (duration && duration > 0) {
+					this.updateSlotNumber(this.state.start, this.state.end, duration);
+					this.setState({appointmentDuration: duration});
 				}
 			} else if (name === "start") {
 				// Validate
