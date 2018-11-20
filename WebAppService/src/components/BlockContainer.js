@@ -1,7 +1,9 @@
 import React from "react";
 import moment from "moment";
 
-export default class SlotContainer extends React.Component {
+import SlotView from "./SlotView";
+
+export default class BlockContainer extends React.Component {
 	constructor(props) {
 		super(props);
 		
@@ -9,6 +11,7 @@ export default class SlotContainer extends React.Component {
 			enabled: false,
 			slots: []
 		}
+		
 		this.prevSlots = this.copySlots(this.state.slots);
 		
 		this.handleUpdate = this.handleUpdate.bind(this);
@@ -144,10 +147,6 @@ export default class SlotContainer extends React.Component {
 		});
 	}
 	
-	slotsEqual(a, b) {
-		return (a.identity === b.identity && a.note === b.note);
-	}
-	
 	updateSlots() {
 		this.setState({enabled: false});
 		this.props.api.getSlots(this.props.blockId)
@@ -200,117 +199,22 @@ export default class SlotContainer extends React.Component {
 		});
 	}
 	
-	renderIdentity(i) {
-		if (this.props.role === "student") {
-			let name;
-			if (this.props.id === this.state.slots[i].identity) {
-				// Student owns slot
-				name = this.props.id;
-			} else {
-				if (this.state.slots[i].identity === "") {
-					// Slot is available
-					name = "Available";
-				} else {
-					// Slot is taken by someone else
-					name = "Not Available";
-				}
-			}
-			return <span id={`identity${i}`}>{name}</span>;
-		} else {
-			return (
-				<input
-					className="text-input"
-					name={`identity${i}`}
-					id={`identity${i}`}
-					type="text"
-					value={this.state.slots[i].identity}
-					placeholder="Unassigned UtorID..."
-					maxLength={50}
-					onChange={this.handleIdentityChange(i)}
-				/>
-			);
-		}
-	}
-	
-	renderNote(i) {
-		if (this.props.role !== "student" || 
-				this.props.id === this.state.slots[i].identity) {
-			// Note editable by instructor or student author
-			return (
-				<input
-					className="text-input"
-					name={`note${i}`}
-					id={`note${i}`}
-					type="text"
-					value={this.state.slots[i].note}
-					placeholder="Empty Note..."
-					maxLength={280}
-					onChange={this.handleNoteChange(i)}
-				/>
-			);
-		} else {
-			// Note by someone else hidden
-			return <span id={`note${i}`} />;
-		}
-	}
-	
-	renderSlotButtons(i) {
-		if (!this.slotsEqual(this.state.slots[i], this.prevSlots[i])) {
-			return <span>
-				<button id={`confirm${i}`} onClick={this.handleSlotConfirm(i)}>✎</button>
-				<button id={`cancel${i}`} onClick={this.handleSlotCancel(i)}>❌</button>
-			</span>;
-		}
-		return <span />
-	}
-	
-	getSlotClass(i) {
-		if (this.props.role !== "student") {
-			return "slot";
-		}
-		if (this.state.slots[i].identity === this.props.id) {
-			return "slot--mine";
-		} else if (this.state.slots[i].identity === "") {
-			return "slot";
-		} else {
-			return "slot--taken";
-		}
-	}
-	
-	renderSlots() {
-		return (
-			this.state.slots.map((slot, i) => 
-				<div 
-					className={this.getSlotClass(i)}
-					id={`slot${i}`}
-					key={i}
-					// Only students can click to assign a free slot to themselves
-					onClick={this.props.role === "student" ? this.handleSlotClick(i) : () => {return false}}
-				>
-				{this.renderSlotButtons(i)}
-					{moment(this.props.startTime + this.props.slotDuration * i).format("h:mmA - ")}
-					{moment(this.props.startTime + this.props.slotDuration * (i + 1)).format("h:mmA")}
-					{this.renderIdentity(i)}
-					{this.renderNote(i)}
-				</div>
-			)
-		);
-	}
-
 	render() {
-		return (
-			<div className="slot-container">
-				{this.renderSlots()}
-				<button id="empty-button" onClick={this.handleEmpty}>
-					{this.props.role === "student" ? (
-						"Empty My Slots"
-					):(
-						"Empty All Slots"
-					)}
-				</button>
-				<button id="update-button" onClick={this.handleUpdate}>Refresh</button>
-				<button id="undo-button" onClick={this.handleUndo}>Undo Changes</button>
-			</div>
-		);
+		return	<SlotView 
+			handleSlotClick={this.handleSlotClick}
+			handleIdentityChange={this.handleIdentityChange}
+			handleNoteChange={this.handleNoteChange}
+			handleSlotConfirm={this.handleSlotConfirm}
+			handleSlotCancel={this.handleSlotCancel}
+			handleEmpty={this.handleEmpty}
+			handleUpdate={this.handleUpdate}
+			handleUndo={this.handleUndo}
+			slots={this.state.slots}
+			prevSlots={this.prevSlots}
+			role={this.props.role}
+			id={this.props.id}
+			startTime={this.props.startTime}
+			slotDuration={this.props.slotDuration}
+		/>;
 	}
 }
