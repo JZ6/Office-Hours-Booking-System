@@ -2,6 +2,7 @@ import React from "react";
 import moment from "moment";
 
 import "../styles/BlockContainer.css";
+import BlockView from "./BlockView";
 import SlotView from "./SlotView";
 
 export default class BlockContainer extends React.Component {
@@ -10,45 +11,185 @@ export default class BlockContainer extends React.Component {
 		
 		this.state = {
 			visible: false,
-			enabled: false,
-			block: {},
-			slots: []
+			enabled: false
 		}
 		
-		this.prevSlots = [];
+		// Blocks
+		this.courseList = ["csc302","csc401","csc321"];
+		this.handleInputChange = this.handleInputChange.bind(this);
+		this.handleCourseSelection = this.handleCourseSelection.bind(this);
+		this.onClose = this.onClose.bind(this)
 		
+		// Slots
+		this.prevSlots = [];
 		this.handleUpdate = this.handleUpdate.bind(this);
 		this.handleUndo = this.handleUndo.bind(this);
-		
-		/*
-		Props:
-		this.props.id = "rossbob2";
-		this.props.role = "instructor";  // for the current class
-		this.props.blockId = "someblock123";
-		*/
 	}
 	
 	onOpen(block) {
 		this.prevSlots = this.copySlots(block.appointmentSlots);
-		delete block.appointmentSlots;
 		this.setState({
-			block: block, 
-			slots: this.copySlots(this.prevSlots),
-			visible: true, 
-			enabled: true
+			visible: true,
+			enabled: true,
+			...block,
+			start: moment(block.startTime).format("HH:mm"),
+			end: moment(block.startTime).add(block.appointmentDuration * block.appointmentSlots.length).format("HH:mm")
 		});
 	}
 	onClose() {
-		this.setState({block: {}, visible: false, enabled: false});
+		this.setState({
+			visible: false,
+			enabled: false
+		});
 	}
+	
+	//----------------------------------------------------------------------------
+	//---------------------------------- Block -----------------------------------
+	//----------------------------------------------------------------------------
+	
+	updateSlotNumber(startTime, endTime, appointmentDuration){
+		let slotNumber = Math.floor(
+			(moment(startTime) - moment(endTime)) / appointmentDuration);
+		if (slotNumber === 0) {
+			this.setState({appointmentSlots: []})
+		} else {
+			let slots = [...Array(slotNumber)];
+			slots.map(() => (
+				{identity: "", courseCode: "", note: ""}
+			));
+			this.setState({appointmentSlots: slots});
+		}
+	}
+	
+	handleInputChange(event) {
+		const value = event.target.value;
+		const name = event.target.name;
+		
+		if (name==="appointmentDuration") {
+			this.updateSlotNumber(this.state.startTime, this.state.endTime, value);
+			this.setState({appointmentDuration: value});
+		} else if (name === 'startTime') {
+			// Validate
+			let start = value;
+			if (moment(start, "HH:mm") > moment(this.state.end, "HH:mm")) {
+				start = this.state.end;
+			}
+			this.setState({start: start});
+			
+			// Need to update block's actual startTime which includes date
+			let newStartTime = this.state.startTime;  // String immutable
+			newStartTime = moment(newStartTime)
+				.hour(parseInt(start.slice(0, 2)))
+				.minute(parseInt(start.slice(3, 5)))
+				.second(0)
+				.millisecond(0)
+				.toISOString();
+			this.setState({startTime: newStartTime})
+			
+			// Changes number of slots
+			this.updateSlotNumber(start, this.state.end, this.state.appointmentDuration);
+		} else if (name === 'endTime') { 
+			// Validate
+			let end = value;
+			if (moment(end) < moment(this.state.start)) {
+				end = this.state.start;
+			}
+			this.setState({end: end});
+			
+			// Changes number of slots
+			this.updateSlotNumber(this.state.start, end, this.state.appointmentDuration);
+		} else if (name === 'date') {
+			let date = value;
+			
+			let newStartTime = this.state.startTime;  // String immutable
+			newStartTime = moment(newStartTime)
+				.year(parseInt(date.slice(0, 4)))
+				.month(parseInt(date.slice(5, 7)))
+				.date(parseInt(date.slice(8, 10)))
+				.toISOString();
+			
+			this.setState({startTime:newStartTime})
+
+			// Shouldn't change number of slots
+		} else if (
+			name === "owners" || 
+			name === "courseCodes" || 
+			name === "comment") {
+			this.setState({[name]: value});
+		}
+
+		
+	}
+
+	//update relevant selectedCourses when a course is selected
+	handleCourseSelection(event){
+		var newSelectedCourses = this.state.selectedCourses;
+		var course = event.target.id;
+
+		var target = event.target;
+		const value = target.type === 'checkbox' ? target.checked : target.value;
+		//add course to course list if checked
+		if (value === true){
+			if(!newSelectedCourses.includes(course)){
+				//add course to selected courses
+				newSelectedCourses.push(course);
+				this.setState({selectedCourses:newSelectedCourses});
+			}
+		} else { //remove course from selected courses
+			var index = newSelectedCourses.indexOf(course);
+			if (index > -1) {
+				newSelectedCourses.splice(index, 1);
+			}
+		}
+		console.log(this.state.selectedCourses);
+	}
+
+	//POSTs the edited block to the API and update calendar views
+	submitBlock(){
+
+			//create block using component state
+			let block = {
+			id:"",
+			owners:this.state.instructorName,
+			courseCodes:this.state.selectedCourses,
+			comment:this.state.blockDescription,
+			startTime: this.state.date+"T"+this.state.startTime+":"+this.state.event.start.getSeconds(), //2008-09-15T15:53:00
+			appointmentDuration:this.state.slotDuration*60*1000,
+			appointmentSlots:[] //get slots from slot component
+			}
+
+			//TO DO: alert and cancel submission if block length is negative.
+
+			// call function to update calendar view with the new block
+			// HERE
+
+			this.props.api.postBlock(block)
+			.then((response) => {
+					if (response.status === 200) {
+							//callback function if POST successful
+					} else {
+							window.alert(response.status, response.statusText);
+							//call function to refresh the page and revert the posted block
+							// HERE
+					}
+			})
+			.catch((error) => {
+					window.alert(error.message);
+			});
+
+	}
+	
+	//----------------------------------------------------------------------------
+	//---------------------------------- Slots -----------------------------------
+	//----------------------------------------------------------------------------
 	
 	handleSlotClick = (i) => () => {
 		if (this.state.enabled) {
-			if (this.state.slots[i].identity === "") {
+			if (this.state.appointmentSlots[i].identity === "") {
 				// Click on empty slot to assign
 				this.editSlot(i, this.props.id, "");
 			} else {
-				if (this.props.id === this.state.slots[i].identity) {
+				if (this.props.id === this.state.appointmentSlots[i].identity) {
 					// Click on own slot to delete
 					this.editSlot(i, "", "");
 				}
@@ -68,8 +209,8 @@ export default class BlockContainer extends React.Component {
 	handleNoteChange = (i) => (event) => {
 		if (this.state.enabled) {
 			// Can't edit note that belongs to nobody
-			if (this.state.slots[i].identity !== "") {
-				this.editSlot(i, this.state.slots[i].identity, event.target.value);
+			if (this.state.appointmentSlots[i].identity !== "") {
+				this.editSlot(i, this.state.appointmentSlots[i].identity, event.target.value);
 			}
 		}
 	}
@@ -77,7 +218,7 @@ export default class BlockContainer extends React.Component {
 	handleSlotConfirm = (i) => () => {
 		if (this.state.enabled) {
 			this.setState({enabled: false});
-			this.props.api.editSlot(this.props.blockId, i, this.state.slots[i])
+			this.props.api.editSlot(this.props.blockId, i, this.state.appointmentSlots[i])
 			.then((response) => {
 				if (response.status === 200) {
 					this.updateSlot(i);
@@ -108,25 +249,25 @@ export default class BlockContainer extends React.Component {
 			
 			if (this.props.role === "student") {
 				// Student clears only their own
-				for (let i = 0; i < this.state.slots.length; i++) {
-					if (this.props.id === this.state.slots[i].identity) {
+				for (let i = 0; i < this.state.appointmentSlots.length; i++) {
+					if (this.props.id === this.state.appointmentSlots[i].identity) {
 						promises.push(this.props.api.editSlot(this.props.blockId, i, {identity: "", note: ""}));
 					}
 				}
 			} else {
 				// Instructor clears all
-				for (let i = 0; i < this.state.slots.length; i++) {
+				for (let i = 0; i < this.state.appointmentSlots.length; i++) {
 					promises.push(this.props.api.editSlot(this.props.blockId, i, {identity: "", note: ""}));
 				}
 			}
 			Promise.all(promises)
-			.then(([response]) => {
-				if (response.status === 200) {
-					this.updateSlots();
-				} else {
-					window.alert(response.status, response.statusText);
-					this.updateSlots();
-				}
+			.then((responses) => {
+				responses.map((response) => {
+					if (response.status !== 200) {
+						window.alert(response.status, response.statusText);
+					}
+				});
+				this.updateSlots();
 			})
 			.catch((error) => {
 				window.alert(error.message);
@@ -143,15 +284,15 @@ export default class BlockContainer extends React.Component {
 	
 	handleUndo() {
 		if (this.state.enabled) {
-			this.setState({slots: this.copySlots(this.prevSlots)});
+			this.setState({appointmentSlots: this.copySlots(this.prevSlots)});
 		}
 	}
 	
 	editSlot(i, identity, note) {
-		const newSlots = this.copySlots(this.state.slots);
+		const newSlots = this.copySlots(this.state.appointmentSlots);
 		newSlots[i].identity = identity;
 		newSlots[i].note = note;
-		this.setState({slots: newSlots});
+		this.setState({appointmentSlots: newSlots});
 	}
 	
 	copySlots(slots) {
@@ -162,7 +303,7 @@ export default class BlockContainer extends React.Component {
 	
 	updateSlots() {
 		this.setState({enabled: false});
-		this.props.api.getBlock(this.state.block.blockId)
+		this.props.api.getBlock(this.state.blockId)
 		.then((response) => {
 			if (response.status === 200) {
 				// Successful, return json promise to next .then
@@ -176,7 +317,7 @@ export default class BlockContainer extends React.Component {
 			if (data.appointmentSlots) {
 				// Extract data from json promise, undefined if failure
 				this.prevSlots = data.appointmentSlots;
-				this.setState({slots: this.copySlots(this.prevSlots)});
+				this.setState({appointmentSlots: this.copySlots(this.prevSlots)});
 			}
 			this.setState({enabled: true});
 		})
@@ -188,7 +329,7 @@ export default class BlockContainer extends React.Component {
 	
 	updateSlot(i) {
 		this.setState({enabled: false});
-		this.props.api.getBlock(this.state.block.blockId)
+		this.props.api.getBlock(this.state.blockId)
 		.then((response) => {
 			if (response.status === 200) {
 				// Successful, return json promise to next .then
@@ -212,25 +353,46 @@ export default class BlockContainer extends React.Component {
 		});
 	}
 	
+	//----------------------------------------------------------------------------
+	//---------------------------------- Render ----------------------------------
+	//----------------------------------------------------------------------------
+	
 	render() {
 		if (this.state.visible) {
-			return <div className="BlockContainer">Loading: {(!this.state.enabled).toString()}<SlotView 
-				handleSlotClick={this.handleSlotClick}
-				handleIdentityChange={this.handleIdentityChange}
-				handleNoteChange={this.handleNoteChange}
-				handleSlotConfirm={this.handleSlotConfirm}
-				handleSlotCancel={this.handleSlotCancel}
-				handleEmpty={this.handleEmpty}
-				handleUpdate={this.handleUpdate}
-				handleUndo={this.handleUndo}
-				
-				startTime={this.state.block.startTime}
-				slotDuration={this.state.block.appointmentDuration}
-				slots={this.state.slots}
-				prevSlots={this.prevSlots}
-				role={this.props.role}
-				id={this.props.id}
-			/></div>;
+			return <div className="BlockContainer">Loading: {(!this.state.enabled).toString()}
+				<BlockView 
+					handleInputChange={this.handleInputChange}
+					
+					startTime={this.state.startTime}
+					appointmentDuration={this.state.appointmentDuration}
+					owners={this.state.owners}
+					courseCodes={this.state.courseCodes}
+					comment={this.state.comment}
+					
+					start={this.state.start}
+					end={this.state.end}
+					
+					role={this.props.role}
+					id={this.props.id}
+				/>
+				<SlotView 
+					handleSlotClick={this.handleSlotClick}
+					handleIdentityChange={this.handleIdentityChange}
+					handleNoteChange={this.handleNoteChange}
+					handleSlotConfirm={this.handleSlotConfirm}
+					handleSlotCancel={this.handleSlotCancel}
+					handleEmpty={this.handleEmpty}
+					handleUpdate={this.handleUpdate}
+					handleUndo={this.handleUndo}
+					
+					startTime={this.state.startTime}
+					slotDuration={this.state.appointmentDuration}
+					slots={this.state.appointmentSlots}
+					prevSlots={this.prevSlots}
+					role={this.props.role}
+					id={this.props.id}
+				/>
+			</div>;
 		}
 		else {
 			return null;
