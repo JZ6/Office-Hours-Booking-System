@@ -214,7 +214,7 @@ export default class BlockContainer extends React.Component {
 	
 	render() {
 		if (this.state.visible) {
-			return <div className="BlockContainer"><SlotView 
+			return <div className="BlockContainer">Loading: {(!this.state.enabled).toString()}<SlotView 
 				handleSlotClick={this.handleSlotClick}
 				handleIdentityChange={this.handleIdentityChange}
 				handleNoteChange={this.handleNoteChange}

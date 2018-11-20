@@ -1,0 +1,9 @@
+.Slot{
+	background-color:rgb(255, 255, 255);
+}
+.Slot--mine{
+	background-color:rgb(200, 255, 200);
+}
+.Slot--taken{
+	background-color:rgb(255, 200, 200);
+}

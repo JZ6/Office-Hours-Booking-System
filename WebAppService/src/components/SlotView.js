@@ -1,6 +1,8 @@
 import React from "react";
 import moment from "moment";
 
+import "../styles/SlotView.css";
+
 export default class SlotView extends React.Component {
 	slotsEqual(a, b) {
 		return (a.identity === b.identity && a.note === b.note);
@@ -11,14 +13,14 @@ export default class SlotView extends React.Component {
 			let name;
 			if (this.props.id === this.props.slots[i].identity) {
 				// Student owns slot
-				name = this.props.id;
+				name = <button onClick={this.props.handleSlotClick(i)}>Unregister</button>;
 			} else {
 				if (this.props.slots[i].identity === "") {
 					// Slot is available
-					name = "Available";
+					name = <button onClick={this.props.handleSlotClick(i)}>Register</button>;
 				} else {
 					// Slot is taken by someone else
-					name = "Not Available";
+					name = <button disabled>Not Available</button>;
 				}
 			}
 			return <span id={`identity${i}`}>{name}</span>;
@@ -72,14 +74,14 @@ export default class SlotView extends React.Component {
 	
 	getSlotClass(i) {
 		if (this.props.role !== "student") {
-			return "slot";
+			return "Slot";
 		}
 		if (this.props.slots[i].identity === this.props.id) {
-			return "slot--mine";
+			return "Slot--mine";
 		} else if (this.props.slots[i].identity === "") {
-			return "slot";
+			return "Slot";
 		} else {
-			return "slot--taken";
+			return "Slot--taken";
 		}
 	}
 	
@@ -90,14 +92,12 @@ export default class SlotView extends React.Component {
 					className={this.getSlotClass(i)}
 					id={`slot${i}`}
 					key={i}
-					// Only students can click to assign a free slot to themselves
-					onClick={this.props.role === "student" ? this.props.handleSlotClick(i) : () => {return false}}
 				>
-				{this.renderSlotButtons(i)}
 					{moment(moment(this.props.startTime) + this.props.slotDuration * i).format("h:mmA - ")}
 					{moment(moment(this.props.startTime) + this.props.slotDuration * (i + 1)).format("h:mmA")}
 					{this.renderIdentity(i)}
 					{this.renderNote(i)}
+					{this.renderSlotButtons(i)}
 				</div>
 			)
 		);
