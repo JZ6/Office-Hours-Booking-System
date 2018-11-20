@@ -1,0 +1,10 @@
+.BlockContainer{
+	position: absolute;
+	width: 80%;
+	height: 500px;
+	top:50%;
+	left:50%;
+	transform: translate(-50%,-50%);
+	background-color:rgb(219, 219, 219);
+	z-index: 4;
+}

@@ -63,8 +63,8 @@ export default class SlotView extends React.Component {
 	renderSlotButtons(i) {
 		if (!this.slotsEqual(this.props.slots[i], this.props.prevSlots[i])) {
 			return <span>
-				<button id={`confirm${i}`} onClick={this.props.handleSlotConfirm(i)}>✎</button>
-				<button id={`cancel${i}`} onClick={this.props.handleSlotCancel(i)}>❌</button>
+				<button id={`confirm${i}`} onClick={this.props.handleSlotConfirm(i)}>Confirm</button>
+				<button id={`cancel${i}`} onClick={this.props.handleSlotCancel(i)}>Cancel</button>
 			</span>;
 		}
 		return <span />
@@ -94,8 +94,8 @@ export default class SlotView extends React.Component {
 					onClick={this.props.role === "student" ? this.props.handleSlotClick(i) : () => {return false}}
 				>
 				{this.renderSlotButtons(i)}
-					{moment(this.props.startTime + this.props.slotDuration * i).format("h:mmA - ")}
-					{moment(this.props.startTime + this.props.slotDuration * (i + 1)).format("h:mmA")}
+					{moment(moment(this.props.startTime) + this.props.slotDuration * i).format("h:mmA - ")}
+					{moment(moment(this.props.startTime) + this.props.slotDuration * (i + 1)).format("h:mmA")}
 					{this.renderIdentity(i)}
 					{this.renderNote(i)}
 				</div>

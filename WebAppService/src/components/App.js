@@ -9,6 +9,7 @@ import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
 import components from './';
+import BlockContainer from "./BlockContainer";
 
 import dummyAPI from './common/dummyApi'
 
@@ -129,7 +130,8 @@ class App extends Component {
 	};
 
 	onSelectEvent = (event, e) => {
-		this.refs.blockView.onSelectEvent(event);
+		console.log("Clicked on ", event);
+		this.refs.blockContainer.onOpen(event.block);
 	};
 
 	render() {
@@ -151,8 +153,7 @@ class App extends Component {
 						}}
 					/>
 				</div>
-				<BlockView ref="blockView" permission={"instructor"} />
-				<SideBar />
+				<BlockContainer ref="blockContainer" id="rossbob2" role="instructor" blockId="someblock123" api={this.api}/>
 			</div>
 		);
 	}
