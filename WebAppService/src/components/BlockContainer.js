@@ -45,46 +45,48 @@ export default class BlockContainer extends React.Component {
 	}
 	
 	update(scope, i) {
-		this.setState({enabled: false});
-		this.props.api.getBlock(this.state.blockId)
-		.then((response) => {
-			if (response.status === 200) {
-				// Successful, return json promise to next .then
-				return response.json;
-			} else {
-				window.alert(response.status, response.statusText);
-			}
-			this.setState({enabled: true});
-		})
-		.then((data) => {
-			if (data.appointmentSlots) {
-				// Extract data from json promise, undefined if failure
-				if (scope === "block") {
-					this.prevSlots = data.appointmentSlots;
-					this.setState({...data});
-					
-					this.setState({
-						start: moment(data.startTime).format("HH:mm"),
-						end: this.getEnd(data)
-					});
-				} else if (scope === "slots") {
-					this.prevSlots = data.appointmentSlots;
-					this.setState({appointmentSlots: this.copySlots(this.prevSlots)});
-					
-					this.setState({end: this.getEnd(data)});
-				} else if (scope === "slot" && i) {
-					this.prevSlots[i] = data.appointmentSlots[i]
-					this.editSlot(i, this.prevSlots[i].identity, this.prevSlots[i].note);
-					
-					this.setState({end: this.getEnd(data)});
+		if (this.state.enabled) {
+			this.setState({enabled: false});
+			this.props.api.getBlock(this.state.blockId)
+			.then((response) => {
+				if (response.status === 200) {
+					// Successful, return json promise to next .then
+					return response.json;
+				} else {
+					window.alert(response.status, response.statusText);
 				}
-			}
-			this.setState({enabled: true});
-		})
-		.catch((error) => {
-			window.alert(error.message);
-			this.setState({enabled: true});
-		});
+				this.setState({enabled: true});
+			})
+			.then((data) => {
+				if (data.appointmentSlots) {
+					// Extract data from json promise, undefined if failure
+					if (scope === "block") {
+						this.prevSlots = data.appointmentSlots;
+						this.setState({...data});
+						
+						this.setState({
+							start: moment(data.startTime).format("HH:mm"),
+							end: this.getEnd(data)
+						});
+					} else if (scope === "slots") {
+						this.prevSlots = data.appointmentSlots;
+						this.setState({appointmentSlots: this.copySlots(this.prevSlots)});
+						
+						this.setState({end: this.getEnd(data)});
+					} else if (scope === "slot" && i) {
+						this.prevSlots[i] = data.appointmentSlots[i]
+						this.editSlot(i, this.prevSlots[i].identity, this.prevSlots[i].note);
+						
+						this.setState({end: this.getEnd(data)});
+					}
+				}
+				this.setState({enabled: true});
+			})
+			.catch((error) => {
+				window.alert(error.message);
+				this.setState({enabled: true});
+			});
+		}
 	}
 	
 	//----------------------------------------------------------------------------
@@ -199,47 +201,26 @@ export default class BlockContainer extends React.Component {
 	}
 	
 	submitBlock() {
-		
+		if (this.state.enabled) {
+			this.setState({enabled: false});
+			this.props.api.postBlock(this.state)  // Will be sanitized in API class
+			.then((response) => {
+				if (response.status !== 200) {
+					window.alert(response.status, response.statusText);
+				}
+				this.setState({enabled: true});
+				this.update("block");
+			})
+			.catch((error) => {
+				window.alert(error.message);
+				this.setState({enabled: true});
+			});
+		}
 	}
 	
 	updateBlock() {
 		this.update("block");
 	}
-
-	//POSTs the edited block to the API and update calendar views
-	/* submitBlock(){
-
-			//create block using component state
-			let block = {
-			id:"",
-			owners:this.state.instructorName,
-			courseCodes:this.state.selectedCourses,
-			comment:this.state.blockDescription,
-			startTime: this.state.date+"T"+this.state.startTime+":"+this.state.event.start.getSeconds(), //2008-09-15T15:53:00
-			appointmentDuration:this.state.slotDuration*60*1000,
-			appointmentSlots:[] //get slots from slot component
-			}
-
-			//TO DO: alert and cancel submission if block length is negative.
-
-			// call function to update calendar view with the new block
-			// HERE
-
-			this.props.api.postBlock(block)
-			.then((response) => {
-					if (response.status === 200) {
-							//callback function if POST successful
-					} else {
-							window.alert(response.status, response.statusText);
-							//call function to refresh the page and revert the posted block
-							// HERE
-					}
-			})
-			.catch((error) => {
-					window.alert(error.message);
-			});
-
-	} */
 	
 	//----------------------------------------------------------------------------
 	//---------------------------------- Slots -----------------------------------
@@ -284,25 +265,22 @@ export default class BlockContainer extends React.Component {
 			this.setState({enabled: false});
 			this.props.api.editSlot(this.props.blockId, i, this.state.appointmentSlots[i])
 			.then((response) => {
-				if (response.status === 200) {
-					this.updateSlot(i);
-				} else {
+				if (response.status !== 200) {
 					window.alert(response.status, response.statusText);
-					this.updateSlot(i);
 				}
-				
+				this.setState({enabled: true});
+				this.update("slot", i);
 			})
 			.catch((error) => {
 				window.alert(error.message);
 				this.setState({enabled: true});
+				this.update("slot", i);
 			});
 		}
 	}
 	
 	handleSlotCancel = (i) => () => {
-		if (this.state.enabled) {
-			this.updateSlot(i);
-		}
+		this.update("slot", i);
 	}
 	
 	handleEmpty = () => {
@@ -330,19 +308,19 @@ export default class BlockContainer extends React.Component {
 						window.alert(response.status, response.statusText);
 					}
 				});
-				this.updateSlots();
+				this.setState({enabled: true});
+				this.update("slots");
 			})
 			.catch((error) => {
 				window.alert(error.message);
 				this.setState({enabled: true});
+				this.update("slots");
 			})
 		}
 	}
 	
 	handleUpdate() {
-		if (this.state.enabled) {
-			this.updateSlots();
-		}
+		this.update("slots");
 	}
 	
 	handleUndo() {
@@ -362,14 +340,6 @@ export default class BlockContainer extends React.Component {
 		return slots.map(slot => {
 			return {identity: slot.identity, note: slot.note}
 		});
-	}
-	
-	updateSlots() {
-		this.update("slots");
-	}
-	
-	updateSlot(i) {
-		this.update("slot", i);
 	}
 	
 	//----------------------------------------------------------------------------
