@@ -4,7 +4,7 @@ from datetime import datetime
 from flask_restful import Resource
 from flask import request
 
-from api import mongo
+from ..db import get_db
 
 
 def deny_authorization(reason=None):

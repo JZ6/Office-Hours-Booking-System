@@ -9,9 +9,10 @@ services:
     depends_on:
       - mongodb
     environment:
-      - MONGO_CONTAINER_NAME=mongoservice
+      - MONGO_HOST=mongoservice
       - MONGO_PORT=27017
       - MONGO_DBNAME=dev_db
+      - FLASK_ENV=dev
     networks:
       - api-network
   mongodb:
@@ -25,7 +26,6 @@ services:
     environment:
       - MONGO_SERVICE_PORT=27017
       - MONGO_INITDB_DATABASE=dev_db
-      - PWDVAR=${PWD}
     networks:
       - api-network
 

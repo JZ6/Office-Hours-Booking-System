@@ -1,0 +1,45 @@
+{
+    "$jsonSchema": {
+        "bsonType": "object",
+        "required": [
+            "courseCode",
+            "instructors",
+            "tas",
+            "students"
+        ],
+        "additionalProperties": false,
+        "properties": {
+            "_id": {
+                "bsonType": "objectId"
+            },
+            "courseCode": {
+                "bsonType": "string",
+                "pattern": "[A-Z]{3}[0-9]{3}"
+            },
+            "instructors": {
+                "bsonType": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                    "bsonType": "string",
+                    "pattern": "[a-z0-9]+"
+                }
+            },
+            "tas": {
+                "bsonType": "array",
+                "uniqueItems": true,
+                "items": {
+                    "bsonType": "string"
+                }
+            },
+            "students": {
+                "bsonType": "array",
+                "uniqueItems": true,
+                "items": {
+                    "bsonType": "string",
+                    "pattern": "[a-z0-9]+"
+                }
+            }
+        }
+    }
+}
