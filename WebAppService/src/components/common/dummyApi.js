@@ -24,16 +24,16 @@ export default class DummyApi {
 							"courseCode": "csc302",
 							"note": "Everybody gets one."
 						},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""}
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" }
 					]
 				},
 				{
@@ -50,30 +50,30 @@ export default class DummyApi {
 					"startTime": "2018-11-18T16:00:00",
 					"appointmentDuration": 600000,
 					"appointmentSlots": [
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""}
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" }
 					]
 				},
 				{
@@ -89,30 +89,30 @@ export default class DummyApi {
 					"startTime": "2018-11-21T09:00:00",
 					"appointmentDuration": 1200000,
 					"appointmentSlots": [
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""},
-						{"identity": "", "courseCode": "", "note": ""}
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" }
 					]
 				}
 			]
@@ -121,7 +121,7 @@ export default class DummyApi {
 
 	login(username, password) {
 		const jsonPromise = new Promise((resolve, reject) => {
-			resolve({sessionToken: "dummysessiontoken"});
+			resolve({ sessionToken: "dummysessiontoken" });
 		});
 		const promise = new Promise((resolve, reject) => {
 			setTimeout(() => resolve({
@@ -183,7 +183,7 @@ export default class DummyApi {
 				json: jsonPromise
 			}), this.delay);
 		});
-		
+
 		return promise;
 	}
 	postIdentity(identity) {
@@ -294,87 +294,15 @@ export default class DummyApi {
 	}
 	// Also use for getting slots en masse
 	getBlock(blockId) {
+
+		let foundBlock = this.currentBlocks.blocks.find(element =>
+			element.blockId === blockId);
+
 		const jsonPromise = new Promise((resolve, reject) => {
-			if (blockId === "blockid0") {
-				resolve(
-					{
-						"blockId": "blockid0",
-						"owners": [
-							"rossbob2",
-							"atat4"
-						],
-						"courseCodes": [
-							"csc301",
-							"csc302"
-						],
-						"comment": "We don't make mistakes, just happy little accidents.",
-						"startTime": "2018-11-18T12:00:00",
-						"appointmentDuration": 300000,
-						"appointmentSlots": [
-							{
-								"identity": "parkerpeter15",
-								"courseCode": "csc302",
-								"note": "Everybody gets one."
-							},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""}
-						]
-					}
-				);
-			} else if (blockId === "blockid1") {
-				resolve(
-					{
-						"blockId": "blockid1",
-						"owners": [
-							"rossbob2",
-							"atst2"
-						],
-						"courseCodes": [
-							"csc301",
-							"csc302"
-						],
-						"comment": "Birds!",
-						"startTime": "2018-11-18T16:00:00",
-						"appointmentDuration": 600000,
-						"appointmentSlots": [
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""}
-						]
-					}
-				);
-			} else {
-				resolve({});
+			if (!foundBlock) {
+				foundBlock = {}
 			}
+			resolve(foundBlock)
 		});
 		const promise = new Promise((resolve, reject) => {
 			setTimeout(() => resolve({
