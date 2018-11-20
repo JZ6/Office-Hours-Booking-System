@@ -57,11 +57,7 @@ class App extends Component {
 
 				jsonPromise.then(
 					result => {
-						const { blocks } = result;
-						console.log(blocks)
-						for (var i = 0; i < blocks.length; i++) {
-							this.addNewBlock(blocks[i]);
-						}
+						result.blocks.forEach(element => this.addNewBlock(element));
 					}
 				)
 			}
@@ -91,12 +87,13 @@ class App extends Component {
 		console.log(newBlockEvent);
 
 		this.setState({ events: [...this.state.events, newBlockEvent] });
+		return true;	//Succeeded
 	}
 
 	deleteBlock(blockId) {
 		const newEventList = this.state.events.filter(
 			blockEvent => blockEvent.block.blockId !== blockId)
-			
+
 		this.setState({events: newEventList});
 	}
 
