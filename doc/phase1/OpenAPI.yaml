@@ -168,7 +168,7 @@ paths:
 
   /blocks/{blockId}:
     get:
-      summary: Return a specific block. Session token permissions determine whether booking details are included. Return an empty value if the block does not exist.
+      summary: Return a specific block. Session token permissions determine whether booking details are included.
       parameters:
       - name: blockId
         in: path
