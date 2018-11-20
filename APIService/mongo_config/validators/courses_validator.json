@@ -1,4 +1,4 @@
-const coursesValidator = {
+{
     "$jsonSchema": {
         "bsonType": "object",
         "required": [
@@ -10,7 +10,7 @@ const coursesValidator = {
         "additionalProperties": false,
         "properties": {
             "_id": {
-                "bsonType": "objectId",
+                "bsonType": "objectId"
             },
             "courseCode": {
                 "bsonType": "string",

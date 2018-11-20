@@ -1,7 +1,10 @@
-load("/docker-entrypoint-initdb.d/validators/identity_validator.js");
-load("/docker-entrypoint-initdb.d/validators/courses_validator.js");
-load("/docker-entrypoint-initdb.d/validators/blocks_validator.js");
-load("/docker-entrypoint-initdb.d/validators/tokens_validator.js");
+try {
+    cd('mongo_config');
+} catch (err) {
+    cd('docker-entrypoint-initdb.d');
+}
+
+load(pwd() + "/validators/validators.js");
 
 db.createCollection("identities", {
     "validator": identityValidator

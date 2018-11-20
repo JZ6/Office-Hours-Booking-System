@@ -1,4 +1,4 @@
-const blocksValidator = {
+{
     "$jsonSchema": {
         "bsonType": "object",
         "required": [
@@ -14,7 +14,7 @@ const blocksValidator = {
         "additionalProperties": false,
         "properties": {
             "_id": {
-                "bsonType": "objectId",
+                "bsonType": "objectId"
             },
             "blockId": {
                 "bsonType": "string"

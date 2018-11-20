@@ -1,15 +1,16 @@
 # APIService
 
-FROM python:3.7
+FROM python:3.7-alpine
 
 LABEL MAINTAINER_NAME="Asher Minden-Webb" MAINTAINER_EMAIL="amindenwebb@gmail.com"
 
 ENV FLASK_ENV=${FLASK_ENV} \
-API_PORT=${API_PORT}
+API_PORT=${API_PORT} \
+MONGO_HOST=${MONGO_HOST} \
+MONGO_PORT=${MONGO_PORT} \
+MONGO_DBNAME=${MONGO_DB_NAME}
 
-RUN apt-get update -y && apt-get clean && apt-get autoremove
-
-RUN set -ex && mkdir /app
+RUN set -ex && mkdir /app && pip install pipenv
 
 WORKDIR /app
 
@@ -20,8 +21,7 @@ COPY Pipfile Pipfile
 
 COPY Pipfile.lock Pipfile.lock
 
-RUN ["/bin/bash", "-c", \
-"pipenv install $(test ${FLASK_ENV:-'dev'} == 'production' || echo '--dev') --deploy --system"]
+RUN pipenv install $(test ${FLASK_ENV:-'dev'} == 'production' || echo '--dev') --deploy --system
 
 COPY . /app
 

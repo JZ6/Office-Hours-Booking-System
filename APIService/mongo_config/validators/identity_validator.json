@@ -1,4 +1,4 @@
-const identityValidator = {
+{
     "$jsonSchema": {
         "bsonType": "object",
         "required": [
@@ -12,7 +12,7 @@ const identityValidator = {
         "additionalProperties": false,
         "properties": {
             "_id": {
-                "bsonType": "objectId",
+                "bsonType": "objectId"
             },
             "utorId": {
                 "bsonType": "string",
@@ -40,7 +40,7 @@ const identityValidator = {
                 "uniqueItems": true,
                 "items": {
                     "bsonType": "string",
-                    "pattern": "[A-Z]{3}[0-9]{3}",
+                    "pattern": "[A-Z]{3}[0-9]{3}"
                 }
             }
         }
