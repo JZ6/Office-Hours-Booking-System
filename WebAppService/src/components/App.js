@@ -34,11 +34,14 @@ class App extends Component {
 
 		this.api = new dummyAPI('Test');
 		this.fetchBlocks(7);
+
+		// setTimeout(() => this.deleteBlock('blockid2')
+		// , 2000);
 	}
 
 	fetchBlocks(days) {
 		const startDate = new Date();
-		const endDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + days);   
+		const endDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + days);
 		const blocksPromise = this.api.getBlocks(startDate.toISOString(), endDate.toISOString());
 
 		blocksPromise.then(
@@ -90,11 +93,14 @@ class App extends Component {
 		this.setState({ events: [...this.state.events, newBlockEvent] });
 	}
 
-	deleteBlock(blockId){
-
+	deleteBlock(blockId) {
+		const newEventList = this.state.events.filter(
+			blockEvent => blockEvent.block.blockId !== blockId)
+			
+		this.setState({events: newEventList});
 	}
 
-	modifyBlock(blockId,block){
+	modifyBlock(blockId, block) {
 		this.deleteBlock(blockId);
 		this.addNewBlock(block);
 	}
