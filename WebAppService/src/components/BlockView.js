@@ -1,6 +1,8 @@
 import React from "react";
 import moment from "moment";
 
+import "../styles/BlockView.css";
+
 export default class BlockView extends React.Component {
 		constructor(props) { //props are either student or instructor. Will render differently depending which is passed
 				super(props);
@@ -61,14 +63,14 @@ export default class BlockView extends React.Component {
 					<input
 						name="start"
 						type="time"
-						value={moment(this.props.start).format("HH:mm")}
+						value={this.props.start}
 						onChange={this.props.handleInputChange} 
 					/>
 					-
 					<input
 						name="end"
 						type="time"
-						value={moment(this.props.end).format("HH:mm")} 
+						value={this.props.end} 
 						onChange={this.props.handleInputChange}
 					/>
 					<input

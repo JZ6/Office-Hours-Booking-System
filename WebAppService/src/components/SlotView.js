@@ -5,7 +5,7 @@ import "../styles/SlotView.css";
 
 export default class SlotView extends React.Component {
 	slotsEqual(a, b) {
-		return (a.identity === b.identity && a.note === b.note);
+		return (a && b && a.identity === b.identity && a.note === b.note);
 	}
 	
 	renderIdentity(i) {
@@ -63,13 +63,17 @@ export default class SlotView extends React.Component {
 	}
 	
 	renderSlotButtons(i) {
-		if (!this.slotsEqual(this.props.slots[i], this.props.prevSlots[i])) {
+		if (this.slotsEqual(this.props.slots[i], this.props.prevSlots[i])) {
+			// No changes
+			return <span />
+		} else {
+			// Pending changes
 			return <span>
 				<button id={`confirm${i}`} onClick={this.props.handleSlotConfirm(i)}>Confirm</button>
 				<button id={`cancel${i}`} onClick={this.props.handleSlotCancel(i)}>Cancel</button>
 			</span>;
 		}
-		return <span />
+		
 	}
 	
 	getSlotClass(i) {

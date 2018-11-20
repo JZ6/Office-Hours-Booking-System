@@ -33,7 +33,7 @@ export default class BlockContainer extends React.Component {
 			enabled: true,
 			...block,
 			start: moment(block.startTime).format("HH:mm"),
-			end: moment(block.startTime).add(block.appointmentDuration * block.appointmentSlots.length).format("HH:mm")
+			end: this.getEnd(block)
 		});
 	}
 	onClose() {
@@ -47,17 +47,27 @@ export default class BlockContainer extends React.Component {
 	//---------------------------------- Block -----------------------------------
 	//----------------------------------------------------------------------------
 	
-	updateSlotNumber(startTime, endTime, appointmentDuration){
+	getEnd(block) {
+		return moment(block.startTime).add(block.appointmentDuration * block.appointmentSlots.length).format("HH:mm");
+	}
+	
+	updateSlotNumber(start, end, appointmentDuration){
 		let slotNumber = Math.floor(
-			(moment(startTime) - moment(endTime)) / appointmentDuration);
+			(moment(end, "HH:mm") - moment(start, "HH:mm")) / appointmentDuration);
 		if (slotNumber === 0) {
+			this.prevSlots = [];
 			this.setState({appointmentSlots: []})
 		} else {
-			let slots = [...Array(slotNumber)];
-			slots.map(() => (
-				{identity: "", courseCode: "", note: ""}
-			));
+			let slots = [...Array(slotNumber)].map(() => 
+				({identity: "", courseCode: "", note: ""}));
+			this.prevSlots = this.copySlots(slots);
 			this.setState({appointmentSlots: slots});
+			
+			// Update End Time?
+			this.setState({
+				end: moment(start, "HH:mm").add(appointmentDuration * slotNumber).format("HH:mm")
+			});
+			
 		}
 	}
 	
@@ -66,9 +76,9 @@ export default class BlockContainer extends React.Component {
 		const name = event.target.name;
 		
 		if (name==="appointmentDuration") {
-			this.updateSlotNumber(this.state.startTime, this.state.endTime, value);
+			this.updateSlotNumber(this.state.start, this.state.end, value);
 			this.setState({appointmentDuration: value});
-		} else if (name === 'startTime') {
+		} else if (name === "start") {
 			// Validate
 			let start = value;
 			if (moment(start, "HH:mm") > moment(this.state.end, "HH:mm")) {
@@ -88,7 +98,7 @@ export default class BlockContainer extends React.Component {
 			
 			// Changes number of slots
 			this.updateSlotNumber(start, this.state.end, this.state.appointmentDuration);
-		} else if (name === 'endTime') { 
+		} else if (name === "end") { 
 			// Validate
 			let end = value;
 			if (moment(end) < moment(this.state.start)) {
@@ -98,7 +108,7 @@ export default class BlockContainer extends React.Component {
 			
 			// Changes number of slots
 			this.updateSlotNumber(this.state.start, end, this.state.appointmentDuration);
-		} else if (name === 'date') {
+		} else if (name === "date") {
 			let date = value;
 			
 			let newStartTime = this.state.startTime;  // String immutable
@@ -318,6 +328,8 @@ export default class BlockContainer extends React.Component {
 				// Extract data from json promise, undefined if failure
 				this.prevSlots = data.appointmentSlots;
 				this.setState({appointmentSlots: this.copySlots(this.prevSlots)});
+				// Also set end time to agree
+				this.setState({end: this.getEnd(data)});
 			}
 			this.setState({enabled: true});
 		})
@@ -344,6 +356,8 @@ export default class BlockContainer extends React.Component {
 				// Extract data from json promise, undefined if failure
 				this.prevSlots[i] = data.appointmentSlots[i]
 				this.editSlot(i, this.prevSlots[i].identity, this.prevSlots[i].note);
+				// Also set end time to agree
+				this.setState({end: this.getEnd(data)});
 			}
 			this.setState({enabled: true});
 		})
@@ -368,6 +382,7 @@ export default class BlockContainer extends React.Component {
 					owners={this.state.owners}
 					courseCodes={this.state.courseCodes}
 					comment={this.state.comment}
+					appointmentSlots={this.state.appointmentSlots}
 					
 					start={this.state.start}
 					end={this.state.end}

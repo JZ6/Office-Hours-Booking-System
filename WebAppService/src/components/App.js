@@ -153,7 +153,13 @@ class App extends Component {
 						}}
 					/>
 				</div>
-				<BlockContainer ref="blockContainer" id="rossbob2" role="student" blockId="someblock123" api={this.api}/>
+				<BlockContainer 
+					ref="blockContainer" 
+					id="parkerpeter15" 
+					role="instructor" 
+					blockId="someblock123" 
+					api={this.api}
+				/>
 			</div>
 		);
 	}
