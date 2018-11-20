@@ -66,14 +66,11 @@ class App extends Component {
 	}
 
 	addNewBlock(block) {
-		console.log(block)
+		// console.log(block)
 		const {
 			appointmentDuration,
 			appointmentSlots,
-			blockId,
-			comment,
 			courseCodes,
-			owners,
 			startTime
 		} = block;
 
@@ -86,12 +83,7 @@ class App extends Component {
 			start: new Date(startTime),
 			end: endTime,
 			title: courseCodes.toString(),
-			details: {
-				appointmentSlots: appointmentSlots,
-				blockId: blockId,
-				comment: comment,
-				owners: owners,
-			}
+			block: block
 		}
 		console.log(newBlockEvent);
 
