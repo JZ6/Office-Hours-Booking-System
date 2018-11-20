@@ -1,30 +1,24 @@
-from hashlib import sha256
-from datetime import datetime
-
+from api import mongo
+from bson.json_util import dumps
 from flask_restful import Resource
 from flask import request
 
-from bson.json_util import dumps
-
-from api import mongo
-
 # TODO: Add all the auth business
 
-# TODO: Can return some sort of nil value; should be handled
-# TODO: Assumes blockId is unique - make sure this assumption can be made
+# Return Block (dict) if it exists, None otherwise
 def get_block_by_id(block_id):
     query = {"blockId": block_id}
     block = mongo.db.blocks.find_one(query)
     return block
 
-# Returns True or False depending on whether or not deletion was successful
+# Return True if deletion successful, False otherwise
 def delete_block_by_id(block_id):
     query = {"blockId": block_id}
     deletion = mongo.db.blocks.delete_one(query)
     return deletion.deleted_count == 1
 
-# Return a list of blocks that match the given arguments (arguments can be None)
-def filter_blocks(owner, start_time, course_code):
+# Return a list of Block (dicts) that match the given optional arguments
+def get_filtered_blocks(owner=None, start_time=None, course_code=None):
     query = {}
 
     if start_time is not None:
@@ -54,23 +48,22 @@ def book_slot(block_id, identity, slot_number, note):
     # The slot in the given block is already filled
     if mongo.db.blocks.find_one(query) is not None:
         return False
-    
+
     mongo.db.blocks.insert_one({
         "block_id": block_id,
         "identity": identity,
         "slot_number": slot_number,
         "note": note
     })
-    
+
     return True
 
-# TODO: Return value is unused
+# Update given Block or insert it if it does not yet exist; return None
 def upsert_block(block):
-    upsertion = mongo.db.blocks.replace_one({'blockId': block['blockId']}, block, True) # Performs an upsert
-    return upsertion.modified_count == 1
+    query = {'blockId': block['blockId']}
+    upsertion = mongo.db.blocks.replace_one(query, block, upsert=True)
 
 
-# TODO: I'm not too familiar with Flask yet, would prefer to pair this part
 class Block(Resource):
     # TODO: log requests
     def get(self, block_id=None):
@@ -81,11 +74,11 @@ class Block(Resource):
         owner = request.args.get('owner')
         start_time = request.args.get('startTime')
         course_code = request.args.get('courseCode')
-        
+
         #############
         # GET /blocks
         if block_id is None:
-            blocks = filter_blocks(owner, start_time, course_code)
+            blocks = get_filtered_blocks(owner, start_time, course_code)
             return {'blocks': dumps(blocks)}, 200
 
         ########################
@@ -99,7 +92,7 @@ class Block(Resource):
         if request.path.endswith('/booking'): # TODO: Map path properly with Flask
             if block_id is None or get_block_by_id(block_id) is None:
                 return 'Block with given blockId not found.', 400
-            
+
             booking = request.get_json()
             if booking is None:
                 return 'Invalid body.', 400
@@ -107,7 +100,7 @@ class Block(Resource):
             identity = booking['identity']
             slot_num = booking['slot_num']
             note = booking['note']
-            
+
             # TODO: Make sure block exists if previous check doesn't do the job
             block = get_block_by_id(block_id)
             if False:
@@ -116,7 +109,7 @@ class Block(Resource):
             # TODO: Fix API then fix logic
             return 'NOT IMPLEMENTED', 200
             return 'Appointment slot is already booked.', 409
-        
+
         ##############
         # POST /blocks
         block = request.get_json()
@@ -136,7 +129,7 @@ class Block(Resource):
             if False: # TODO: Allow editing of a block only if one of the owners and the auth token's holder match
                 return "NOT ENOUGH PERMISSION", 401
 
-        upsert_block(block) # TODO: Check return value to deem transaction successful
+        upsert_block(block) # TODO: So long as no mongo exceptions; successful
 
         return 'Successfully added block.', 200
 
