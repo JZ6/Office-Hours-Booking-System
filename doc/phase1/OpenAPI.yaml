@@ -346,10 +346,6 @@ components:
           type: integer
           description: Milliseconds per slot.
           example: 300000
-        numSlots:
-          type: integer
-          description: Number of appointment slots in this block.
-          example: 10
         appointmentSlots:
           type: array
           description: A chronologically sorted dense array of appointment slots. \
