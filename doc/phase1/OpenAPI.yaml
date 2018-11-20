@@ -24,7 +24,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Authorization'
-  
+
   /identity:
     post:
       summary: Add/edit an identity.
@@ -42,7 +42,7 @@ paths:
           description: Successfully added user.
         '401':
           $ref: '#/components/responses/UnauthorizedError'
-  
+
   /identity/{id}:
     get:
       summary: Access information about an identity.
@@ -137,6 +137,8 @@ paths:
           description: Successfully added block.
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          description: Could not add block.
     get:
       summary: Return all blocks. Filtered based on identity of the session token -- includes blocks from all courses the identity is associated with (either as a student or instructor). Further filtering through query parameters is available.
       parameters:
@@ -166,18 +168,12 @@ paths:
 
   /blocks/{blockId}:
     get:
-      summary: Return a specific block. Session token permissions determine whether booking details are included.
+      summary: Return a specific block. Session token permissions determine whether booking details are included. Return an empty value if the block does not exist.
       parameters:
       - name: blockId
         in: path
         required: true
         description: Unique identifier of the requested block
-        schema:
-          type: string
-      - name: startTime
-        in: path
-        required: true
-        description: ISO 8601 formatted time (e.g "2008-09-15T15:53:00").
         schema:
           type: string
       responses:
@@ -203,7 +199,9 @@ paths:
           description: Successfully deleted block.
         '401':
           $ref: '#/components/responses/UnauthorizedError'
-  
+        '403':
+          description: Could not delete block.
+
   /blocks/{blockId}/booking:
     post:
       summary: Book an appointment slot.
@@ -223,7 +221,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '409':
           $ref: '#/components/responses/BookingConflict'
-      
+
 
 components:
   securitySchemes:
@@ -258,7 +256,7 @@ components:
               type: boolean
             instructor:
               type: boolean
-  
+
     Identity:
       type: object
       properties:
@@ -346,6 +344,10 @@ components:
           type: integer
           description: Milliseconds per slot.
           example: 300000
+        numSlots:
+          type: integer
+          description: Number of appointment slots in this block.
+          example: 10
         appointmentSlots:
           type: array
           description: A chronologically sorted dense array of appointment slots. \
@@ -368,7 +370,7 @@ components:
                 description: Note left by student. Should be deleted on updating student. \
                   Only viewable by TAs, Instructors, and relevant student.
                 example: Everybody gets one.
-          
+
     Booking:
       type: object
       properties:
@@ -411,7 +413,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Booking'
-  
+
   responses:
     UnauthorizedError:
       description: Bearer token and/or API key is missing or invalid.
