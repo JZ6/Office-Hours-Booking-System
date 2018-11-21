@@ -2,13 +2,12 @@ from bson.json_util import dumps
 from flask_restful import Resource
 from flask import request
 
-from block_dao import filter_blocks, get_block_by_id
-from block_dao import upsert_block, delete_block_by_id
+from .block_dao import filter_blocks, get_block_by_id
+from .block_dao import upsert_block, delete_block_by_id
 
 # TODO: App doesn't run with new DB accessor methods
 # TODO: Auth (return 'Bearer token and/or API key is missing or invalid.', 401)
 # TODO: Logging
-# TODO: Move DAO methods to their own file; get rid of classes
 
 
 class Block(Resource):
