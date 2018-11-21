@@ -117,6 +117,31 @@ export default class DummyApi {
 				}
 			]
 		}
+		this.testDummyApi();
+	}
+
+	
+	testDummyApi(){
+		this.getBlock('blockid0').then(
+			result => {
+
+				const {
+					status,
+					statusText,
+					json: jsonPromise
+				} = result
+
+				if (status !== 200 || statusText !== "OK") { return false };
+
+				jsonPromise.then(
+					result => {
+						console.log(result)
+					}
+				)
+			}
+		);
+
+		
 	}
 
 	login(username, password) {
