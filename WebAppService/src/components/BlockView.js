@@ -13,7 +13,6 @@ export default class BlockView extends React.Component {
 					value={this.props.appointmentDuration} 
 					onChange={this.props.handleInputChange}
 				>
-						// Values are in milliseconds
 						<option value="300000">5 minutes</option>
 						<option value="600000">10 minutes</option>
 						<option value="900000">15 minutes</option>

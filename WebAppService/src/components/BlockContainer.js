@@ -51,7 +51,7 @@ export default class BlockContainer extends React.Component {
 			.then((response) => {
 				if (response.status === 200) {
 					// Successful, return json promise to next .then
-					return response.json;
+					return response.json();
 				} else {
 					window.alert(response.status, response.statusText);
 				}
@@ -73,7 +73,7 @@ export default class BlockContainer extends React.Component {
 						this.setState({appointmentSlots: this.copySlots(this.prevSlots)});
 						
 						this.setState({end: this.getEnd(data)});
-					} else if (scope === "slot" && i) {
+					} else if (scope === "slot") {
 						this.prevSlots[i] = data.appointmentSlots[i]
 						this.editSlot(i, this.prevSlots[i].identity, this.prevSlots[i].note);
 						
@@ -124,7 +124,7 @@ export default class BlockContainer extends React.Component {
 			const name = event.target.name;
 			
 			if (name==="appointmentDuration") {
-				let duration = parseInt(value);
+				let duration = parseInt(value, 10);
 				if (duration && duration > 0) {
 					this.updateSlotNumber(this.state.start, this.state.end, duration);
 					this.setState({appointmentDuration: duration});
@@ -141,8 +141,8 @@ export default class BlockContainer extends React.Component {
 					// Need to update block's actual startTime which includes date
 					let newStartTime = this.state.startTime;  // String immutable
 					newStartTime = moment(newStartTime)
-						.hour(parseInt(start.slice(0, 2)))
-						.minute(parseInt(start.slice(3, 5)))
+						.hour(parseInt(start.slice(0, 2), 10))
+						.minute(parseInt(start.slice(3, 5), 10))
 						.second(0)
 						.millisecond(0)
 						.toISOString();
@@ -216,7 +216,16 @@ export default class BlockContainer extends React.Component {
 	submitBlock() {
 		if (this.state.enabled) {
 			this.setState({enabled: false});
-			this.props.api.postBlock(this.state)  // Will be sanitized in API class
+			let block = {
+				blockId: this.state.blockId,
+				owners: this.state.owners,
+				courseCodes: this.state.courseCodes,
+				comment: this.state.comment,
+				startTime: this.state.startTime,
+				appointmentDuration: this.state.appointmentDuration,
+				appointmentSlots: this.state.appointmentSlots
+			}
+			this.props.api.postBlock(block)
 			.then((response) => {
 				if (response.status !== 200) {
 					window.alert(response.status, response.statusText);
@@ -275,7 +284,13 @@ export default class BlockContainer extends React.Component {
 	handleSlotConfirm = (i) => () => {
 		if (this.state.enabled) {
 			this.setState({enabled: false});
-			this.props.api.editSlot(this.props.blockId, i, this.state.appointmentSlots[i])
+			this.props.api.editSlot(
+				this.state.blockId, i, 
+				{
+					identity: this.state.appointmentSlots[i].identity, 
+					courseCode: this.state.appointmentSlots[i].courseCode, 
+					note: this.state.appointmentSlots[i].note
+				})
 			.then((response) => {
 				if (response.status !== 200) {
 					window.alert(response.status, response.statusText);
@@ -304,18 +319,22 @@ export default class BlockContainer extends React.Component {
 				// Student clears only their own
 				for (let i = 0; i < this.state.appointmentSlots.length; i++) {
 					if (this.props.id === this.state.appointmentSlots[i].identity) {
-						promises.push(this.props.api.editSlot(this.props.blockId, i, {identity: "", note: ""}));
+						promises.push(this.props.api.editSlot(
+							this.state.blockId, i, 
+							{identity: "", courseCode: "", note: ""}));
 					}
 				}
 			} else {
 				// Instructor clears all
 				for (let i = 0; i < this.state.appointmentSlots.length; i++) {
-					promises.push(this.props.api.editSlot(this.props.blockId, i, {identity: "", note: ""}));
+					promises.push(this.props.api.editSlot(
+						this.state.blockId, i, 
+						{identity: "", courseCode: "", note: ""}));
 				}
 			}
 			Promise.all(promises)
 			.then((responses) => {
-				responses.map((response) => {
+				responses.forEach((response) => {
 					if (response.status !== 200) {
 						window.alert(response.status, response.statusText);
 					}

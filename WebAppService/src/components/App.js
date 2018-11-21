@@ -15,7 +15,7 @@ import dummyAPI from './common/dummyApi'
 
 const {
 	LoginView,
-	BlockView,
+	//BlockContainer,
 	SideBar
 } = components
 
@@ -157,7 +157,6 @@ class App extends Component {
 					ref="blockContainer" 
 					id="parkerpeter15" 
 					role="instructor" 
-					blockId="someblock123" 
 					api={this.api}
 				/>
 			</div>

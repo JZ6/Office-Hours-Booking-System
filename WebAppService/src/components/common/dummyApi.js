@@ -375,7 +375,16 @@ export default class DummyApi {
 	}
 
 	postBlock(block) {
-		this.currentBlocks.blocks.push(block);
+		let create = true;
+		this.currentBlocks.blocks.forEach((b, i) => {
+			if (block.blockId === b.blockId) {
+				this.currentBlocks.blocks[i] = block;
+				create = false;
+			}
+		});
+		if (create) {
+			this.currentBlocks.blocks.push(block);
+		}
 		const promise = new Promise((resolve, reject) => {
 			setTimeout(() => resolve({
 				status: 200,
@@ -386,7 +395,6 @@ export default class DummyApi {
 	}
 
 	deleteBlock(blockId) {
-
 		this.currentBlocks.blocks = this.currentBlocks.blocks.filter(
 			block => block.blockId !== blockId)
 
@@ -398,18 +406,13 @@ export default class DummyApi {
 		});
 		return promise;
 	}
-
+	
 	editSlot(blockId, slotId, slot) {
-		const promise = new Promise((resolve, reject) => {
-			setTimeout(() => resolve({
-				status: 200,
-				statusText: "OK"
-			}), this.delay);
+		this.currentBlocks.blocks.forEach((b, i) => {
+			if (blockId === b.blockId) {
+				this.currentBlocks.blocks[i].appointmentSlots[slotId] = slot;
+			}
 		});
-		return promise;
-	}
-	// Edit slots en masse without editing block
-	editSlots(blockId, slots) {
 		const promise = new Promise((resolve, reject) => {
 			setTimeout(() => resolve({
 				status: 200,
