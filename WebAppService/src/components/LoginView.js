@@ -8,6 +8,9 @@ import storage from './common/storage'
 import "../styles/LoginView.css";
 import '../styles/common.css'
 
+import api from "./common/api";
+import dummyAPI from './common/dummyApi'
+
 export default class LoginView extends React.Component {
     state = {
         display: 'block',
@@ -25,16 +28,30 @@ export default class LoginView extends React.Component {
         if (authPromise) {
             authPromise.then(result => {
 
-                //Store current info to storage.
-                Object.assign(storage,
-                    {
-                        currentUserType: permissions,
-                        loggedIn: true
+                const {
+                    status,
+                    statusText,
+                    json: jsonPromise
+                } = result
+
+                if (status !== 200 || statusText !== "OK") { return false };
+
+                jsonPromise.then(
+                    result => {
+
+                        Object.assign(storage,
+                            {
+                                currentUserType: permissions,
+                                loggedIn: true,
+                                token: result.sessionToken
+                            }
+                        )
+
+                        sessionStorage.setItem('sessionToken', result.sessionToken);
+                        sessionStorage.setItem('currentUserType', permissions);
+                        sessionStorage.setItem('loggedIn', 1);
                     }
                 )
-
-                //Add token to session storage
-                // sessionStorage.setItem('token', 0);
 
                 this.setState({
                     display: 'none',
@@ -48,11 +65,8 @@ export default class LoginView extends React.Component {
     }
 
     authenticate(username, password) {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => resolve(), 1000);
-        })
-
-        // api.login();
+        const api = new dummyAPI('Test');
+        return api.login();
     }
 
     getLoadingAnimation() {
