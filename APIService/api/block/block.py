@@ -30,7 +30,6 @@ class Block(Resource):
         return dumps(get_block_by_id(owner)), 200
 
     def post(self, block_id=None):
-        #################################
         # POST /blocks/<block_id>/booking
         if request.path.endswith('/booking'):  # TODO: Map path properly
             if block_id is None or get_block_by_id(block_id) is None:
@@ -53,7 +52,6 @@ class Block(Resource):
             return 'NOT IMPLEMENTED', 200
             return 'Appointment slot is already booked.', 409
 
-        ##############
         # POST /blocks
         block = request.get_json()
         if block is None:
