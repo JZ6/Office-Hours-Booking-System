@@ -2,7 +2,7 @@
     "$jsonSchema": {
         "bsonType": "object",
         "required": [
-            "utorId",
+            "id",
             "studentNumber",
             "firstName",
             "lastName",
@@ -14,7 +14,7 @@
             "_id": {
                 "bsonType": "objectId"
             },
-            "utorId": {
+            "id": {
                 "bsonType": "string",
                 "pattern": "[a-z0-9]+"
             },
