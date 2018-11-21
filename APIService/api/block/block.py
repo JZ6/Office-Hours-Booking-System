@@ -7,6 +7,7 @@ from ..db import get_db
 # TODO: App doesn't run with new DB accessor methods
 # TODO: Auth (return 'Bearer token and/or API key is missing or invalid.', 401)
 # TODO: Logging
+# TODO: Move DAO methods to their own file; get rid of classes
 
 
 class BlockDAO:
@@ -16,7 +17,7 @@ class BlockDAO:
     def get_block_by_id(block_id):
         """Return Block (`dict`) if it exists, `None` otherwise"""
         query = {'blockId': block_id}
-        block = BlockDAO.get_db().blocks.find_one(query)
+        block = get_db().blocks.find_one(query)
         BookingDAO.map_bookings(block)
         # TODO: Should strip out information depending on auth level
         return block
@@ -26,7 +27,7 @@ class BlockDAO:
         """Return `True` if deletion is successful, `False` otherwise."""
         # TODO: Also delete associated bookings
         query = {'blockId': block_id}
-        deletion = BlockDAO.get_db().blocks.delete_one(query)
+        deletion = get_db().blocks.delete_one(query)
         return deletion.deleted_count == 1
 
     @staticmethod
@@ -38,7 +39,7 @@ class BlockDAO:
             query['startTime'] = start_time
 
         # Convert returned Cursor object into a list
-        blocks = BlockDAO.get_db().blocks.find(query)
+        blocks = get_db().blocks.find(query)
         filtered_blocks = blocks[:]
 
         if owner is not None:
@@ -61,7 +62,7 @@ class BlockDAO:
     def upsert_block(block):
         """Update given Block or insert it if it does not yet exist."""
         query = {'blockId': block['blockId']}
-        BlockDAO.get_db().blocks.replace_one(query, block, upsert=True)
+        get_db().blocks.replace_one(query, block, upsert=True)
 
 
 class BookingDAO:
@@ -71,7 +72,7 @@ class BookingDAO:
     def get_booking_by_id(booking_id):
         """Return Booking (`dict`) if it exists, `None` otherwise."""
         query = {'_id': booking_id}
-        booking = BookingDAO.get_db().bookings.find_one(query)
+        booking = get_db().bookings.find_one(query)
         # TODO: Should strip out information depending on auth level
         return booking
 
@@ -96,13 +97,13 @@ class BookingDAO:
             if BookingDAO.get_booking_by_id(slots[slot_number]) is not None:
                 return False
 
-            BookingDAO.get_db().bookings.insert_one({
+            get_db().bookings.insert_one({
                 'utorId': identity,
                 'courseCode': course_code,
                 'note': note
             })
 
-        insertion = BlockDAO.get_db().blocks.insert_one({
+        insertion = get_db().blocks.insert_one({
             'block_id': block_id,
             'identity': identity,
             'slot_number': slot_number,
