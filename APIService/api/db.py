@@ -30,8 +30,20 @@ def close_db(e=None):
 
 
 def init_db():
-    # Currently done separately by docker-compose
-    # run: mongo $MONGO_HOST/$MONGO_DB_NAME ../mongo_config/create_db_dev.js
+    """ Initializes the current database.
+    
+    If not in a prod environment, will drop existing database.
+    
+    Does not need to be run in development docker setup, since it's currently done separately by 
+    docker-compose, with equivalent to the following:
+        mongo $MONGO_HOST/$MONGO_DB_NAME ../mongo_config/create_db_dev.js
+
+    This function should only be called by unittest or manually by command line:
+        flask init-db
+
+    *** IMPORTANT ***
+    For unit tests, ensure FLASK_ENV=dev is set in shell environment.
+    """
     current_app.logger.setLevel(logging.INFO)
     db = get_db()
 
@@ -39,8 +51,11 @@ def init_db():
         db.client.drop_database(db.name)
 
     # Create collections with schema validators
+    # Assume cwd is APIService/ locally or /app in docker container
     for filename in os.listdir(os.getcwd() + "/mongo_config/validators/"):
-        matcher = re.match(re.compile("^(\w+)_validator\.json"), filename)
+        # All validator JSON files must follow this naming convention
+        naming_convention = re.compile("^(\w+)_validator\.json")
+        matcher = re.match(naming_convention, filename)
         if matcher is None:
             continue
         data_type = matcher.group(1)
