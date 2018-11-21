@@ -28,18 +28,26 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			events: []
+			events: [],
+			authenticated: false
 		};
 		// this.api = new api("localhost/");
 
 		this.api = new dummyAPI('Test');
-		this.fetchBlocks(7);
+		this.authenticated = this.authenticated.bind(this)
 
 		// setTimeout(() => this.deleteBlock('blockid2')
 		// , 2000);
 	}
 
+	authenticated(){
+		this.setState({authenticated: true})
+		this.fetchBlocks(7);
+	}
+
 	fetchBlocks(days) {
+		if (!this.state.authenticated) return false;
+		
 		const startDate = new Date();
 		const endDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + days);
 		const blocksPromise = this.api.getBlocks(startDate.toISOString(), endDate.toISOString());
@@ -65,6 +73,8 @@ class App extends Component {
 	}
 
 	addNewBlock(block) {
+		if (!this.state.authenticated) return false;
+
 		// console.log(block)
 		const {
 			appointmentDuration,
@@ -91,6 +101,8 @@ class App extends Component {
 	}
 
 	deleteBlock(blockId) {
+		if (!this.state.authenticated) return false;
+
 		const newEventList = this.state.events.filter(
 			blockEvent => blockEvent.block.blockId !== blockId)
 
@@ -98,6 +110,8 @@ class App extends Component {
 	}
 
 	modifyBlock(blockId, block) {
+		if (!this.state.authenticated) return false;
+
 		this.deleteBlock(blockId);
 		this.addNewBlock(block);
 	}
@@ -121,7 +135,7 @@ class App extends Component {
 	render() {
 		return (
 			<div className="App">
-				<LoginView api={this.api} />
+				<LoginView api={this.api} authenticated = {this.authenticated}/>
 				<div className="App-container">
 					<DnDCalendar
 						defaultDate={new Date()}

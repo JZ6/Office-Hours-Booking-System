@@ -2,14 +2,10 @@ import React, {
     createElement as h
 } from "react"
 
-// import api from './common/api'
 import storage from './common/storage'
 
 import "../styles/LoginView.css";
 import '../styles/common.css'
-
-import api from "./common/api";
-import dummyAPI from './common/dummyApi'
 
 export default class LoginView extends React.Component {
     state = {
@@ -50,6 +46,7 @@ export default class LoginView extends React.Component {
                         sessionStorage.setItem('sessionToken', result.sessionToken);
                         sessionStorage.setItem('currentUserType', permissions);
                         sessionStorage.setItem('loggedIn', 1);
+                        this.props.authenticated();
                     }
                 )
 
@@ -59,14 +56,15 @@ export default class LoginView extends React.Component {
                 })
 
                 // console.log(storage);
+                // console.log(sessionStorage)
+
             })
                 .catch(error => console.log(error))
         }
     }
 
     authenticate(username, password) {
-        const api = new dummyAPI('Test');
-        return api.login();
+        return this.props.api.login();
     }
 
     getLoadingAnimation() {
