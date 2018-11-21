@@ -8,6 +8,7 @@ from ..db import get_db
 # TODO: Auth (return 'Bearer token and/or API key is missing or invalid.', 401)
 # TODO: Logging
 
+
 class BlockDAO:
     """Provides methods for accessing objects in the Block database."""
 
@@ -62,6 +63,7 @@ class BlockDAO:
         query = {'blockId': block['blockId']}
         BlockDAO.get_db().blocks.replace_one(query, block, upsert=True)
 
+
 class BookingDAO:
     """Provides methods for accessing objects in the Booking database."""
 
@@ -82,7 +84,7 @@ class BookingDAO:
 
     @staticmethod
     def book_slot(block_id, identity, slot_number, note):
-        course_code = 'CSC302' # TODO: not provided - default to CSC302 for now
+        course_code = 'CSC302'  # TODO: not provided; default to CSC302 for now
         query = {'block_id': block_id, 'slot_number': slot_number}
 
         block = BlockDAO.get_block_by_id(block_id)
@@ -132,7 +134,7 @@ class Block(Resource):
     def post(self, block_id=None):
         #################################
         # POST /blocks/<block_id>/booking
-        if request.path.endswith('/booking'): # TODO: Map path properly
+        if request.path.endswith('/booking'):  # TODO: Map path properly
             if block_id is None or BlockDAO.get_block_by_id(block_id) is None:
                 return Block.failure_block_id_not_found
 
@@ -174,7 +176,7 @@ class Block(Resource):
                 # TODO: Allow editing a block only if auth token matches owner
                 return 'NOT ENOUGH PERMISSION', 401
 
-        BlockDAO.upsert_block(block) # TODO: Successful if no mongo exceptions
+        BlockDAO.upsert_block(block)  # TODO: Successful if no mongo exceptions
 
         return Block.success_block_added
 
