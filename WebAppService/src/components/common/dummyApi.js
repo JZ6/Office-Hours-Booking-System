@@ -117,10 +117,43 @@ export default class DummyApi {
 				}
 			]
 		}
-		this.testDummyApi();
+	
+		// this.testDummyApi();
 	}
 
 	testDummyApi() {
+		this.postBlock({
+			"blockId": "blockid100",
+			"owners": [
+				"right",
+				"htm"
+			],
+			"courseCodes": [
+				"csc369",
+				"csc379"
+			],
+			"comment": "We don't make mistakes, just happy little accidents.",
+			"startTime": "2018-11-23T12:00:00",
+			"appointmentDuration": 600000,
+			"appointmentSlots": [
+				{
+					"identity": "parkerpeter15",
+					"courseCode": "csc302",
+					"note": "Everybody gets one."
+				},
+				{ "identity": "", "courseCode": "", "note": "" },
+				{ "identity": "", "courseCode": "", "note": "" },
+				{ "identity": "", "courseCode": "", "note": "" },
+				{ "identity": "", "courseCode": "", "note": "" },
+				{ "identity": "", "courseCode": "", "note": "" },
+				{ "identity": "", "courseCode": "", "note": "" },
+				{ "identity": "", "courseCode": "", "note": "" },
+				{ "identity": "", "courseCode": "", "note": "" },
+				{ "identity": "", "courseCode": "", "note": "" },
+				{ "identity": "", "courseCode": "", "note": "" }
+			]
+		},)
+
 		// this.getBlock('blockid0').then(
 		// 	result => {
 
@@ -342,6 +375,7 @@ export default class DummyApi {
 	}
 
 	postBlock(block) {
+		this.currentBlocks.blocks.push(block);
 		const promise = new Promise((resolve, reject) => {
 			setTimeout(() => resolve({
 				status: 200,
