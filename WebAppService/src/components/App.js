@@ -63,7 +63,7 @@ class App extends Component {
 
 				if (status !== 200 || statusText !== "OK") { return false };
 
-				jsonPromise.then(
+				jsonPromise().then(
 					result => {
 						result.blocks.forEach(element => this.addNewBlock(element));
 					}

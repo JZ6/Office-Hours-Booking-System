@@ -180,7 +180,7 @@ export default class DummyApi {
 	}
 
 	login(username, password) {
-		const jsonPromise = new Promise((resolve, reject) => {
+		const jsonPromise = () => new Promise((resolve, reject) => {
 			resolve({ sessionToken: "dummysessiontoken" });
 		});
 		const promise = new Promise((resolve, reject) => {
@@ -194,7 +194,7 @@ export default class DummyApi {
 	}
 
 	getIdentity(id) {
-		const jsonPromise = new Promise((resolve, reject) => {
+		const jsonPromise = () => new Promise((resolve, reject) => {
 			if (id === "rossbob2") {
 				resolve({
 					"id": "rossbob2",
@@ -266,7 +266,7 @@ export default class DummyApi {
 	}
 
 	getCourse(courseCode) {
-		const jsonPromise = new Promise((resolve, reject) => {
+		const jsonPromise = () => new Promise((resolve, reject) => {
 			if (courseCode === "csc300") {
 				resolve({
 					"instructors": [
@@ -340,7 +340,7 @@ export default class DummyApi {
 	}
 
 	getBlocks(startDate, endDate) {
-		const jsonPromise = new Promise((resolve, reject) => {
+		const jsonPromise = () => new Promise((resolve, reject) => {
 			resolve(this.currentBlocks);
 		});
 		const promise = new Promise((resolve, reject) => {
@@ -358,7 +358,7 @@ export default class DummyApi {
 		let foundBlock = this.currentBlocks.blocks.find(element =>
 			element.blockId === blockId);
 
-		const jsonPromise = new Promise((resolve, reject) => {
+		const jsonPromise = () => new Promise((resolve, reject) => {
 			if (!foundBlock) {
 				foundBlock = {}
 			}

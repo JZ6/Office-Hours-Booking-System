@@ -32,7 +32,7 @@ export default class LoginView extends React.Component {
 
                 if (status !== 200 || statusText !== "OK") { return false };
 
-                jsonPromise.then(
+                jsonPromise().then(
                     result => {
 
                         Object.assign(storage,
