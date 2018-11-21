@@ -2,115 +2,13 @@ from bson.json_util import dumps
 from flask_restful import Resource
 from flask import request
 
-from ..db import get_db
+from block_dao import filter_blocks, get_block_by_id
+from block_dao import upsert_block, delete_block_by_id
 
 # TODO: App doesn't run with new DB accessor methods
 # TODO: Auth (return 'Bearer token and/or API key is missing or invalid.', 401)
 # TODO: Logging
 # TODO: Move DAO methods to their own file; get rid of classes
-
-
-class BlockDAO:
-    """Provides methods for accessing objects in the Block database."""
-
-    @staticmethod
-    def get_block_by_id(block_id):
-        """Return Block (`dict`) if it exists, `None` otherwise"""
-        query = {'blockId': block_id}
-        block = get_db().blocks.find_one(query)
-        BookingDAO.map_bookings(block)
-        # TODO: Should strip out information depending on auth level
-        return block
-
-    @staticmethod
-    def delete_block_by_id(block_id):
-        """Return `True` if deletion is successful, `False` otherwise."""
-        # TODO: Also delete associated bookings
-        query = {'blockId': block_id}
-        deletion = get_db().blocks.delete_one(query)
-        return deletion.deleted_count == 1
-
-    @staticmethod
-    def filter_blocks(owner=None, start_time=None, course_code=None):
-        """Return a list of Block (dicts) that match the given arguments."""
-        query = {}
-
-        if start_time is not None:
-            query['startTime'] = start_time
-
-        # Convert returned Cursor object into a list
-        blocks = get_db().blocks.find(query)
-        filtered_blocks = blocks[:]
-
-        if owner is not None:
-            filtered_blocks = filter(
-                lambda block: block['owners'].contains(owner),
-                filtered_blocks
-            )
-        if course_code is not None:
-            filtered_blocks = filter(
-                lambda block: block['courseCodes'].contains(course_code),
-                filtered_blocks
-            )
-
-        # TODO: Should strip out information depending on auth level
-        BookingDAO.map_bookings(filtered_blocks)
-
-        return filtered_blocks
-
-    @staticmethod
-    def upsert_block(block):
-        """Update given Block or insert it if it does not yet exist."""
-        query = {'blockId': block['blockId']}
-        get_db().blocks.replace_one(query, block, upsert=True)
-
-
-class BookingDAO:
-    """Provides methods for accessing objects in the Booking database."""
-
-    @staticmethod
-    def get_booking_by_id(booking_id):
-        """Return Booking (`dict`) if it exists, `None` otherwise."""
-        query = {'_id': booking_id}
-        booking = get_db().bookings.find_one(query)
-        # TODO: Should strip out information depending on auth level
-        return booking
-
-    @staticmethod
-    def map_bookings(block):
-        """Fill in given Block's slot info using the Bookings collection."""
-        if block is not None:
-            map(lambda slot: BookingDAO.get_booking_by_id(slot) or {},
-                block['slots'])
-
-    @staticmethod
-    def book_slot(block_id, identity, slot_number, note):
-        course_code = 'CSC302'  # TODO: not provided; default to CSC302 for now
-        query = {'block_id': block_id, 'slot_number': slot_number}
-
-        block = BlockDAO.get_block_by_id(block_id)
-        if block is not None:
-            slots = block['slots']
-            if slot_number >= len(slots):
-                return False
-
-            if BookingDAO.get_booking_by_id(slots[slot_number]) is not None:
-                return False
-
-            get_db().bookings.insert_one({
-                'utorId': identity,
-                'courseCode': course_code,
-                'note': note
-            })
-
-        insertion = get_db().blocks.insert_one({
-            'block_id': block_id,
-            'identity': identity,
-            'slot_number': slot_number,
-            'note': note
-        })
-
-        return insertion.inserted_count == 1
 
 
 class Block(Resource):
@@ -126,17 +24,17 @@ class Block(Resource):
 
         # GET /blocks
         if block_id is None:
-            blocks = BlockDAO.filter_blocks(owner, start_time, course_code)
+            blocks = filter_blocks(owner, start_time, course_code)
             return {'blocks': dumps(blocks)}, 200
 
         # GET /blocks/<block_id>
-        return dumps(BlockDAO.get_block_by_id(owner)), 200
+        return dumps(get_block_by_id(owner)), 200
 
     def post(self, block_id=None):
         #################################
         # POST /blocks/<block_id>/booking
         if request.path.endswith('/booking'):  # TODO: Map path properly
-            if block_id is None or BlockDAO.get_block_by_id(block_id) is None:
+            if block_id is None or get_block_by_id(block_id) is None:
                 return Block.failure_block_id_not_found
 
             booking = request.get_json()
@@ -148,7 +46,7 @@ class Block(Resource):
             note = booking['note']
 
             # TODO: Make sure block exists if previous check doesn't do the job
-            block = BlockDAO.get_block_by_id(block_id)
+            block = get_block_by_id(block_id)
             if False:
                 return 'OWNER PROBLEM', 401
 
@@ -167,7 +65,7 @@ class Block(Resource):
         block['slotDuration'] = block.pop('appointmentDuration')
         block['slots'] = block.pop('appointmentSlots')
 
-        existing_block = BlockDAO.get_block_by_id(block['blockId'])
+        existing_block = get_block_by_id(block['blockId'])
         if existing_block is None:
             # adding new block
             pass
@@ -177,7 +75,7 @@ class Block(Resource):
                 # TODO: Allow editing a block only if auth token matches owner
                 return 'NOT ENOUGH PERMISSION', 401
 
-        BlockDAO.upsert_block(block)  # TODO: Successful if no mongo exceptions
+        upsert_block(block)  # TODO: Successful if no mongo exceptions
 
         return Block.success_block_added
 
@@ -186,7 +84,7 @@ class Block(Resource):
         if block_id is None:
             return Block.failure_block_id_not_found
 
-        successful = BlockDAO.delete_block_by_id(block_id)
+        successful = delete_block_by_id(block_id)
 
         if not successful:
             return Block.failure_block_id_not_found
