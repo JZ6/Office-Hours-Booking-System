@@ -8,6 +8,9 @@
         ],
         "additionalProperties": false,
         "properties": {
+            "_id": {
+                "bsonType": "objectId"
+            },
             "utorId": {
                 "bsonType": "string",
                 "pattern": "[a-z0-9]+"
