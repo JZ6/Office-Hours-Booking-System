@@ -176,9 +176,10 @@ export default class BlockContainer extends React.Component {
 
 					// Shouldn't change number of slots
 				}
+			} else if (name === "courseCodes"){
+				this.setState({courseCodes: value.split(",")});
 			} else if (
 				name === "owners" || 
-				name === "courseCodes" || 
 				name === "comment") {
 				this.setState({[name]: value});
 			} else {
