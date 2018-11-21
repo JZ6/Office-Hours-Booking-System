@@ -1,0 +1,24 @@
+{
+    "$jsonSchema": {
+        "bsonType": "object",
+        "required": [
+            "utorId",
+            "courseCode",
+            "note"
+        ],
+        "additionalProperties": false,
+        "properties": {
+            "utorId": {
+                "bsonType": "string",
+                "pattern": "[a-z0-9]+"
+            },
+            "courseCode": {
+                "bsonType": "string",
+                "pattern": "[A-Z]{3}[0-9]{3}"
+            },
+            "note": {
+                "bsonType": "string"
+            }
+        }
+    }
+}
