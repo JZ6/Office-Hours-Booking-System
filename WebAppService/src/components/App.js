@@ -84,7 +84,7 @@ class App extends Component {
 			title: courseCodes.toString(),
 			block: block
 		}
-		console.log(newBlockEvent);
+		// console.log(newBlockEvent);
 
 		this.setState({ events: [...this.state.events, newBlockEvent] });
 		return true;	//Succeeded

@@ -120,28 +120,30 @@ export default class DummyApi {
 		this.testDummyApi();
 	}
 
-	
-	testDummyApi(){
-		this.getBlock('blockid0').then(
-			result => {
+	testDummyApi() {
+		// this.getBlock('blockid0').then(
+		// 	result => {
 
-				const {
-					status,
-					statusText,
-					json: jsonPromise
-				} = result
+		// 		const {
+		// 			status,
+		// 			statusText,
+		// 			json: jsonPromise
+		// 		} = result
 
-				if (status !== 200 || statusText !== "OK") { return false };
+		// 		if (status !== 200 || statusText !== "OK") { return false };
 
-				jsonPromise.then(
-					result => {
-						console.log(result)
-					}
-				)
-			}
-		);
+		// 		jsonPromise.then(
+		// 			result => {
+		// 				console.log(result)
+		// 			}
+		// 		)
+		// 	}
+		// );
 
+		// console.log(this.currentBlocks.blocks)
+		// this.deleteBlock('blockid0');
 		
+		// console.log(this.currentBlocks.blocks)
 	}
 
 	login(username, password) {
@@ -350,6 +352,10 @@ export default class DummyApi {
 	}
 
 	deleteBlock(blockId) {
+
+		this.currentBlocks.blocks = this.currentBlocks.blocks.filter(
+			block => block.blockId !== blockId)
+
 		const promise = new Promise((resolve, reject) => {
 			setTimeout(() => resolve({
 				status: 200,
