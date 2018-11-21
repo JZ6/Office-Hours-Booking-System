@@ -10,7 +10,7 @@ from pymongo import MongoClient
 Test the methods of initializing an empty test database.
 """
 
-
+@unittest.skip("Deprecated")
 class DatabaseAndCollectionCreationTestCase(unittest.TestCase):
 
     """
