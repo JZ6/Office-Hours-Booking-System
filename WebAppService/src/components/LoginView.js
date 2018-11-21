@@ -2,7 +2,6 @@ import React, {
     createElement as h
 } from "react"
 
-// import api from './common/api'
 import storage from './common/storage'
 
 import "../styles/LoginView.css";
@@ -25,16 +24,31 @@ export default class LoginView extends React.Component {
         if (authPromise) {
             authPromise.then(result => {
 
-                //Store current info to storage.
-                Object.assign(storage,
-                    {
-                        currentUserType: permissions,
-                        loggedIn: true
+                const {
+                    status,
+                    statusText,
+                    json: jsonPromise
+                } = result
+
+                if (status !== 200 || statusText !== "OK") { return false };
+
+                jsonPromise().then(
+                    result => {
+
+                        Object.assign(storage,
+                            {
+                                currentUserType: permissions,
+                                loggedIn: true,
+                                token: result.sessionToken
+                            }
+                        )
+
+                        sessionStorage.setItem('sessionToken', result.sessionToken);
+                        sessionStorage.setItem('currentUserType', permissions);
+                        sessionStorage.setItem('loggedIn', 1);
+                        this.props.authenticated();
                     }
                 )
-
-                //Add token to session storage
-                // sessionStorage.setItem('token', 0);
 
                 this.setState({
                     display: 'none',
@@ -42,17 +56,15 @@ export default class LoginView extends React.Component {
                 })
 
                 // console.log(storage);
+                // console.log(sessionStorage)
+
             })
                 .catch(error => console.log(error))
         }
     }
 
     authenticate(username, password) {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => resolve(), 1000);
-        })
-
-        // api.login();
+        return this.props.api.login();
     }
 
     getLoadingAnimation() {

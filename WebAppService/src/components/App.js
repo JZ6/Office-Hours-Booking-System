@@ -28,17 +28,28 @@ class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			events: []
+			events: [],
+			authenticated: false
 		};
 		// this.api = new api("localhost/");
 
 		this.api = new dummyAPI('Test');
+		this.authenticated = this.authenticated.bind(this)
+
+		// setTimeout(() => this.deleteBlock('blockid2')
+		// , 2000);
+	}
+
+	authenticated(){
+		this.setState({authenticated: true})
 		this.fetchBlocks(7);
 	}
 
 	fetchBlocks(days) {
+		if (!this.state.authenticated) return false;
+		
 		const startDate = new Date();
-		const endDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + days);   
+		const endDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + days);
 		const blocksPromise = this.api.getBlocks(startDate.toISOString(), endDate.toISOString());
 
 		blocksPromise.then(
@@ -52,13 +63,9 @@ class App extends Component {
 
 				if (status !== 200 || statusText !== "OK") { return false };
 
-				jsonPromise.then(
+				jsonPromise().then(
 					result => {
-						const { blocks } = result;
-						console.log(blocks)
-						for (var i = 0; i < blocks.length; i++) {
-							this.addNewBlock(blocks[i]);
-						}
+						result.blocks.forEach(element => this.addNewBlock(element));
 					}
 				)
 			}
@@ -66,14 +73,13 @@ class App extends Component {
 	}
 
 	addNewBlock(block) {
-		console.log(block)
+		if (!this.state.authenticated) return false;
+
+		// console.log(block)
 		const {
 			appointmentDuration,
 			appointmentSlots,
-			blockId,
-			comment,
 			courseCodes,
-			owners,
 			startTime
 		} = block;
 
@@ -86,23 +92,26 @@ class App extends Component {
 			start: new Date(startTime),
 			end: endTime,
 			title: courseCodes.toString(),
-			details: {
-				appointmentSlots: appointmentSlots,
-				blockId: blockId,
-				comment: comment,
-				owners: owners,
-			}
+			block: block
 		}
-		console.log(newBlockEvent);
+		// console.log(newBlockEvent);
 
 		this.setState({ events: [...this.state.events, newBlockEvent] });
+		return true;	//Succeeded
 	}
 
-	deleteBlock(blockId){
+	deleteBlock(blockId) {
+		if (!this.state.authenticated) return false;
 
+		const newEventList = this.state.events.filter(
+			blockEvent => blockEvent.block.blockId !== blockId)
+
+		this.setState({events: newEventList});
 	}
 
-	modifyBlock(blockId,block){
+	modifyBlock(blockId, block) {
+		if (!this.state.authenticated) return false;
+
 		this.deleteBlock(blockId);
 		this.addNewBlock(block);
 	}
@@ -126,7 +135,7 @@ class App extends Component {
 	render() {
 		return (
 			<div className="App">
-				<LoginView api={this.api} />
+				<LoginView api={this.api} authenticated = {this.authenticated}/>
 				<div className="App-container">
 					<DnDCalendar
 						defaultDate={new Date()}

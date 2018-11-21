@@ -3,11 +3,185 @@ export default class DummyApi {
 		this.url = url;
 		this.sessionToken = null;
 		this.delay = 50;
+		this.currentBlocks = {
+			"blocks": [
+				{
+					"blockId": "blockid0",
+					"owners": [
+						"rossbob2",
+						"atat4"
+					],
+					"courseCodes": [
+						"csc301",
+						"csc302"
+					],
+					"comment": "We don't make mistakes, just happy little accidents.",
+					"startTime": "2018-11-18T12:00:00",
+					"appointmentDuration": 300000,
+					"appointmentSlots": [
+						{
+							"identity": "parkerpeter15",
+							"courseCode": "csc302",
+							"note": "Everybody gets one."
+						},
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" }
+					]
+				},
+				{
+					"blockId": "blockid1",
+					"owners": [
+						"rossbob2",
+						"atst2"
+					],
+					"courseCodes": [
+						"csc301",
+						"csc302"
+					],
+					"comment": "Birds!",
+					"startTime": "2018-11-18T16:00:00",
+					"appointmentDuration": 600000,
+					"appointmentSlots": [
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" }
+					]
+				},
+				{
+					"blockId": "blockid2",
+					"owners": [
+						"rossbob3",
+						"atst3"
+					],
+					"courseCodes": [
+						"csc402"
+					],
+					"comment": "TEST3!",
+					"startTime": "2018-11-21T09:00:00",
+					"appointmentDuration": 1200000,
+					"appointmentSlots": [
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "", "courseCode": "", "note": "" }
+					]
+				}
+			]
+		}
+	
+		// this.testDummyApi();
+	}
+
+	testDummyApi() {
+		this.postBlock({
+			"blockId": "blockid100",
+			"owners": [
+				"right",
+				"htm"
+			],
+			"courseCodes": [
+				"csc369",
+				"csc379"
+			],
+			"comment": "We don't make mistakes, just happy little accidents.",
+			"startTime": "2018-11-23T12:00:00",
+			"appointmentDuration": 600000,
+			"appointmentSlots": [
+				{
+					"identity": "parkerpeter15",
+					"courseCode": "csc302",
+					"note": "Everybody gets one."
+				},
+				{ "identity": "", "courseCode": "", "note": "" },
+				{ "identity": "", "courseCode": "", "note": "" },
+				{ "identity": "", "courseCode": "", "note": "" },
+				{ "identity": "", "courseCode": "", "note": "" },
+				{ "identity": "", "courseCode": "", "note": "" },
+				{ "identity": "", "courseCode": "", "note": "" },
+				{ "identity": "", "courseCode": "", "note": "" },
+				{ "identity": "", "courseCode": "", "note": "" },
+				{ "identity": "", "courseCode": "", "note": "" },
+				{ "identity": "", "courseCode": "", "note": "" }
+			]
+		},)
+
+		// this.getBlock('blockid0').then(
+		// 	result => {
+
+		// 		const {
+		// 			status,
+		// 			statusText,
+		// 			json: jsonPromise
+		// 		} = result
+
+		// 		if (status !== 200 || statusText !== "OK") { return false };
+
+		// 		jsonPromise.then(
+		// 			result => {
+		// 				console.log(result)
+		// 			}
+		// 		)
+		// 	}
+		// );
+
+		// console.log(this.currentBlocks.blocks)
+		// this.deleteBlock('blockid0');
+		
+		// console.log(this.currentBlocks.blocks)
 	}
 
 	login(username, password) {
-		const jsonPromise = new Promise((resolve, reject) => {
-			resolve({sessionToken: "dummysessiontoken"});
+		const jsonPromise = () => new Promise((resolve, reject) => {
+			resolve({ sessionToken: "dummysessiontoken" });
 		});
 		const promise = new Promise((resolve, reject) => {
 			setTimeout(() => resolve({
@@ -20,7 +194,7 @@ export default class DummyApi {
 	}
 
 	getIdentity(id) {
-		const jsonPromise = new Promise((resolve, reject) => {
+		const jsonPromise = () => new Promise((resolve, reject) => {
 			if (id === "rossbob2") {
 				resolve({
 					"id": "rossbob2",
@@ -69,7 +243,7 @@ export default class DummyApi {
 				json: jsonPromise
 			}), this.delay);
 		});
-		
+
 		return promise;
 	}
 	postIdentity(identity) {
@@ -92,7 +266,7 @@ export default class DummyApi {
 	}
 
 	getCourse(courseCode) {
-		const jsonPromise = new Promise((resolve, reject) => {
+		const jsonPromise = () => new Promise((resolve, reject) => {
 			if (courseCode === "csc300") {
 				resolve({
 					"instructors": [
@@ -166,123 +340,8 @@ export default class DummyApi {
 	}
 
 	getBlocks(startDate, endDate) {
-		const jsonPromise = new Promise((resolve, reject) => {
-			resolve(
-				{
-					"blocks": [
-						{
-							"blockId": "blockid0",
-							"owners": [
-								"rossbob2",
-								"atat4"
-							],
-							"courseCodes": [
-								"csc301",
-								"csc302"
-							],
-							"comment": "We don't make mistakes, just happy little accidents.",
-							"startTime": "2018-11-18T12:00:00",
-							"appointmentDuration": 300000,
-							"appointmentSlots": [
-								{
-									"identity": "parkerpeter15",
-									"courseCode": "csc302",
-									"note": "Everybody gets one."
-								},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""}
-							]
-						},
-						{
-							"blockId": "blockid1",
-							"owners": [
-								"rossbob2",
-								"atst2"
-							],
-							"courseCodes": [
-								"csc301",
-								"csc302"
-							],
-							"comment": "Birds!",
-							"startTime": "2018-11-18T16:00:00",
-							"appointmentDuration": 600000,
-							"appointmentSlots": [
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""}
-							]
-						},
-						{
-							"blockId": "blockid2",
-							"owners": [
-								"rossbob3",
-								"atst3"
-							],
-							"courseCodes": [
-								"csc402"
-							],
-							"comment": "TEST3!",
-							"startTime": "2018-11-21T09:00:00",
-							"appointmentDuration": 1200000,
-							"appointmentSlots": [
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""},
-								{"identity": "", "courseCode": "", "note": ""}
-							]
-						}
-					]
-				}
-			);
+		const jsonPromise = () => new Promise((resolve, reject) => {
+			resolve(this.currentBlocks);
 		});
 		const promise = new Promise((resolve, reject) => {
 			setTimeout(() => resolve({
@@ -295,87 +354,15 @@ export default class DummyApi {
 	}
 	// Also use for getting slots en masse
 	getBlock(blockId) {
-		const jsonPromise = new Promise((resolve, reject) => {
-			if (blockId === "blockid0") {
-				resolve(
-					{
-						"blockId": "blockid0",
-						"owners": [
-							"rossbob2",
-							"atat4"
-						],
-						"courseCodes": [
-							"csc301",
-							"csc302"
-						],
-						"comment": "We don't make mistakes, just happy little accidents.",
-						"startTime": "2018-11-18T12:00:00",
-						"appointmentDuration": 300000,
-						"appointmentSlots": [
-							{
-								"identity": "parkerpeter15",
-								"courseCode": "csc302",
-								"note": "Everybody gets one."
-							},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""}
-						]
-					}
-				);
-			} else if (blockId === "blockid1") {
-				resolve(
-					{
-						"blockId": "blockid1",
-						"owners": [
-							"rossbob2",
-							"atst2"
-						],
-						"courseCodes": [
-							"csc301",
-							"csc302"
-						],
-						"comment": "Birds!",
-						"startTime": "2018-11-18T16:00:00",
-						"appointmentDuration": 600000,
-						"appointmentSlots": [
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""},
-							{"identity": "", "courseCode": "", "note": ""}
-						]
-					}
-				);
-			} else {
-				resolve({});
+
+		let foundBlock = this.currentBlocks.blocks.find(element =>
+			element.blockId === blockId);
+
+		const jsonPromise = () => new Promise((resolve, reject) => {
+			if (!foundBlock) {
+				foundBlock = {}
 			}
+			resolve(foundBlock)
 		});
 		const promise = new Promise((resolve, reject) => {
 			setTimeout(() => resolve({
@@ -388,6 +375,7 @@ export default class DummyApi {
 	}
 
 	postBlock(block) {
+		this.currentBlocks.blocks.push(block);
 		const promise = new Promise((resolve, reject) => {
 			setTimeout(() => resolve({
 				status: 200,
@@ -398,6 +386,10 @@ export default class DummyApi {
 	}
 
 	deleteBlock(blockId) {
+
+		this.currentBlocks.blocks = this.currentBlocks.blocks.filter(
+			block => block.blockId !== blockId)
+
 		const promise = new Promise((resolve, reject) => {
 			setTimeout(() => resolve({
 				status: 200,
