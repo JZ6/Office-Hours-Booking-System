@@ -12,7 +12,6 @@ def get_env_var(env_var_name, default):
         value = os.environ[env_var_name]
     except KeyError:
         value = default
-    LOGGER.info("Environment config:")
     LOGGER.info("%s=%s", env_var_name, value)
     return value
 
@@ -32,6 +31,7 @@ def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     app.logger.setLevel(logging.INFO)
+    app.logger.info("Creating app instance")
 
     if test_config is None:
         # load the instance config, if it exists, when not testing

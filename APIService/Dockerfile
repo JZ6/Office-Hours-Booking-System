@@ -21,7 +21,7 @@ COPY Pipfile Pipfile
 
 COPY Pipfile.lock Pipfile.lock
 
-RUN pipenv install $(test ${FLASK_ENV:-'dev'} == 'production' || echo '--dev') --deploy --system
+RUN pipenv install $(test ${FLASK_ENV:-'dev'} == 'prod' || echo '--dev') --deploy --system
 
 COPY . /app
 
