@@ -123,14 +123,14 @@ export default class DummyApi {
 
 	testDummyApi() {
 		this.postBlock({
-			"blockId": "blockid100",
+			"blockId": "blockid0",
 			"owners": [
 				"right",
 				"htm"
 			],
 			"courseCodes": [
-				"csc369",
-				"csc379"
+				"Test",
+				"postblock"
 			],
 			"comment": "We don't make mistakes, just happy little accidents.",
 			"startTime": "2018-11-23T12:00:00",
@@ -375,16 +375,11 @@ export default class DummyApi {
 	}
 
 	postBlock(block) {
-		let create = true;
-		this.currentBlocks.blocks.forEach((b, i) => {
-			if (block.blockId === b.blockId) {
-				this.currentBlocks.blocks[i] = block;
-				create = false;
-			}
-		});
-		if (create) {
-			this.currentBlocks.blocks.push(block);
-		}
+		this.currentBlocks.blocks = this.currentBlocks.blocks.filter(
+			currentBlock => currentBlock.blockId !== block.blockId)
+
+		this.currentBlocks.blocks.push(block);
+		
 		const promise = new Promise((resolve, reject) => {
 			setTimeout(() => resolve({
 				status: 200,
