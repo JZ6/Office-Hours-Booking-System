@@ -130,7 +130,24 @@ class App extends Component {
 	onEventDrop = ({ event, start, end, allDay }) => {
 		//console.log(start);
 	};
-
+	
+	onSelectSlot = (event) => {
+		if (!this.state.authenticated) return false;
+		
+		let block = {
+			blockId: "",
+			owners: [],
+			courseCodes: [],
+			comment: "",
+			startTime: event.start.toISOString(),
+			appointmentDuration: 300000,
+			appointmentSlots: [...Array(Math.floor((event.end - event.start) / 300000))]
+				.map(() => ({ "identity": "", "courseCode": "", "note": "" }))
+		}
+		
+		this.refs.blockContainer.onOpen(block);
+	}
+	
 	onSelectEvent = (event, e) => {
 		console.log("Clicked on ", event);
 		this.refs.blockContainer.onOpen(event.block);
@@ -161,6 +178,8 @@ class App extends Component {
 						onEventDrop={this.onEventDrop}
 						onEventResize={this.onEventResize}
 						onSelectEvent={this.onSelectEvent}
+						selectable={true}
+						onSelectSlot={this.onSelectSlot}
 						resizable
 						style={{
 							height: "95vh",

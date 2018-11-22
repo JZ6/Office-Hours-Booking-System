@@ -242,6 +242,7 @@ export default class BlockContainer extends React.Component {
 			});
 			
 			this.props.blockCallback(this.state.blockId, block);
+			this.onClose();
 		}
 	}
 	
@@ -251,6 +252,10 @@ export default class BlockContainer extends React.Component {
 	
 	deleteBlock() {
 		if (this.state.enabled) {
+			if (!this.state.blockId) {
+				this.onClose();
+				return false;
+			}
 			this.setState({enabled: false});
 			this.props.api.deleteBlock(this.state.blockId)
 			.then((response) => {
@@ -265,6 +270,7 @@ export default class BlockContainer extends React.Component {
 			});
 			
 			this.props.blockCallback(this.state.blockId);
+			this.onClose();
 		}
 	}
 	
@@ -417,6 +423,7 @@ export default class BlockContainer extends React.Component {
 					courseCodes={this.state.courseCodes}
 					comment={this.state.comment}
 					appointmentSlots={this.state.appointmentSlots}
+					blockId={this.state.blockId}
 					
 					start={this.state.start}
 					end={this.state.end}
@@ -424,23 +431,27 @@ export default class BlockContainer extends React.Component {
 					role={this.props.role}
 					id={this.props.id}
 				/>
-				<SlotView 
-					handleSlotClick={this.handleSlotClick}
-					handleIdentityChange={this.handleIdentityChange}
-					handleNoteChange={this.handleNoteChange}
-					handleSlotConfirm={this.handleSlotConfirm}
-					handleSlotCancel={this.handleSlotCancel}
-					handleEmpty={this.handleEmpty}
-					handleUpdate={this.handleUpdate}
-					handleUndo={this.handleUndo}
-					
-					startTime={this.state.startTime}
-					slotDuration={this.state.appointmentDuration}
-					slots={this.state.appointmentSlots}
-					prevSlots={this.prevSlots}
-					role={this.props.role}
-					id={this.props.id}
-				/>
+				{!this.state.blockId ? 
+					"Please submit the new block before editing slots."
+				: 
+					<SlotView 
+						handleSlotClick={this.handleSlotClick}
+						handleIdentityChange={this.handleIdentityChange}
+						handleNoteChange={this.handleNoteChange}
+						handleSlotConfirm={this.handleSlotConfirm}
+						handleSlotCancel={this.handleSlotCancel}
+						handleEmpty={this.handleEmpty}
+						handleUpdate={this.handleUpdate}
+						handleUndo={this.handleUndo}
+						
+						startTime={this.state.startTime}
+						slotDuration={this.state.appointmentDuration}
+						slots={this.state.appointmentSlots}
+						prevSlots={this.prevSlots}
+						role={this.props.role}
+						id={this.props.id}
+					/>
+				}
 			</div>;
 		}
 		else {

@@ -3,10 +3,11 @@ export default class DummyApi {
 		this.url = url;
 		this.sessionToken = null;
 		this.delay = 50;
+		this.currentBlockId = 2;
 		this.currentBlocks = {
 			"blocks": [
 				{
-					"blockId": "blockid0",
+					"blockId": "0",
 					"owners": [
 						"rossbob2",
 						"atat4"
@@ -37,7 +38,7 @@ export default class DummyApi {
 					]
 				},
 				{
-					"blockId": "blockid1",
+					"blockId": "1",
 					"owners": [
 						"rossbob2",
 						"atst2"
@@ -77,7 +78,7 @@ export default class DummyApi {
 					]
 				},
 				{
-					"blockId": "blockid2",
+					"blockId": "2",
 					"owners": [
 						"rossbob3",
 						"atst3"
@@ -123,7 +124,7 @@ export default class DummyApi {
 
 	testDummyApi() {
 		this.postBlock({
-			"blockId": "blockid0",
+			"blockId": "0",
 			"owners": [
 				"right",
 				"htm"
@@ -375,9 +376,15 @@ export default class DummyApi {
 	}
 
 	postBlock(block) {
-		this.currentBlocks.blocks = this.currentBlocks.blocks.filter(
-			currentBlock => currentBlock.blockId !== block.blockId)
-
+		if (!block.blockId) {
+			// If blank/no blockId, create block with new id
+			this.currentBlockId ++;
+			block.blockId = this.currentBlockId.toString();
+		} else {
+			// Otherwise delete and re-add existing block
+			this.currentBlocks.blocks = this.currentBlocks.blocks.filter(
+				currentBlock => currentBlock.blockId !== block.blockId)
+		}
 		this.currentBlocks.blocks.push(block);
 		
 		const promise = new Promise((resolve, reject) => {
