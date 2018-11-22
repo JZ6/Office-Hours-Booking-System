@@ -39,6 +39,7 @@ export default class BlockContainer extends React.Component {
 	}
 	onClose() {
 		if (!this.state.locked && this.state.visible) {
+			this.props.blockContainerClose();
 			this.setState({
 				visible: false,
 			});
@@ -239,7 +240,7 @@ export default class BlockContainer extends React.Component {
 				this.setState({locked: false});
 			});
 			
-			this.props.blockCallback(this.state.blockId, block);
+			this.props.blockContainerCallback(this.state.blockId, block);
 			this.onClose();
 		}
 	}
@@ -267,7 +268,7 @@ export default class BlockContainer extends React.Component {
 				this.setState({locked: false});
 			});
 			
-			this.props.blockCallback(this.state.blockId);
+			this.props.blockContainerCallback(this.state.blockId);
 			this.onClose();
 		}
 	}

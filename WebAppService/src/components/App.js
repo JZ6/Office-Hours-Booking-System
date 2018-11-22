@@ -28,6 +28,7 @@ class App extends Component {
 		this.state = {
 			events: [],
 			authenticated: false,
+			locked: true,
 			id: "",
 			role: ""
 		};
@@ -43,6 +44,7 @@ class App extends Component {
 	authenticated(role, id) {
 		this.setState({
 			authenticated: true,
+			locked: false,
 			role: role,
 			id: id
 		});
@@ -124,7 +126,7 @@ class App extends Component {
 	}
 
 	onEventResize = (type, { event, start, end, allDay }) => {
-		if (!this.state.authenticated) return false;
+		if (!this.state.authenticated || this.state.locked) return false;
 		/* this.setState(state => {
 			state.events[0].start = start;
 			state.events[0].end = end;
@@ -133,12 +135,14 @@ class App extends Component {
 	};
 
 	onEventDrop = ({ event, start, end, allDay }) => {
-		if (!this.state.authenticated) return false;
+		if (!this.state.authenticated || this.state.locked) return false;
 		//console.log(start);
 	};
 
 	onSelectSlot = (event) => {
-		if (!this.state.authenticated || this.state.role === "student") return false;
+		if (!this.state.authenticated || 
+			this.state.locked || 
+			this.state.role === "student") return false;
 
 		let block = {
 			blockId: "",
@@ -150,18 +154,20 @@ class App extends Component {
 			appointmentSlots: [...Array(Math.floor((event.end - event.start) / 300000))]
 				.map(() => ({ "identity": "", "courseCode": "", "note": "" }))
 		}
-
+		
+		this.setState({ locked: true });
 		this.refs.blockContainer.onOpen(block);
 	}
 
 	onSelectEvent = (event, e) => {
-		if (!this.state.authenticated) return false;
+		if (!this.state.authenticated || this.state.locked) return false;
 
 		console.log("Clicked on ", event);
+		this.setState({ locked: true });
 		this.refs.blockContainer.onOpen(event.block);
 	};
 
-	blockCallback = (blockId, block) => {
+	blockContainerCallback = (blockId, block) => {
 		if (!this.state.authenticated) return false;
 
 		if (block) {
@@ -173,12 +179,16 @@ class App extends Component {
 		}
 		this.fetchBlocks(7);
 	};
+	
+	blockContainerClose = () => {
+		this.setState({ locked: false });
+	}
 
 	render() {
 		return (
 			<div className="App">
 				<LoginView api={this.api} authenticated={this.authenticated} />
-				<div className="App-container">
+				<div className={this.state.locked ? "App-container--locked" : "App-container"}>
 					<DnDCalendar
 						defaultDate={new Date()}
 						defaultView="week"
@@ -195,13 +205,15 @@ class App extends Component {
 						}}
 					/>
 				</div>
+				{this.state.locked ? <div className="App-LockOverlay" /> : null}
 				{this.state.authenticated ?
 					<BlockContainer
 						ref="blockContainer"
 						id={this.state.id}
 						role={this.state.role}
 						api={this.api}
-						blockCallback={this.blockCallback}
+						blockContainerCallback={this.blockContainerCallback}
+						blockContainerClose={this.blockContainerClose}
 					/>
 					:
 					null

@@ -6,5 +6,5 @@
 	left:50%;
 	transform: translate(-50%,-50%);
 	background-color:rgb(219, 219, 219);
-	z-index: 4;
+	z-index: 6;
 }

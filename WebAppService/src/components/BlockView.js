@@ -103,7 +103,7 @@ export default class BlockView extends React.Component {
 					</textarea>
 					<br/>
 					<button className="submit-button" onClick={this.props.submitBlock}>Submit</button>
-					{this.blockId ? <button className="submit-button" onClick={this.props.updateBlock}>Cancel</button> : ""}
+					{this.blockId ? <button className="submit-button" onClick={this.props.updateBlock}>Cancel</button> : null}
 					<button className="submit-button" onClick={this.props.deleteBlock}>Delete</button>
 				</div>
 			);
