@@ -63,10 +63,12 @@ class App extends Component {
 				} = result
 
 				if (status !== 200 || statusText !== "OK") { return false };
-
+				
+				this.setState({events: []});  // Empty out existing events
+				
 				jsonPromise().then(
 					result => {
-						result.blocks.forEach(element => this.addNewBlock(element));
+						result.blocks.forEach(block => this.addNewBlock(block));
 					}
 				)
 			}
@@ -106,7 +108,7 @@ class App extends Component {
 
 		const newEventList = this.state.events.filter(
 			blockEvent => blockEvent.block.blockId !== blockId)
-
+		console.log(newEventList);
 		this.setState({events: newEventList});
 	}
 
@@ -118,20 +120,33 @@ class App extends Component {
 	}
 
 	onEventResize = (type, { event, start, end, allDay }) => {
-		this.setState(state => {
+		/* this.setState(state => {
 			state.events[0].start = start;
 			state.events[0].end = end;
 			return { events: state.events };
-		});
+		}); */
 	};
 
 	onEventDrop = ({ event, start, end, allDay }) => {
-		console.log(start);
+		//console.log(start);
 	};
 
 	onSelectEvent = (event, e) => {
 		console.log("Clicked on ", event);
 		this.refs.blockContainer.onOpen(event.block);
+	};
+	
+	blockCallback = (blockId, block) => {
+		if (!this.state.authenticated) return false;
+		
+		if (block) {
+			console.log("POST", blockId, block);
+			this.modifyBlock(blockId, block);
+		} else {
+			console.log("DELETE", blockId);
+			this.deleteBlock(blockId);
+		}
+		this.fetchBlocks(7);
 	};
 
 	render() {
@@ -158,6 +173,7 @@ class App extends Component {
 					id="parkerpeter15" 
 					role="instructor" 
 					api={this.api}
+					blockCallback={this.blockCallback}
 				/>
 			</div>
 		);

@@ -19,6 +19,7 @@ export default class BlockContainer extends React.Component {
 		this.handleInputChange = this.handleInputChange.bind(this);
 		this.submitBlock = this.submitBlock.bind(this);
 		this.updateBlock = this.updateBlock.bind(this);
+		this.deleteBlock = this.deleteBlock.bind(this);
 		this.onClose = this.onClose.bind(this)
 		
 		// Slots
@@ -38,10 +39,12 @@ export default class BlockContainer extends React.Component {
 		});
 	}
 	onClose() {
-		this.setState({
-			visible: false,
-			enabled: false
-		});
+		if (this.state.enabled) {
+			this.setState({
+				visible: false,
+				enabled: false
+			});
+		}
 	}
 	
 	update(scope, i) {
@@ -237,11 +240,32 @@ export default class BlockContainer extends React.Component {
 				window.alert(error.message);
 				this.setState({enabled: true});
 			});
+			
+			this.props.blockCallback(this.state.blockId, block);
 		}
 	}
 	
 	updateBlock() {
 		this.update("block");
+	}
+	
+	deleteBlock() {
+		if (this.state.enabled) {
+			this.setState({enabled: false});
+			this.props.api.deleteBlock(this.state.blockId)
+			.then((response) => {
+				if (response.status !== 200) {
+					window.alert(response.status, response.statusText);
+				}
+				this.setState({enabled: true});
+			})
+			.catch((error) => {
+				window.alert(error.message);
+				this.setState({enabled: true});
+			});
+			
+			this.props.blockCallback(this.state.blockId);
+		}
 	}
 	
 	//----------------------------------------------------------------------------
@@ -384,6 +408,7 @@ export default class BlockContainer extends React.Component {
 					handleInputChange={this.handleInputChange}
 					submitBlock={this.submitBlock}
 					updateBlock={this.updateBlock}
+					deleteBlock={this.deleteBlock}
 					onClose={this.onClose}
 					
 					startTime={this.state.startTime}

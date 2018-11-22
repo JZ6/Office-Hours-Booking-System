@@ -108,6 +108,7 @@ export default class BlockView extends React.Component {
 				{this.renderInfo(this.props.role)}
 				<button className="submit-button" onClick={this.props.submitBlock}>Submit</button>
 				<button className="submit-button" onClick={this.props.updateBlock}>Cancel</button>
+				<button className="submit-button" onClick={this.props.deleteBlock}>Delete</button>
 			</div>
 		);
 	}
