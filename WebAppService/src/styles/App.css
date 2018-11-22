@@ -12,6 +12,11 @@
 	flex-grow: 1;
 }
 
+.App-container--locked {
+	flex-grow: 1;
+	filter: blur(10px);
+}
+
 .App-intro {
   font-size: large;
 }
@@ -19,4 +24,12 @@
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+.App-LockOverlay {
+	z-index: 5;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, .5);
 }

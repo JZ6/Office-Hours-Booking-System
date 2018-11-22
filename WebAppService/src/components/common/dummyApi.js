@@ -3,10 +3,11 @@ export default class DummyApi {
 		this.url = url;
 		this.sessionToken = null;
 		this.delay = 50;
+		this.currentBlockId = 2;
 		this.currentBlocks = {
 			"blocks": [
 				{
-					"blockId": "blockid0",
+					"blockId": "0",
 					"owners": [
 						"rossbob2",
 						"atat4"
@@ -24,7 +25,7 @@ export default class DummyApi {
 							"courseCode": "csc302",
 							"note": "Everybody gets one."
 						},
-						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "watsonmj25", "courseCode": "csc301", "note": "Tigers!" },
 						{ "identity": "", "courseCode": "", "note": "" },
 						{ "identity": "", "courseCode": "", "note": "" },
 						{ "identity": "", "courseCode": "", "note": "" },
@@ -37,7 +38,7 @@ export default class DummyApi {
 					]
 				},
 				{
-					"blockId": "blockid1",
+					"blockId": "1",
 					"owners": [
 						"rossbob2",
 						"atst2"
@@ -77,7 +78,7 @@ export default class DummyApi {
 					]
 				},
 				{
-					"blockId": "blockid2",
+					"blockId": "2",
 					"owners": [
 						"rossbob3",
 						"atst3"
@@ -123,14 +124,14 @@ export default class DummyApi {
 
 	testDummyApi() {
 		this.postBlock({
-			"blockId": "blockid100",
+			"blockId": "0",
 			"owners": [
 				"right",
 				"htm"
 			],
 			"courseCodes": [
-				"csc369",
-				"csc379"
+				"Test",
+				"postblock"
 			],
 			"comment": "We don't make mistakes, just happy little accidents.",
 			"startTime": "2018-11-23T12:00:00",
@@ -375,7 +376,17 @@ export default class DummyApi {
 	}
 
 	postBlock(block) {
+		if (!block.blockId) {
+			// If blank/no blockId, create block with new id
+			this.currentBlockId ++;
+			block.blockId = this.currentBlockId.toString();
+		} else {
+			// Otherwise delete and re-add existing block
+			this.currentBlocks.blocks = this.currentBlocks.blocks.filter(
+				currentBlock => currentBlock.blockId !== block.blockId)
+		}
 		this.currentBlocks.blocks.push(block);
+		
 		const promise = new Promise((resolve, reject) => {
 			setTimeout(() => resolve({
 				status: 200,
@@ -386,7 +397,6 @@ export default class DummyApi {
 	}
 
 	deleteBlock(blockId) {
-
 		this.currentBlocks.blocks = this.currentBlocks.blocks.filter(
 			block => block.blockId !== blockId)
 
@@ -398,18 +408,13 @@ export default class DummyApi {
 		});
 		return promise;
 	}
-
+	
 	editSlot(blockId, slotId, slot) {
-		const promise = new Promise((resolve, reject) => {
-			setTimeout(() => resolve({
-				status: 200,
-				statusText: "OK"
-			}), this.delay);
+		this.currentBlocks.blocks.forEach((b, i) => {
+			if (blockId === b.blockId) {
+				this.currentBlocks.blocks[i].appointmentSlots[slotId] = slot;
+			}
 		});
-		return promise;
-	}
-	// Edit slots en masse without editing block
-	editSlots(blockId, slots) {
 		const promise = new Promise((resolve, reject) => {
 			setTimeout(() => resolve({
 				status: 200,

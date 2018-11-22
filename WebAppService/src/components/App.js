@@ -2,20 +2,18 @@ import React, { Component } from "react";
 import Calendar from "react-big-calendar";
 import moment from "moment";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
-import api from "./common/api";
 
 import '../styles/App.css'
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
-import components from './';
-
+//import api from "./common/api";
 import dummyAPI from './common/dummyApi'
 
+import components from './';
+import BlockContainer from "./BlockContainer";
 const {
-	LoginView,
-	BlockView,
-	SideBar
+	LoginView
 } = components
 
 // console.log(LoginView)
@@ -29,7 +27,10 @@ class App extends Component {
 		super(props);
 		this.state = {
 			events: [],
-			authenticated: false
+			authenticated: false,
+			locked: true,
+			id: "",
+			role: ""
 		};
 		// this.api = new api("localhost/");
 
@@ -40,14 +41,20 @@ class App extends Component {
 		// , 2000);
 	}
 
-	authenticated(){
-		this.setState({authenticated: true})
+	authenticated(role, id) {
+		this.setState({
+			authenticated: true,
+			locked: false,
+			role: role,
+			id: id
+		});
+		console.log('Logged in as:', role)
 		this.fetchBlocks(7);
 	}
 
 	fetchBlocks(days) {
 		if (!this.state.authenticated) return false;
-		
+
 		const startDate = new Date();
 		const endDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + days);
 		const blocksPromise = this.api.getBlocks(startDate.toISOString(), endDate.toISOString());
@@ -63,9 +70,11 @@ class App extends Component {
 
 				if (status !== 200 || statusText !== "OK") { return false };
 
+				this.setState({ events: [] });  // Empty out existing events
+
 				jsonPromise().then(
 					result => {
-						result.blocks.forEach(element => this.addNewBlock(element));
+						result.blocks.forEach(block => this.addNewBlock(block));
 					}
 				)
 			}
@@ -105,8 +114,8 @@ class App extends Component {
 
 		const newEventList = this.state.events.filter(
 			blockEvent => blockEvent.block.blockId !== blockId)
-
-		this.setState({events: newEventList});
+		// console.log(newEventList);
+		this.setState({ events: newEventList });
 	}
 
 	modifyBlock(blockId, block) {
@@ -117,26 +126,69 @@ class App extends Component {
 	}
 
 	onEventResize = (type, { event, start, end, allDay }) => {
-		this.setState(state => {
+		if (!this.state.authenticated || this.state.locked) return false;
+		/* this.setState(state => {
 			state.events[0].start = start;
 			state.events[0].end = end;
 			return { events: state.events };
-		});
+		}); */
 	};
 
 	onEventDrop = ({ event, start, end, allDay }) => {
-		console.log(start);
+		if (!this.state.authenticated || this.state.locked) return false;
+		//console.log(start);
 	};
 
+	onSelectSlot = (event) => {
+		if (!this.state.authenticated || 
+			this.state.locked || 
+			this.state.role === "student") return false;
+
+		let block = {
+			blockId: "",
+			owners: [],
+			courseCodes: [],
+			comment: "",
+			startTime: event.start.toISOString(),
+			appointmentDuration: 300000,
+			appointmentSlots: [...Array(Math.floor((event.end - event.start) / 300000))]
+				.map(() => ({ "identity": "", "courseCode": "", "note": "" }))
+		}
+		
+		this.setState({ locked: true });
+		this.refs.blockContainer.onOpen(block);
+	}
+
 	onSelectEvent = (event, e) => {
-		this.refs.blockView.onSelectEvent(event);
+		if (!this.state.authenticated || this.state.locked) return false;
+
+		console.log("Clicked on ", event);
+		this.setState({ locked: true });
+		this.refs.blockContainer.onOpen(event.block);
 	};
+
+	blockContainerCallback = (blockId, block) => {
+		if (!this.state.authenticated) return false;
+
+		if (block) {
+			console.log("POST", blockId, block);
+			this.modifyBlock(blockId, block);
+		} else {
+			console.log("DELETE", blockId);
+			this.deleteBlock(blockId);
+		}
+		this.fetchBlocks(7);
+	};
+	
+	blockContainerClose = () => {
+		this.setState({ locked: false });
+	}
 
 	render() {
 		return (
 			<div className="App">
-				<LoginView api={this.api} authenticated = {this.authenticated}/>
-				<div className="App-container">
+				<LoginView api={this.api} authenticated={this.authenticated} />
+				<div className={this.state.locked ? "App-container--locked" : "App-container"}>
 					<DnDCalendar
 						defaultDate={new Date()}
 						defaultView="week"
@@ -144,6 +196,8 @@ class App extends Component {
 						onEventDrop={this.onEventDrop}
 						onEventResize={this.onEventResize}
 						onSelectEvent={this.onSelectEvent}
+						selectable={this.state.role !== "student"}
+						onSelectSlot={this.onSelectSlot}
 						resizable
 						style={{
 							height: "95vh",
@@ -151,8 +205,19 @@ class App extends Component {
 						}}
 					/>
 				</div>
-				<BlockView ref="blockView" permission={"instructor"} />
-				<SideBar />
+				{this.state.locked ? <div className="App-LockOverlay" /> : null}
+				{this.state.authenticated ?
+					<BlockContainer
+						ref="blockContainer"
+						id={this.state.id}
+						role={this.state.role}
+						api={this.api}
+						blockContainerCallback={this.blockContainerCallback}
+						blockContainerClose={this.blockContainerClose}
+					/>
+					:
+					null
+				}
 			</div>
 		);
 	}
