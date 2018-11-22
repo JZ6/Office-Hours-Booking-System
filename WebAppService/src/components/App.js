@@ -40,17 +40,19 @@ class App extends Component {
 		// , 2000);
 	}
 
-	authenticated(role, id){
+	authenticated(role, id) {
 		this.setState({
 			authenticated: true,
 			role: role,
-			id: id});
+			id: id
+		});
+		console.log('Logged in as:', role)
 		this.fetchBlocks(7);
 	}
 
 	fetchBlocks(days) {
 		if (!this.state.authenticated) return false;
-		
+
 		const startDate = new Date();
 		const endDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + days);
 		const blocksPromise = this.api.getBlocks(startDate.toISOString(), endDate.toISOString());
@@ -65,9 +67,9 @@ class App extends Component {
 				} = result
 
 				if (status !== 200 || statusText !== "OK") { return false };
-				
-				this.setState({events: []});  // Empty out existing events
-				
+
+				this.setState({ events: [] });  // Empty out existing events
+
 				jsonPromise().then(
 					result => {
 						result.blocks.forEach(block => this.addNewBlock(block));
@@ -110,8 +112,8 @@ class App extends Component {
 
 		const newEventList = this.state.events.filter(
 			blockEvent => blockEvent.block.blockId !== blockId)
-		console.log(newEventList);
-		this.setState({events: newEventList});
+		// console.log(newEventList);
+		this.setState({ events: newEventList });
 	}
 
 	modifyBlock(blockId, block) {
@@ -134,10 +136,10 @@ class App extends Component {
 		if (!this.state.authenticated) return false;
 		//console.log(start);
 	};
-	
+
 	onSelectSlot = (event) => {
 		if (!this.state.authenticated || this.state.role === "student") return false;
-		
+
 		let block = {
 			blockId: "",
 			owners: [],
@@ -148,20 +150,20 @@ class App extends Component {
 			appointmentSlots: [...Array(Math.floor((event.end - event.start) / 300000))]
 				.map(() => ({ "identity": "", "courseCode": "", "note": "" }))
 		}
-		
+
 		this.refs.blockContainer.onOpen(block);
 	}
-	
+
 	onSelectEvent = (event, e) => {
 		if (!this.state.authenticated) return false;
-		
+
 		console.log("Clicked on ", event);
 		this.refs.blockContainer.onOpen(event.block);
 	};
-	
+
 	blockCallback = (blockId, block) => {
 		if (!this.state.authenticated) return false;
-		
+
 		if (block) {
 			console.log("POST", blockId, block);
 			this.modifyBlock(blockId, block);
@@ -175,7 +177,7 @@ class App extends Component {
 	render() {
 		return (
 			<div className="App">
-				<LoginView api={this.api} authenticated = {this.authenticated}/>
+				<LoginView api={this.api} authenticated={this.authenticated} />
 				<div className="App-container">
 					<DnDCalendar
 						defaultDate={new Date()}
@@ -193,9 +195,9 @@ class App extends Component {
 						}}
 					/>
 				</div>
-				{this.state.authenticated ? 
-					<BlockContainer 
-						ref="blockContainer" 
+				{this.state.authenticated ?
+					<BlockContainer
+						ref="blockContainer"
 						id={this.state.id}
 						role={this.state.role}
 						api={this.api}

@@ -43,13 +43,17 @@ export default class LoginView extends React.Component {
                             }
                         )
 
+                        const permID = {
+                            student: "parkerpeter15",
+                            instructor: "rossbob2"
+                        }
+
+                        this.props.authenticated(permissions, permID[permissions]);
+
+                        
                         sessionStorage.setItem('sessionToken', result.sessionToken);
                         sessionStorage.setItem('currentUserType', permissions);
                         sessionStorage.setItem('loggedIn', 1);
-												let id;
-												if (permissions === "student") {id = "parkerpeter15";}
-												else if (permissions === "instructor") {id = "rossbob2";}
-                        this.props.authenticated(permissions, id);
                     }
                 )
 
