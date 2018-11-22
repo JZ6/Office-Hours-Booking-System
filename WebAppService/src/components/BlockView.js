@@ -95,6 +95,10 @@ export default class BlockView extends React.Component {
 						placeholder="Enter block description..."
 					>
 					</textarea>
+					
+					<button className="submit-button" onClick={this.props.submitBlock}>Submit</button>
+					{this.blockId ? <button className="submit-button" onClick={this.props.updateBlock}>Cancel</button> : ""}
+					<button className="submit-button" onClick={this.props.deleteBlock}>Delete</button>
 				</div>
 			);
 		}
@@ -106,9 +110,6 @@ export default class BlockView extends React.Component {
 				<div className="close-block" onClick={this.props.onClose}>Close</div>
 				{this.renderTimes(this.props.role)}
 				{this.renderInfo(this.props.role)}
-				<button className="submit-button" onClick={this.props.submitBlock}>Submit</button>
-				{this.blockId ? <button className="submit-button" onClick={this.props.updateBlock}>Cancel</button> : ""}
-				<button className="submit-button" onClick={this.props.deleteBlock}>Delete</button>
 			</div>
 		);
 	}

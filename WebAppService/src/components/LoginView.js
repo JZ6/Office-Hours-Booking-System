@@ -46,7 +46,10 @@ export default class LoginView extends React.Component {
                         sessionStorage.setItem('sessionToken', result.sessionToken);
                         sessionStorage.setItem('currentUserType', permissions);
                         sessionStorage.setItem('loggedIn', 1);
-                        this.props.authenticated();
+												let id;
+												if (permissions === "student") {id = "parkerpeter15";}
+												else if (permissions === "instructor") {id = "rossbob2";}
+                        this.props.authenticated(permissions, id);
                     }
                 )
 
@@ -121,14 +124,14 @@ export default class LoginView extends React.Component {
                         id: "studentLoginButton",
                         key: 'loginButton0',
                         className: 'loginButton',
-                        onClick: () => this.tryToLogin(0),
+                        onClick: () => this.tryToLogin("student"),
                     }, 'Student'),
 
                     h("button", {
                         id: "instructorLoginButton",
                         key: 'loginButton1',
                         className: 'loginButton',
-                        onClick: () => this.tryToLogin(1),
+                        onClick: () => this.tryToLogin("instructor"),
                     }, 'Instructor')
                 ]
             )

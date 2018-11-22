@@ -2,21 +2,18 @@ import React, { Component } from "react";
 import Calendar from "react-big-calendar";
 import moment from "moment";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
-import api from "./common/api";
 
 import '../styles/App.css'
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
-import components from './';
-import BlockContainer from "./BlockContainer";
-
+//import api from "./common/api";
 import dummyAPI from './common/dummyApi'
 
+import components from './';
+import BlockContainer from "./BlockContainer";
 const {
-	LoginView,
-	//BlockContainer,
-	SideBar
+	LoginView
 } = components
 
 // console.log(LoginView)
@@ -30,7 +27,9 @@ class App extends Component {
 		super(props);
 		this.state = {
 			events: [],
-			authenticated: false
+			authenticated: false,
+			id: "",
+			role: ""
 		};
 		// this.api = new api("localhost/");
 
@@ -41,8 +40,11 @@ class App extends Component {
 		// , 2000);
 	}
 
-	authenticated(){
-		this.setState({authenticated: true})
+	authenticated(role, id){
+		this.setState({
+			authenticated: true,
+			role: role,
+			id: id});
 		this.fetchBlocks(7);
 	}
 
@@ -120,6 +122,7 @@ class App extends Component {
 	}
 
 	onEventResize = (type, { event, start, end, allDay }) => {
+		if (!this.state.authenticated) return false;
 		/* this.setState(state => {
 			state.events[0].start = start;
 			state.events[0].end = end;
@@ -128,11 +131,12 @@ class App extends Component {
 	};
 
 	onEventDrop = ({ event, start, end, allDay }) => {
+		if (!this.state.authenticated) return false;
 		//console.log(start);
 	};
 	
 	onSelectSlot = (event) => {
-		if (!this.state.authenticated) return false;
+		if (!this.state.authenticated || this.state.role === "student") return false;
 		
 		let block = {
 			blockId: "",
@@ -149,6 +153,8 @@ class App extends Component {
 	}
 	
 	onSelectEvent = (event, e) => {
+		if (!this.state.authenticated) return false;
+		
 		console.log("Clicked on ", event);
 		this.refs.blockContainer.onOpen(event.block);
 	};
@@ -178,7 +184,7 @@ class App extends Component {
 						onEventDrop={this.onEventDrop}
 						onEventResize={this.onEventResize}
 						onSelectEvent={this.onSelectEvent}
-						selectable={true}
+						selectable={this.state.role !== "student"}
 						onSelectSlot={this.onSelectSlot}
 						resizable
 						style={{
@@ -187,13 +193,17 @@ class App extends Component {
 						}}
 					/>
 				</div>
-				<BlockContainer 
-					ref="blockContainer" 
-					id="parkerpeter15" 
-					role="instructor" 
-					api={this.api}
-					blockCallback={this.blockCallback}
-				/>
+				{this.state.authenticated ? 
+					<BlockContainer 
+						ref="blockContainer" 
+						id={this.state.id}
+						role={this.state.role}
+						api={this.api}
+						blockCallback={this.blockCallback}
+					/>
+					:
+					null
+				}
 			</div>
 		);
 	}

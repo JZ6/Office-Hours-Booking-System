@@ -25,7 +25,7 @@ export default class DummyApi {
 							"courseCode": "csc302",
 							"note": "Everybody gets one."
 						},
-						{ "identity": "", "courseCode": "", "note": "" },
+						{ "identity": "watsonmj25", "courseCode": "csc301", "note": "Tigers!" },
 						{ "identity": "", "courseCode": "", "note": "" },
 						{ "identity": "", "courseCode": "", "note": "" },
 						{ "identity": "", "courseCode": "", "note": "" },
