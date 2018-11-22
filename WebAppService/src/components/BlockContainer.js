@@ -177,12 +177,12 @@ export default class BlockContainer extends React.Component {
 
 					// Shouldn't change number of slots
 				}
-			} else if (name === "courseCodes"){
+			} else if (name === "courseCodes") {
 				this.setState({courseCodes: value.split(",")});
-			} else if (
-				name === "owners" || 
-				name === "comment") {
-				this.setState({[name]: value});
+			} else if (name === "owners") {
+				this.setState({owners: value.split(",")});
+			} else if (name === "comment") {
+				this.setState({comment: value});
 			} else {
 				window.alert("Invalid form element name ", name);
 			}

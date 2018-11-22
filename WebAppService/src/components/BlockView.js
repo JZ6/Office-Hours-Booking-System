@@ -75,7 +75,13 @@ export default class BlockView extends React.Component {
 		} else {
 			return (
 				<div className="blockInfo">
-					Owners: {this.props.owners}
+					Owners:
+					<input
+						name="owners"
+						type="text"
+						value={this.props.owners}
+						onChange={this.props.handleInputChange}
+					/>
 					<br/>
 					Courses:
 					<input
@@ -95,7 +101,7 @@ export default class BlockView extends React.Component {
 						placeholder="Enter block description..."
 					>
 					</textarea>
-					
+					<br/>
 					<button className="submit-button" onClick={this.props.submitBlock}>Submit</button>
 					{this.blockId ? <button className="submit-button" onClick={this.props.updateBlock}>Cancel</button> : ""}
 					<button className="submit-button" onClick={this.props.deleteBlock}>Delete</button>
