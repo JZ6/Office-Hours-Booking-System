@@ -11,7 +11,7 @@ export default class BlockContainer extends React.Component {
 		
 		this.state = {
 			visible: false,
-			enabled: false
+			locked: false
 		}
 		
 		// Blocks
@@ -32,24 +32,22 @@ export default class BlockContainer extends React.Component {
 		this.prevSlots = this.copySlots(block.appointmentSlots);
 		this.setState({
 			visible: true,
-			enabled: true,
 			...block,
 			start: moment(block.startTime).format("HH:mm"),
 			end: this.getEnd(block)
 		});
 	}
 	onClose() {
-		if (this.state.enabled) {
+		if (!this.state.locked && this.state.visible) {
 			this.setState({
 				visible: false,
-				enabled: false
 			});
 		}
 	}
 	
 	update(scope, i) {
-		if (this.state.enabled) {
-			this.setState({enabled: false});
+		if (!this.state.locked && this.state.visible) {
+			this.setState({locked: true});
 			this.props.api.getBlock(this.state.blockId)
 			.then((response) => {
 				if (response.status === 200) {
@@ -58,7 +56,7 @@ export default class BlockContainer extends React.Component {
 				} else {
 					window.alert(response.status, response.statusText);
 				}
-				this.setState({enabled: true});
+				this.setState({locked: false});
 			})
 			.then((data) => {
 				if (data.appointmentSlots) {
@@ -83,11 +81,11 @@ export default class BlockContainer extends React.Component {
 						this.setState({end: this.getEnd(data)});
 					}
 				}
-				this.setState({enabled: true});
+				this.setState({locked: false});
 			})
 			.catch((error) => {
 				window.alert(error.message);
-				this.setState({enabled: true});
+				this.setState({locked: false});
 			});
 		}
 	}
@@ -101,7 +99,7 @@ export default class BlockContainer extends React.Component {
 	}
 	
 	updateSlotNumber(start, end, appointmentDuration){
-		if (this.state.enabled) {
+		if (!this.state.locked && this.state.visible) {
 			let slotNumber = Math.floor(
 				(moment(end, "HH:mm") - moment(start, "HH:mm")) / appointmentDuration);
 			if (slotNumber === 0) {
@@ -122,7 +120,7 @@ export default class BlockContainer extends React.Component {
 	}
 	
 	handleInputChange(event) {
-		if (this.state.enabled) {
+		if (!this.state.locked && this.state.visible) {
 			const value = event.target.value;
 			const name = event.target.name;
 			
@@ -193,7 +191,7 @@ export default class BlockContainer extends React.Component {
 
 	//update relevant selectedCourses when a course is selected
 	handleCourseSelection(event){
-		if (this.state.enabled) {
+		if (!this.state.locked && this.state.visible) {
 			var newSelectedCourses = this.state.selectedCourses;
 			var course = event.target.id;
 
@@ -217,8 +215,8 @@ export default class BlockContainer extends React.Component {
 	}
 	
 	submitBlock() {
-		if (this.state.enabled) {
-			this.setState({enabled: false});
+		if (!this.state.locked && this.state.visible) {
+			this.setState({locked: true});
 			let block = {
 				blockId: this.state.blockId,
 				owners: this.state.owners,
@@ -233,12 +231,12 @@ export default class BlockContainer extends React.Component {
 				if (response.status !== 200) {
 					window.alert(response.status, response.statusText);
 				}
-				this.setState({enabled: true});
+				this.setState({locked: false});
 				this.update("block");
 			})
 			.catch((error) => {
 				window.alert(error.message);
-				this.setState({enabled: true});
+				this.setState({locked: false});
 			});
 			
 			this.props.blockCallback(this.state.blockId, block);
@@ -251,22 +249,22 @@ export default class BlockContainer extends React.Component {
 	}
 	
 	deleteBlock() {
-		if (this.state.enabled) {
+		if (!this.state.locked && this.state.visible) {
 			if (!this.state.blockId) {
 				this.onClose();
 				return false;
 			}
-			this.setState({enabled: false});
+			this.setState({locked: true});
 			this.props.api.deleteBlock(this.state.blockId)
 			.then((response) => {
 				if (response.status !== 200) {
 					window.alert(response.status, response.statusText);
 				}
-				this.setState({enabled: true});
+				this.setState({locked: false});
 			})
 			.catch((error) => {
 				window.alert(error.message);
-				this.setState({enabled: true});
+				this.setState({locked: false});
 			});
 			
 			this.props.blockCallback(this.state.blockId);
@@ -279,7 +277,7 @@ export default class BlockContainer extends React.Component {
 	//----------------------------------------------------------------------------
 	
 	handleSlotClick = (i) => () => {
-		if (this.state.enabled) {
+		if (!this.state.locked && this.state.visible) {
 			if (this.state.appointmentSlots[i].identity === "") {
 				// Click on empty slot to assign
 				this.editSlot(i, this.props.id, "");
@@ -294,14 +292,14 @@ export default class BlockContainer extends React.Component {
 	}
 	
 	handleIdentityChange = (i) => (event) => {
-		if (this.state.enabled) {
+		if (!this.state.locked && this.state.visible) {
 			// Delete note to protect privacy
 			this.editSlot(i, event.target.value, "");
 		}
 	}
 	
 	handleNoteChange = (i) => (event) => {
-		if (this.state.enabled) {
+		if (!this.state.locked && this.state.visible) {
 			// Can't edit note that belongs to nobody
 			if (this.state.appointmentSlots[i].identity !== "") {
 				this.editSlot(i, this.state.appointmentSlots[i].identity, event.target.value);
@@ -312,8 +310,8 @@ export default class BlockContainer extends React.Component {
 	}
 	
 	handleSlotConfirm = (i) => () => {
-		if (this.state.enabled) {
-			this.setState({enabled: false});
+		if (!this.state.locked && this.state.visible) {
+			this.setState({locked: true});
 			this.props.api.editSlot(
 				this.state.blockId, i, 
 				{
@@ -325,12 +323,12 @@ export default class BlockContainer extends React.Component {
 				if (response.status !== 200) {
 					window.alert(response.status, response.statusText);
 				}
-				this.setState({enabled: true});
+				this.setState({locked: false});
 				this.update("slot", i);
 			})
 			.catch((error) => {
 				window.alert(error.message);
-				this.setState({enabled: true});
+				this.setState({locked: false});
 				this.update("slot", i);
 			});
 		}
@@ -341,8 +339,8 @@ export default class BlockContainer extends React.Component {
 	}
 	
 	handleEmpty = () => {
-		if (this.state.enabled) {
-			this.setState({enabled: false});
+		if (!this.state.locked && this.state.visible) {
+			this.setState({locked: true});
 			let promises = [];
 			
 			if (this.props.role === "student") {
@@ -369,12 +367,12 @@ export default class BlockContainer extends React.Component {
 						window.alert(response.status, response.statusText);
 					}
 				});
-				this.setState({enabled: true});
+				this.setState({locked: false});
 				this.update("slots");
 			})
 			.catch((error) => {
 				window.alert(error.message);
-				this.setState({enabled: true});
+				this.setState({locked: false});
 				this.update("slots");
 			})
 		}
@@ -385,7 +383,7 @@ export default class BlockContainer extends React.Component {
 	}
 	
 	handleUndo() {
-		if (this.state.enabled) {
+		if (!this.state.locked && this.state.visible) {
 			this.setState({appointmentSlots: this.copySlots(this.prevSlots)});
 		}
 	}
@@ -409,7 +407,7 @@ export default class BlockContainer extends React.Component {
 	
 	render() {
 		if (this.state.visible) {
-			return <div className="BlockContainer">Loading: {(!this.state.enabled).toString()}
+			return <div className="BlockContainer">Loading: {(this.state.locked).toString()}
 				<BlockView 
 					handleInputChange={this.handleInputChange}
 					submitBlock={this.submitBlock}
