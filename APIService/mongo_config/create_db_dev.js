@@ -18,6 +18,10 @@ db.createCollection("blocks", {
     "validator": blocksValidator
 });
 
+db.createCollection("bookings", {
+    "validator": bookingsValidator
+});
+
 db.createCollection("tokens", {
     "validator": tokensValidator
 });
