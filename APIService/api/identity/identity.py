@@ -1,13 +1,20 @@
-from flask import request, jsonify
+from flask import request
 from flask_restful import Resource
 from ..db import get_db
 
 '''
+Strips the collection query response of its _id field leaving only relevant
+response data. Same thing as make_identity_document, a semantic rename.
+'''
+def strip_query_response(response):
+    return make_identity_document(response)
+
+'''
 Returns back a dict that matches the database keys. May be unnecessary after
-schema change "utorId" -> "id"
+schema change "utorId" -> "id". Translation function in case of inconsistencies
+between what the web app sends and what the api and database expects.
 '''
 def make_identity_document(data):
-    db = get_db()
     document = {}
     document["id"] = data["id"]
     document["studentNumber"] = data["studentNumber"]
@@ -23,8 +30,7 @@ Returns the identity document with specified id.
 def id_get(id):
     db = get_db()
     utorId_filter = {"id": {"$eq": str(id)}}
-    document = db.identity.find_one(utorId_filter)
-    return document
+    return(strip_query_response(db.identity.find_one(utorId_filter)))
 
 '''
 Edit the user id via replaceOne.
@@ -32,9 +38,15 @@ Edit the user id via replaceOne.
 def id_update(id, data):
     db = get_db()
     document = make_identity_document(data)
-    utorId_filter = {"id": {"$eq": str(id)}}
-    result = db.identity.replace_one(utorId_filter, document)
-    return 200 if result.acknowledged else 404
+    id_filter = {"id": {"$eq": str(id)}}
+
+    # Depend on the validator throwing an error if the document data is not
+    # syntactically correct.
+    try:
+        db.identity.replace_one(id_filter, document)
+        return 200
+    except:
+        return 404
 
 '''
 Create the user id via insert.
@@ -42,45 +54,47 @@ Create the user id via insert.
 def id_create(id, data):
     db = get_db()
     document = make_identity_document(data)
-    result = db.identity.insert_one(document)
-    return 200 if result.acknowledged else 404
 
+    try:
+        db.identity.insert_one(document)
+        return 200
+    except:
+        return 404
+        
 '''
-Return whether the given user id exists in the database or not. Helps decide
+Return whether the given user id exists in the database or not. Decides
 whether to add (insert) or edit (replaceOne).
 '''
 def id_exists(id):
     db = get_db()
     return (True if
-            db.identity.find({"id": {"$eq": str(id)}}).count() > 0  
+            db.identity.count_documents({"id": {"$eq": str(id)}}) > 0
             else False)
 
-
 class Identity(Resource):
-    '''
-    For MVP assume the data attached with the request is valid and complete, if
-    time permits add data verification.
-    '''
-
     '''
     Adds or edits an identity id returning response code 200 upon success.
     '''
     def post(self, id):
         identity_id = id
         data = request.get_json()
-        response = 200
-        if id_exists(identity_id):
-            response = id_create(identity_id, data)
-        else:
-            response = id_update(identity_id, data)
-        
-        return response
 
+        # The resource id must be the same as the body's id.
+        if str(id) is not data["id"]:
+            return 404
+
+        # POST is an update.
+        if id_exists(identity_id):
+            return(id_update(identity_id, data))
+
+        # POST is a create.
+        return(id_create(identity_id, data))
+            
     '''Returns an identity id if it exists otherwise response 404.'''
     def get(self, id):
         identity_id = id
+
         if id_exists(identity_id):
-            response_data = id_get(identity_id)
-            return jsonify(response_data), 200
+            return(id_get(identity_id))
         
-        return 404
+        return 404 
