@@ -1,15 +1,13 @@
 from flask import request, jsonify
 from flask_restful import Resource
-
 from ..db import get_db
-
-db = get_db()
 
 '''
 Returns back a dict that matches the database keys. May be unnecessary after
 schema change "utorId" -> "id"
 '''
 def make_identity_document(data):
+    db = get_db()
     document = {}
     document["id"] = data["id"]
     document["studentNumber"] = data["studentNumber"]
@@ -23,14 +21,16 @@ def make_identity_document(data):
 Returns the identity document with specified id.
 '''
 def id_get(id):
+    db = get_db()
     utorId_filter = {"id": {"$eq": str(id)}}
-    result = db.identity.find_one(utorId_filter)
-    return result
+    document = db.identity.find_one(utorId_filter)
+    return document
 
 '''
 Edit the user id via replaceOne.
 '''
 def id_update(id, data):
+    db = get_db()
     document = make_identity_document(data)
     utorId_filter = {"id": {"$eq": str(id)}}
     result = db.identity.replace_one(utorId_filter, document)
@@ -40,6 +40,7 @@ def id_update(id, data):
 Create the user id via insert.
 '''
 def id_create(id, data):
+    db = get_db()
     document = make_identity_document(data)
     result = db.identity.insert_one(document)
     return 200 if result.acknowledged else 404
@@ -49,6 +50,7 @@ Return whether the given user id exists in the database or not. Helps decide
 whether to add (insert) or edit (replaceOne).
 '''
 def id_exists(id):
+    db = get_db()
     return (True if
             db.identity.find({"id": {"$eq": str(id)}}).count() > 0  
             else False)
@@ -64,19 +66,21 @@ class Identity(Resource):
     Adds or edits an identity id returning response code 200 upon success.
     '''
     def post(self, id):
-        data = request.json # A dict of the request's JSON body.
+        identity_id = id
+        data = request.get_json()
         response = 200
-        if id_exists(id):
-            response = id_create(id, data)
+        if id_exists(identity_id):
+            response = id_create(identity_id, data)
         else:
-            response = id_update(id, data)
+            response = id_update(identity_id, data)
         
         return response
 
     '''Returns an identity id if it exists otherwise response 404.'''
     def get(self, id):
-        if id_exists(id):
-            response_data = id_get(id)
+        identity_id = id
+        if id_exists(identity_id):
+            response_data = id_get(identity_id)
             return jsonify(response_data), 200
         
         return 404
