@@ -80,7 +80,7 @@ class Identity(Resource):
         data = request.get_json()
 
         # The resource id must be the same as the body's id.
-        if str(id) is not data["id"]:
+        if str(id) != str(data["id"]):
             return 404
 
         # POST is an update.
@@ -90,7 +90,9 @@ class Identity(Resource):
         # POST is a create.
         return(id_create(identity_id, data))
             
-    '''Returns an identity id if it exists otherwise response 404.'''
+    '''
+    Returns an identity id if it exists otherwise response 404.
+    '''
     def get(self, id):
         identity_id = id
 
