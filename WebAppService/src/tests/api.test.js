@@ -155,8 +155,8 @@ describe("Logged in", () => {
 	});
 
 
-	test("getBlockIds", () => {
-		api.getBlockIds("2008-09-15T15:00:00", "2008-09-15T16:00:00");
+	test("getBlocks", () => {
+		api.getBlocks("2008-09-15T15:00:00", "2008-09-15T16:00:00");
 		expect(fetch).toHaveBeenCalledTimes(2);
 		expect(fetch).toHaveBeenCalledWith(
 			"localhost/test/blocks?from=2008-09-15T15:00:00&to=2008-09-15T16:00:00", {
@@ -240,26 +240,6 @@ describe("Logged in", () => {
 		expect(fetch).toHaveBeenCalledTimes(2);
 		expect(fetch).toHaveBeenCalledWith(
 			"localhost/test/blocks/someBlockId/booking", {
-				headers: 
-					new Headers({
-						Accept: "application/json",
-						Authorization: "Bearer token123",
-						"Content-Type": "application/json"
-					}),
-				method: "POST",
-				body: body
-			}
-		);
-	});
-
-	test("editSlots", () => {
-		const body = {
-			appointmentSlots: [{identity: "", courseCode: "", note: ""}]
-		};
-		api.editSlots("someBlockId", body);
-		expect(fetch).toHaveBeenCalledTimes(2);
-		expect(fetch).toHaveBeenCalledWith(
-			"localhost/test/blocks/someBlockId", {
 				headers: 
 					new Headers({
 						Accept: "application/json",
