@@ -1,9 +1,7 @@
 import LoginView from './LoginView';
-import BlockView from './BlockView';
-import SideBar from './SideBar'
+import BlockContainer from './BlockContainer';
 
 export default {
     LoginView,
-    BlockView,
-    SideBar
+    BlockContainer
 };
