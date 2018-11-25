@@ -89,13 +89,6 @@ export default class Api {
 		}
 		return this.__call("POST", `/blocks/${blockId}/booking`, body);
 	}
-	
-	editSlots(blockId, slots) {  // Edit slots en masse without editing block
-		const body = {
-			appointmentSlots: slots.appointmentSlots
-		}
-		return this.__call("POST", `/blocks/${blockId}`, body);
-	}
 
 	__call(method, path, body) {
 

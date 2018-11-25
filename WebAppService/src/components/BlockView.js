@@ -25,8 +25,8 @@ export default class BlockView extends React.Component {
 		if (role === "student") {
 			return (
 				<div className="blockTimes">
-					From: {moment(this.props.start).format("HH:mm")} 
-					To: {moment(this.props.end).format("HH:mm")} 
+					From: {moment(this.props.start, "HH:mm").format("hh:mmA")}, 
+					To: {moment(this.props.end, "HH:mm").format("hh:mmA")}, 
 					Date: {moment(this.props.startTime).format("YYYY-MM-DD")}
 				</div>
 			);

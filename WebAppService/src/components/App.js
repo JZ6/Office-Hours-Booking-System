@@ -11,9 +11,9 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import dummyAPI from './common/dummyApi'
 
 import components from './';
-import BlockContainer from "./BlockContainer";
 const {
-	LoginView
+	LoginView,
+	BlockContainer
 } = components
 
 // console.log(LoginView)

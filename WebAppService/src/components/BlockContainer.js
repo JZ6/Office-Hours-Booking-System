@@ -398,7 +398,11 @@ export default class BlockContainer extends React.Component {
 	
 	copySlots(slots) {
 		return slots.map(slot => {
-			return {identity: slot.identity, note: slot.note}
+			return {
+				identity: slot.identity, 
+				courseCode: slot.courseCode, 
+				note: slot.note
+			}
 		});
 	}
 	

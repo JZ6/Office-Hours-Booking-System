@@ -2,23 +2,31 @@ import React from "react";
 import renderer from 'react-test-renderer';
 import {shallow, mount} from "enzyme";
 import moment from "moment";
-import SlotContainer from "../components/SlotContainer";
+import BlockContainer from "../components/BlockContainer";
 
-let mockJson, mockGetSlots, mockEditSlot;
-let testProps, testSlots, mockApi;
+let mockJson, mockGetBlock, mockEditSlot;
+let mockProps, mockBlock, mockApi;
 
 beforeEach(() => {
-	testSlots = [
-		{identity: "parkerpeter15", note: "Everyone gets one."},
-		{identity: "watsonmj25", note: "Face it Tiger... you just hit the jackpot!"},
-		{identity: "", note: ""}
-	]
-	mockJson = () => {
+	mockBlock = {
+		blockId: "0",
+		owners: ["rossbob2", "atat4"],
+		courseCodes: ["csc301", "csc302"],
+		comment: "We don't make mistakes, just happy little accidents.",
+		startTime: "2018-11-18T12:00:00Z",
+		appointmentDuration: 600000,
+		appointmentSlots: [
+			{identity: "parkerpeter15", note: "Everyone gets one.", courseCode: "csc302"},
+			{identity: "watsonmj25", note: "Face it Tiger... you just hit the jackpot!", courseCode: "csc302"},
+			{identity: "", note: "", courseCode: ""}
+		]
+	};
+	mockJson = jest.fn(() => {
 		return new Promise((resolve, reject) => {
-			resolve(testSlots);
+			resolve(mockBlock);
 		});
-	}
-	mockGetSlots = () => {
+	});
+	mockGetBlock = jest.fn((blockId) => {
 		return new Promise((resolve, reject) => {
 			resolve({
 				status: 200,
@@ -26,9 +34,9 @@ beforeEach(() => {
 				json: mockJson
 			});
 		});
-	}
-	mockEditSlot = jest.fn().mockImplementation((blockId, i, slot) => {
-		testSlots[i] = slot;
+	});
+	mockEditSlot = jest.fn((blockId, slotId, slot) => {
+		mockBlock.appointmentSlots[slotId] = slot;
 		return new Promise((resolve, reject) => {
 			resolve({
 				status: 200,
@@ -37,24 +45,22 @@ beforeEach(() => {
 		});
 	});
 	mockApi = {
-		getSlots: (blockId) => mockGetSlots(),
+		getBlock: mockGetBlock,
 		editSlot: mockEditSlot
 		};
-	testProps = {
+	mockProps = {
 		api: mockApi,
-		blockId: "someId123",
-		startTime: moment("2077/01/01 00:00", "YYYY-MM-DD HH:mm"),
-		slotDuration: 600000,
 	};
 });
 
 describe("instructor view", () => {
 	let wrapper;
-	beforeEach(async () => {
-		testProps.id = "octaviusotto3";
-		testProps.role = "instructor";
-		wrapper = shallow(<SlotContainer {...testProps}/>);
-		await wrapper.instance().componentDidMount();
+	beforeEach(() => {
+		mockProps.id = "octaviusotto3";
+		mockProps.role = "instructor";
+		wrapper = mount(<BlockContainer {...mockProps}/>);
+		wrapper.instance().onOpen(mockBlock);
+		wrapper = wrapper.update();
 	});
 	
 	test("render", () => {
@@ -62,7 +68,7 @@ describe("instructor view", () => {
 	});
 	
 	test("handleSlotClick isn't called", () => {
-		wrapper.find("#slot2").props().onClick();
+		wrapper.find("#identity2").simulate("click");
 		expect(wrapper.find("#identity2").text()).toEqual("");
 		expect(wrapper.find("#note2").props().value).toEqual("");
 	});
@@ -86,37 +92,38 @@ describe("instructor view", () => {
 		expect(wrapper.find("#note0").props().value).toEqual("Honor is for fools.");
 	});
 	
-	test("handleSlotConfirm applies slot changes", () => {
+	test("handleSlotConfirm applies slot changes", async () => {
 		wrapper.find("#identity0").simulate("change", {target: {value: "osbornharry31"}});
 		wrapper.find("#note0").simulate("change", {target: {value: "Honor is for fools."}});
-		wrapper.find("#confirm0").simulate("click");
+		await wrapper.find("#confirm0").simulate("click");
 		expect(mockEditSlot).toHaveBeenCalledTimes(1);
-		expect(mockEditSlot).toHaveBeenCalledWith("someId123", 0, {identity: "osbornharry31", note: "Honor is for fools."});
+		expect(mockEditSlot).toHaveBeenCalledWith("0", 0, {courseCode: "csc302", identity: "osbornharry31", note: "Honor is for fools."});
 	});
 	
-	test("handleSlotCancel cancels changes", () => {
+	test("handleSlotCancel cancels changes", async () => {
 		wrapper.find("#identity0").simulate("change", {target: {value: "osbornharry31"}});
 		wrapper.find("#note0").simulate("change", {target: {value: "Honor is for fools."}});
-		wrapper.find("#cancel0").simulate("click");
-		expect(wrapper.find("#identity0").props().value).toEqual("parkerpeter15");
-		expect(wrapper.find("#note0").props().value).toEqual("Everyone gets one.");
+		await wrapper.find("#cancel0").simulate("click");
+		expect(mockGetBlock).toHaveBeenCalledTimes(1);
+		expect(mockGetBlock).toHaveBeenCalledWith("0");
 	});
 	
 	test("handleEmpty empties slots", async () => {
 		await wrapper.find("#empty-button").simulate("click");
 		expect(mockEditSlot).toHaveBeenCalledTimes(3);
-		expect(mockEditSlot).toHaveBeenCalledWith("someId123", 2, 
-			{identity: "", note: ""});
+		expect(mockEditSlot).toHaveBeenCalledWith("0", 2, 
+			{identity: "", courseCode: "", note: ""});
 	});
 });
 
 describe("student view", () => {
 	let wrapper;
 	beforeEach(async () => {
-		testProps.id = "parkerpeter15";
-		testProps.role = "student";
-		wrapper = shallow(<SlotContainer {...testProps}/>);
-		await wrapper.instance().componentDidMount();
+		mockProps.id = "parkerpeter15";
+		mockProps.role = "student";
+		wrapper = mount(<BlockContainer {...mockProps}/>);
+		wrapper.instance().onOpen(mockBlock);
+		wrapper = wrapper.update();
 	});
 	
 	test("render", () => {
@@ -125,21 +132,17 @@ describe("student view", () => {
 	
 	test("handleSlotClick assigns slot", () => {
 		// Click on own slot (unregisters slot and deletes note)
-		wrapper.find("#slot0").props().onClick();
-		expect(wrapper.find("#identity0").text()).toEqual("Available");
+		wrapper.find("#identity0").simulate("click");
+		expect(wrapper.find("#identity0").text()).toEqual("Register");
 		expect(wrapper.find("#note0").text()).toEqual("");
 		// Click on occupied slot (does nothing)
-		wrapper.find("#slot1").props().onClick();
+		wrapper.find("#identity1").simulate("click");
 		expect(wrapper.find("#identity1").text()).toEqual("Not Available");
 		expect(wrapper.find("#note1").text()).toEqual("");
 		// Click on empty slot (registers slot)
-		wrapper.find("#slot2").props().onClick();
-		expect(wrapper.find("#identity2").text()).toEqual("parkerpeter15");
+		wrapper.find("#identity2").simulate("click");
+		expect(wrapper.find("#identity2").text()).toEqual("Unregister");
 		expect(wrapper.find("#note2").props().value).toEqual("");
-	});
-	
-	test("handleIdentityChange can't be called", () => {
-		expect(wrapper.find("#identity0").props().onClick).toEqual(undefined);
 	});
 	
 	test("handleNoteChange changes only own notes", () => {
@@ -152,27 +155,27 @@ describe("student view", () => {
 		expect(wrapper.find("#note0").props().value).toEqual("With great powers comes great responsibility.");
 	});
 	
-	test("handleSlotConfirm applies slot changes", () => {
-		wrapper.find("#slot2").simulate("click");
+	test("handleSlotConfirm applies slot changes", async () => {
+		wrapper.find("#identity2").simulate("click");
 		wrapper.find("#note2").simulate("change", {target: {value: "With great powers..."}});
-		wrapper.find("#confirm2").simulate("click");
+		await wrapper.find("#confirm2").simulate("click");
 		expect(mockEditSlot).toHaveBeenCalledTimes(1);
-		expect(mockEditSlot).toHaveBeenCalledWith("someId123", 2, {identity: "parkerpeter15", note: "With great powers..."});
+		expect(mockEditSlot).toHaveBeenCalledWith("0", 2, {identity: "parkerpeter15", courseCode: "", note: "With great powers..."});
 	});
 	
 	test("handleSlotCancel cancels changes", async () => {
 		// Edit identity and note
-		wrapper.find("#slot2").simulate("click");
+		wrapper.find("#identity2").simulate("click");
 		wrapper.find("#note2").simulate("change", {target: {value: "With great powers..."}});
-		wrapper.find("#cancel2").simulate("click");
-		expect(wrapper.find("#identity2").text()).toEqual("Available");
-		expect(wrapper.find("#note2").text()).toEqual("");
+		await wrapper.find("#cancel2").simulate("click");
+		expect(mockGetBlock).toHaveBeenCalledTimes(1);
+		expect(mockGetBlock).toHaveBeenCalledWith("0");
 	});
 	
 	test("handleEmpty empties only own slots", async () => {
 		await wrapper.find("#empty-button").simulate("click");
 		expect(mockEditSlot).toHaveBeenCalledTimes(1);
-		expect(mockEditSlot).toHaveBeenCalledWith("someId123", 0, 
-			{identity: "", note: ""});
+		expect(mockEditSlot).toHaveBeenCalledWith("0", 0, 
+			{identity: "", courseCode: "", note: ""});
 	});
 });
