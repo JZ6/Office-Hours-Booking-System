@@ -13,17 +13,17 @@ export default class SlotView extends React.Component {
 			let name;
 			if (this.props.id === this.props.slots[i].identity) {
 				// Student owns slot
-				name = <button onClick={this.props.handleSlotClick(i)}>Unregister</button>;
+				name = <button id={`identity${i}`} onClick={this.props.handleSlotClick(i)}>Unregister</button>;
 			} else {
 				if (this.props.slots[i].identity === "") {
 					// Slot is available
-					name = <button onClick={this.props.handleSlotClick(i)}>Register</button>;
+					name = <button id={`identity${i}`} onClick={this.props.handleSlotClick(i)}>Register</button>;
 				} else {
 					// Slot is taken by someone else
-					name = <button disabled>Not Available</button>;
+					name = <button id={`identity${i}`} disabled>Not Available</button>;
 				}
 			}
-			return <span id={`identity${i}`}>{name}</span>;
+			return name;
 		} else {
 			return (
 				<input
