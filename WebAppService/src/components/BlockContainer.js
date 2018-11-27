@@ -407,7 +407,7 @@ export default class BlockContainer extends React.Component {
 	renderButtons(role, blockId) {
 		if (role === "student") {
 			return <div className="ButtonContainer">
-				<button className="submit-button" onClick={this.updateBlock}>Refresh</button> 
+				<button id="refresh-button" className="submit-button" onClick={this.updateBlock}>Refresh</button> 
 				<button id="empty-button" onClick={this.handleEmpty}>Unregister My Slots</button>
 			</div>;
 		} else {
@@ -415,8 +415,8 @@ export default class BlockContainer extends React.Component {
 				<button className="submit-button" onClick={this.submitBlock}>Submit</button>
 				{blockId ? 
 					<React.Fragment>
-						<button className="submit-button" onClick={this.updateBlock}>Refresh</button> 
-						<button className="submit-button" onClick={this.deleteBlock}>Delete</button>
+						<button id="refresh-button" className="submit-button" onClick={this.updateBlock}>Refresh</button> 
+						<button id="delete-button" className="submit-button" onClick={this.deleteBlock}>Delete</button>
 						<button id="empty-button" onClick={this.handleEmpty}>Unregister All Slots</button>
 					</React.Fragment>
 				: null}

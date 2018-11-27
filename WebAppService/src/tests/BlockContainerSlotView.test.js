@@ -117,6 +117,29 @@ describe("instructor view", () => {
 		expect(wrapper.find("#note0").props().value).toEqual("Everyone gets one.");
 	});
 	
+	test("updateBlock updates slots", async () => {
+		wrapper.find("#identity0").simulate("change", {target: {value: "osbornharry31"}});
+		wrapper.find("#note0").simulate("change", {target: {value: "Honor is for fools."}});
+		wrapper.find("#identity1").simulate("change", {target: {value: "osbornharry31"}});
+		wrapper.find("#note1").simulate("change", {target: {value: "Honor is for fools."}});
+		wrapper.find("#identity2").simulate("change", {target: {value: "osbornharry31"}});
+		wrapper.find("#note2").simulate("change", {target: {value: "Honor is for fools."}});
+		wrapper.find("#refresh-button").simulate("click");
+		
+		await mockGetBlockPromise;
+		await mockJsonPromise;
+		wrapper = wrapper.update();
+		
+		expect(mockGetBlock).toHaveBeenCalledTimes(1);
+		expect(mockGetBlock).toHaveBeenCalledWith("0");
+		expect(wrapper.find("#identity0").props().value).toEqual("parkerpeter15");
+		expect(wrapper.find("#note0").props().value).toEqual("Everyone gets one.");
+		expect(wrapper.find("#identity1").props().value).toEqual("watsonmj25");
+		expect(wrapper.find("#note1").props().value).toEqual("Face it Tiger... you just hit the jackpot!");
+		expect(wrapper.find("#identity2").props().value).toEqual("");
+		expect(wrapper.find("#note2").props().value).toEqual("");
+	});
+	
 	test("handleEmpty empties slots", async () => {
 		wrapper.find("#empty-button").simulate("click");
 		
@@ -204,6 +227,24 @@ describe("student view", () => {
 		
 		expect(mockGetBlock).toHaveBeenCalledTimes(1);
 		expect(mockGetBlock).toHaveBeenCalledWith("0");
+		expect(wrapper.find("#identity2").props().children).toEqual("Register");
+		expect(wrapper.find("#note2").props().value).toEqual(undefined);
+	});
+	
+	test("updateBlock updates slots", async () => {
+		wrapper.find("#identity0").simulate("click");
+		wrapper.find("#identity2").simulate("click");
+		wrapper.find("#note2").simulate("change", {target: {value: "With great powers..."}});
+		wrapper.find("#refresh-button").simulate("click");
+		
+		await mockGetBlockPromise;
+		await mockJsonPromise;
+		wrapper = wrapper.update();
+		
+		expect(mockGetBlock).toHaveBeenCalledTimes(1);
+		expect(mockGetBlock).toHaveBeenCalledWith("0");
+		expect(wrapper.find("#identity0").props().children).toEqual("Unregister");
+		expect(wrapper.find("#note0").props().value).toEqual("Everyone gets one.");
 		expect(wrapper.find("#identity2").props().children).toEqual("Register");
 		expect(wrapper.find("#note2").props().value).toEqual(undefined);
 	});
