@@ -15,15 +15,12 @@ export default class BlockContainer extends React.Component {
 			prevSlots: []
 		}
 		
-		// Blocks
+		// Block
 		this.handleInputChange = this.handleInputChange.bind(this);
 		this.submitBlock = this.submitBlock.bind(this);
 		this.updateBlock = this.updateBlock.bind(this);
 		this.deleteBlock = this.deleteBlock.bind(this);
 		this.onClose = this.onClose.bind(this)
-		
-		// Slots
-		this.handleUpdate = this.handleUpdate.bind(this);
 	}
 	
 	onOpen(block) {
@@ -384,10 +381,6 @@ export default class BlockContainer extends React.Component {
 				this.update("block");
 			})
 		}
-	}
-	
-	handleUpdate() {
-		this.update("block");
 	}
 	
 	editSlot(i, identity, note) {
