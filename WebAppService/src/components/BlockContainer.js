@@ -32,6 +32,7 @@ export default class BlockContainer extends React.Component {
 			...block,
 			start: moment(block.startTime).format("HH:mm"),
 			end: this.getEnd(block),
+			appointmentSlots: this.copySlots(block.appointmentSlots),
 			prevSlots: this.copySlots(block.appointmentSlots)
 		});
 	}
@@ -61,18 +62,17 @@ export default class BlockContainer extends React.Component {
 				if (data.appointmentSlots) {
 					// Extract data from json promise, undefined if failure
 					if (scope === "block") {
-						let prevSlots = this.copySlots(data.appointmentSlots);
-						this.setState({prevSlots: prevSlots});
+						this.setState({prevSlots: this.copySlots(data.appointmentSlots)});
 						this.setState({...data});
+						this.setState({appointmentSlots: this.copySlots(data.appointmentSlots)});
 						
 						this.setState({
 							start: moment(data.startTime).format("HH:mm"),
 							end: this.getEnd(data)
 						});
 					} else if (scope === "slots") {
-						let prevSlots = this.copySlots(data.appointmentSlots);
-						this.setState({prevSlots: prevSlots});
-						this.setState({appointmentSlots: data.appointmentSlots});
+						this.setState({prevSlots: this.copySlots(data.appointmentSlots)});
+						this.setState({appointmentSlots: this.copySlots(data.appointmentSlots)});
 						
 						this.setState({end: this.getEnd(data)});
 					} else if (scope === "slot") {
@@ -376,18 +376,18 @@ export default class BlockContainer extends React.Component {
 					}
 				});
 				this.setState({locked: false});
-				this.update("slots");
+				this.update("block");
 			})
 			.catch((error) => {
 				window.alert(error.message);
 				this.setState({locked: false});
-				this.update("slots");
+				this.update("block");
 			})
 		}
 	}
 	
 	handleUpdate() {
-		this.update("slots");
+		this.update("block");
 	}
 	
 	editSlot(i, identity, note) {
@@ -411,14 +411,31 @@ export default class BlockContainer extends React.Component {
 	//---------------------------------- Render ----------------------------------
 	//----------------------------------------------------------------------------
 	
+	renderButtons(role, blockId) {
+		if (role === "student") {
+			return <div className="ButtonContainer">
+				<button className="submit-button" onClick={this.updateBlock}>Refresh</button> 
+				<button id="empty-button" onClick={this.handleEmpty}>Unregister My Slots</button>
+			</div>;
+		} else {
+			return <div className="ButtonContainer">
+				<button className="submit-button" onClick={this.submitBlock}>Submit</button>
+				{blockId ? 
+					<React.Fragment>
+						<button className="submit-button" onClick={this.updateBlock}>Refresh</button> 
+						<button className="submit-button" onClick={this.deleteBlock}>Delete</button>
+						<button id="empty-button" onClick={this.handleEmpty}>Unregister All Slots</button>
+					</React.Fragment>
+				: null}
+			</div>;
+		}
+	}
+	
 	render() {
 		if (this.state.visible) {
 			return <div className="BlockContainer">Loading: {(this.state.locked).toString()}
 				<BlockView 
 					handleInputChange={this.handleInputChange}
-					submitBlock={this.submitBlock}
-					updateBlock={this.updateBlock}
-					deleteBlock={this.deleteBlock}
 					onClose={this.onClose}
 					
 					startTime={this.state.startTime}
@@ -435,6 +452,8 @@ export default class BlockContainer extends React.Component {
 					role={this.props.role}
 					id={this.props.id}
 				/>
+				
+				{this.renderButtons(this.props.role, this.state.blockId)}
 				{!this.state.blockId ? 
 					"Please submit the new block before editing slots."
 				: 
@@ -444,8 +463,6 @@ export default class BlockContainer extends React.Component {
 						handleNoteChange={this.handleNoteChange}
 						handleSlotConfirm={this.handleSlotConfirm}
 						handleSlotCancel={this.handleSlotCancel}
-						handleEmpty={this.handleEmpty}
-						handleUpdate={this.handleUpdate}
 						
 						startTime={this.state.startTime}
 						slotDuration={this.state.appointmentDuration}
@@ -456,8 +473,7 @@ export default class BlockContainer extends React.Component {
 					/>
 				}
 			</div>;
-		}
-		else {
+		} else {
 			return null;
 		}
 	}

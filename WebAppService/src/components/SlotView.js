@@ -110,14 +110,6 @@ export default class SlotView extends React.Component {
 	render() {
 		return (
 			<div className="slot-container">
-				<button id="empty-button" onClick={this.props.handleEmpty}>
-					{this.props.role === "student" ? (
-						"Empty My Slots"
-					):(
-						"Empty All Slots"
-					)}
-				</button>
-				<button id="update-button" onClick={this.props.handleUpdate}>Refresh</button>
 				{this.renderSlots()}
 			</div>
 		);
