@@ -76,8 +76,6 @@ export default class BlockContainer extends React.Component {
 						
 						this.setState({end: this.getEnd(data)});
 					} else if (scope === "slot") {
-						console.log(this.state.prevSlots);
-						
 						let prevSlots = this.copySlots(this.state.prevSlots);
 						prevSlots[i].identity = data.appointmentSlots[i].identity;
 						prevSlots[i].note = data.appointmentSlots[i].note;
