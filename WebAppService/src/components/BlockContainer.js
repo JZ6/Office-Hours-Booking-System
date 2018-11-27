@@ -11,11 +11,11 @@ export default class BlockContainer extends React.Component {
 		
 		this.state = {
 			visible: false,
-			locked: false
+			locked: false,
+			prevSlots: []
 		}
 		
 		// Blocks
-		this.courseList = ["csc302","csc401","csc321"];
 		this.handleInputChange = this.handleInputChange.bind(this);
 		this.submitBlock = this.submitBlock.bind(this);
 		this.updateBlock = this.updateBlock.bind(this);
@@ -23,18 +23,16 @@ export default class BlockContainer extends React.Component {
 		this.onClose = this.onClose.bind(this)
 		
 		// Slots
-		this.prevSlots = [];
 		this.handleUpdate = this.handleUpdate.bind(this);
-		this.handleUndo = this.handleUndo.bind(this);
 	}
 	
 	onOpen(block) {
-		this.prevSlots = this.copySlots(block.appointmentSlots);
 		this.setState({
 			visible: true,
 			...block,
 			start: moment(block.startTime).format("HH:mm"),
-			end: this.getEnd(block)
+			end: this.getEnd(block),
+			prevSlots: this.copySlots(block.appointmentSlots)
 		});
 	}
 	onClose() {
@@ -63,7 +61,8 @@ export default class BlockContainer extends React.Component {
 				if (data.appointmentSlots) {
 					// Extract data from json promise, undefined if failure
 					if (scope === "block") {
-						this.prevSlots = data.appointmentSlots;
+						let prevSlots = this.copySlots(data.appointmentSlots);
+						this.setState({prevSlots: prevSlots});
 						this.setState({...data});
 						
 						this.setState({
@@ -71,13 +70,23 @@ export default class BlockContainer extends React.Component {
 							end: this.getEnd(data)
 						});
 					} else if (scope === "slots") {
-						this.prevSlots = data.appointmentSlots;
-						this.setState({appointmentSlots: this.copySlots(this.prevSlots)});
+						let prevSlots = this.copySlots(data.appointmentSlots);
+						this.setState({prevSlots: prevSlots});
+						this.setState({appointmentSlots: data.appointmentSlots});
 						
 						this.setState({end: this.getEnd(data)});
 					} else if (scope === "slot") {
-						this.prevSlots[i] = data.appointmentSlots[i]
-						this.editSlot(i, this.prevSlots[i].identity, this.prevSlots[i].note);
+						console.log(this.state.prevSlots);
+						
+						let prevSlots = this.copySlots(this.state.prevSlots);
+						prevSlots[i].identity = data.appointmentSlots[i].identity;
+						prevSlots[i].note = data.appointmentSlots[i].note;
+						this.setState({prevSlots: prevSlots});
+						this.editSlot(
+							i, 
+							data.appointmentSlots[i].identity, 
+							data.appointmentSlots[i].note
+						);
 						
 						this.setState({end: this.getEnd(data)});
 					}
@@ -104,12 +113,12 @@ export default class BlockContainer extends React.Component {
 			let slotNumber = Math.floor(
 				(moment(end, "HH:mm") - moment(start, "HH:mm")) / appointmentDuration);
 			if (slotNumber === 0) {
-				this.prevSlots = [];
-				this.setState({appointmentSlots: []})
+				this.setState({prevSlots: []});
+				this.setState({appointmentSlots: []});
 			} else {
 				let slots = [...Array(slotNumber)].map(() => 
 					({identity: "", courseCode: "", note: ""}));
-				this.prevSlots = this.copySlots(slots);
+				this.setState({prevSlots: this.copySlots(slots)});
 				this.setState({appointmentSlots: slots});
 				
 				// Update End Time?
@@ -383,12 +392,6 @@ export default class BlockContainer extends React.Component {
 		this.update("slots");
 	}
 	
-	handleUndo() {
-		if (!this.state.locked && this.state.visible) {
-			this.setState({appointmentSlots: this.copySlots(this.prevSlots)});
-		}
-	}
-	
 	editSlot(i, identity, note) {
 		const newSlots = this.copySlots(this.state.appointmentSlots);
 		newSlots[i].identity = identity;
@@ -445,12 +448,11 @@ export default class BlockContainer extends React.Component {
 						handleSlotCancel={this.handleSlotCancel}
 						handleEmpty={this.handleEmpty}
 						handleUpdate={this.handleUpdate}
-						handleUndo={this.handleUndo}
 						
 						startTime={this.state.startTime}
 						slotDuration={this.state.appointmentDuration}
 						slots={this.state.appointmentSlots}
-						prevSlots={this.prevSlots}
+						prevSlots={this.state.prevSlots}
 						role={this.props.role}
 						id={this.props.id}
 					/>
