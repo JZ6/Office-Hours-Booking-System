@@ -12,13 +12,17 @@ export default class BlockContainer extends React.Component {
 		this.state = {
 			visible: false,
 			locked: false,
-			prevSlots: [],
+			prevSlots: [], //only updated on block opening
 			timeChanged: false 
 		}
 		
 		// Block
 		this.handleInputChange = this.handleInputChange.bind(this);
-		this.submitBlock = this.submitBlock.bind(this);
+
+		this.submitBlock_properties = this.submitBlock_properties.bind(this);
+		this.submitBlock_everything = this.submitBlock_everything.bind(this);
+		this.submit = this.submit.bind(this);
+
 		this.updateBlock = this.updateBlock.bind(this);
 		this.submitTime = this.submitTime.bind(this);
 		this.deleteBlock = this.deleteBlock.bind(this);
@@ -65,16 +69,10 @@ export default class BlockContainer extends React.Component {
 						this.setState({prevSlots: this.copySlots(data.appointmentSlots)});
 						this.setState({...data});
 						this.setState({appointmentSlots: this.copySlots(data.appointmentSlots)});
-						
 						this.setState({
 							start: moment(data.startTime).format("HH:mm"),
 							end: this.getEnd(data)
 						});
-					} else if (scope === "slots") {
-						this.setState({prevSlots: this.copySlots(data.appointmentSlots)});
-						this.setState({appointmentSlots: this.copySlots(data.appointmentSlots)});
-						
-						this.setState({end: this.getEnd(data)});
 					} else if (scope === "slot") {
 						let prevSlots = this.copySlots(this.state.prevSlots);
 						prevSlots[i].identity = data.appointmentSlots[i].identity;
@@ -105,21 +103,17 @@ export default class BlockContainer extends React.Component {
 	getEnd(block) {
 		return moment(block.startTime).add(block.appointmentDuration * block.appointmentSlots.length).format("HH:mm");
 	}
-	getNumberOfSlots(block){
-
-	}
 	
 	updateSlotNumber(start, end, appointmentDuration){
 		if (!this.state.locked && this.state.visible) {
 			let slotNumber = Math.floor(
 				(moment(end, "HH:mm") - moment(start, "HH:mm")) / appointmentDuration);
 			if (slotNumber === 0) {
-				this.setState({prevSlots: []});
 				this.setState({appointmentSlots: []});
 			} else {
 				let slots = [...Array(slotNumber)].map(() => 
 					({identity: "", courseCode: "", note: ""}));
-				this.setState({prevSlots: this.copySlots(slots)});
+				// this.setState({prevSlots: this.copySlots(slots)});
 				this.setState({appointmentSlots: slots});
 				
 				// Update End Time?
@@ -204,7 +198,41 @@ export default class BlockContainer extends React.Component {
 		}
 	}
 	
-	submitBlock() {
+	//submits non time-related attributes (doesn't submit slots)
+	//only called from submit
+	submitBlock_properties() {
+		if (!this.state.locked && this.state.visible) {
+			
+			this.setState({locked: true});
+			let block = {
+				blockId: this.state.blockId,
+				
+				owners: this.state.owners,
+				courseCodes: this.state.courseCodes,
+				comment: this.state.comment
+			}
+
+			this.props.api.postBlock(block)
+			.then((response) => {
+				
+				if (response.status !== 200) {
+					window.alert(response.status, response.statusText);
+				}
+				this.setState({locked: false});
+				this.update("block");
+			})
+			.catch((error) => {
+				window.alert(error.message);
+				this.setState({locked: false});
+			});
+			
+			
+		}
+	}
+
+	//submits time-related attributes (also submits all the slots)
+	//only called from submit
+	submitBlock_everything(){
 		if (!this.state.locked && this.state.visible) {
 			this.setState({locked: true});
 			let block = {
@@ -216,6 +244,7 @@ export default class BlockContainer extends React.Component {
 				appointmentDuration: this.state.appointmentDuration,
 				appointmentSlots: this.state.appointmentSlots
 			}
+
 			this.props.api.postBlock(block)
 			.then((response) => {
 				if (response.status !== 200) {
@@ -228,11 +257,37 @@ export default class BlockContainer extends React.Component {
 				window.alert(error.message);
 				this.setState({locked: false});
 			});
-			
-			this.props.blockContainerCallback(this.state.blockId, block);
-			this.onClose();
 		}
 	}
+
+	//submits whole block and closes it. 
+	//Also checks for changes in slots number and submits different attributes accordingly
+	submit(){
+		console.log(this.state.prevSlots)
+			console.log(this.state.appointmentSlots);
+		if(this.state.prevSlots.length!==this.state.appointmentSlots.length){
+			this.submitBlock_everything();
+			
+		}else{
+			console.log("properties")
+			this.submitBlock_properties();
+		}
+		
+		//prepare for callback
+		let block = {
+			blockId: this.state.blockId,
+			owners: this.state.owners,
+			courseCodes: this.state.courseCodes,
+			comment: this.state.comment,
+			startTime: this.state.startTime,
+			appointmentDuration: this.state.appointmentDuration,
+			appointmentSlots: this.state.appointmentSlots
+		}
+		//THIS CAUSES ERRORS BECAUSE API IS CREATING BLOCKS WITH MISSING ATTRIBUTES
+		this.props.blockContainerCallback(this.state.blockId, block);
+		this.onClose();
+	}
+
 	
 	updateBlock() {
 		this.update("block");
@@ -429,7 +484,7 @@ export default class BlockContainer extends React.Component {
 			</div>;
 		} else {
 			return <div className="ButtonContainer">
-				<button className="submit-button" onClick={this.submitBlock}>Submit</button>
+				<button className="submit-button" onClick={this.submit}>Submit</button>
 				{blockId ? 
 					<React.Fragment>
 						<button id="refresh-button" className="submit-button" onClick={this.updateBlock}>Refresh</button> 

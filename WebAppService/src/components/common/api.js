@@ -65,16 +65,8 @@ export default class Api {
 	}
 
 	postBlock(block) {
-		const body = {
-			blockId: block.blockId,  // if adding, use empty string ""
-			owners: block.owners,
-			courseCodes: block.courseCodes,
-			comment: block.comment,
-			startTime: block.startTime,
-			appointmentDuration: block.appointmentDuration,
-			appointmentSlots: block.appointmentSlots
-		};
-		return this.__call("POST", "/blocks", body);
+	
+		return this.__call("POST", "/blocks", block);
 	}
 
 	deleteBlock(blockId) {
