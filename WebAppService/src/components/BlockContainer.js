@@ -31,13 +31,13 @@ export default class BlockContainer extends React.Component {
 	
 	onOpen(block) {
 		this.setState({
-			originalNumberOfSlots : block.appointmentSlots.length,
 			visible: true,
 			...block,
 			start: moment(block.startTime).format("HH:mm"),
 			end: this.getEnd(block),
 			appointmentSlots: this.copySlots(block.appointmentSlots),
-			prevSlots: this.copySlots(block.appointmentSlots)
+			prevSlots: this.copySlots(block.appointmentSlots),
+			timeChanged: false
 		});
 	}
 	onClose() {
@@ -71,7 +71,8 @@ export default class BlockContainer extends React.Component {
 						this.setState({appointmentSlots: this.copySlots(data.appointmentSlots)});
 						this.setState({
 							start: moment(data.startTime).format("HH:mm"),
-							end: this.getEnd(data)
+							end: this.getEnd(data),
+							timeChanged: false
 						});
 					} else if (scope === "slot") {
 						let prevSlots = this.copySlots(this.state.prevSlots);
@@ -83,8 +84,6 @@ export default class BlockContainer extends React.Component {
 							data.appointmentSlots[i].identity, 
 							data.appointmentSlots[i].note
 						);
-						
-						this.setState({end: this.getEnd(data)});
 					}
 				}
 				this.setState({locked: false});
@@ -104,7 +103,7 @@ export default class BlockContainer extends React.Component {
 		return moment(block.startTime).add(block.appointmentDuration * block.appointmentSlots.length).format("HH:mm");
 	}
 	
-	updateSlotNumber(start, end, appointmentDuration){
+	updateSlotNumber(start, end, appointmentDuration) {
 		if (!this.state.locked && this.state.visible) {
 			let slotNumber = Math.floor(
 				(moment(end, "HH:mm") - moment(start, "HH:mm")) / appointmentDuration);
@@ -116,7 +115,7 @@ export default class BlockContainer extends React.Component {
 				// this.setState({prevSlots: this.copySlots(slots)});
 				this.setState({appointmentSlots: slots});
 				
-				// Update End Time?
+				// Update end to be startTime + slotNumber * duration (i.e. floor)
 				this.setState({
 					end: moment(start, "HH:mm").add(appointmentDuration * slotNumber).format("HH:mm")
 				});
@@ -412,7 +411,12 @@ export default class BlockContainer extends React.Component {
 	}
 	
 	handleSlotCancel = (i) => () => {
-		this.update("slot", i);
+		//this.update("slot", i);
+		this.editSlot(
+			i, 
+			this.state.prevSlots[i].identity, 
+			this.state.prevSlots[i].note
+		);
 	}
 	
 	handleEmpty = () => {
