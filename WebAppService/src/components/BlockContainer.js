@@ -12,19 +12,22 @@ export default class BlockContainer extends React.Component {
 		this.state = {
 			visible: false,
 			locked: false,
-			prevSlots: []
+			prevSlots: [],
+			timeChanged: false 
 		}
 		
 		// Block
 		this.handleInputChange = this.handleInputChange.bind(this);
 		this.submitBlock = this.submitBlock.bind(this);
 		this.updateBlock = this.updateBlock.bind(this);
+		this.submitTime = this.submitTime.bind(this);
 		this.deleteBlock = this.deleteBlock.bind(this);
 		this.onClose = this.onClose.bind(this)
 	}
 	
 	onOpen(block) {
 		this.setState({
+			originalNumberOfSlots : block.appointmentSlots.length,
 			visible: true,
 			...block,
 			start: moment(block.startTime).format("HH:mm"),
@@ -102,6 +105,9 @@ export default class BlockContainer extends React.Component {
 	getEnd(block) {
 		return moment(block.startTime).add(block.appointmentDuration * block.appointmentSlots.length).format("HH:mm");
 	}
+	getNumberOfSlots(block){
+
+	}
 	
 	updateSlotNumber(start, end, appointmentDuration){
 		if (!this.state.locked && this.state.visible) {
@@ -136,39 +142,18 @@ export default class BlockContainer extends React.Component {
 					this.setState({appointmentDuration: duration});
 				}
 			} else if (name === "start") {
-				// Validate
+				// just change display start time
 				let start = value;
-				if (moment(start, "HH:mm").isValid()) {
-					if (moment(start, "HH:mm") > moment(this.state.end, "HH:mm")) {
-						start = this.state.end;
-					}
-					this.setState({start: start});
-					
-					// Need to update block's actual startTime which includes date
-					let newStartTime = this.state.startTime;  // String immutable
-					newStartTime = moment(newStartTime)
-						.hour(parseInt(start.slice(0, 2), 10))
-						.minute(parseInt(start.slice(3, 5), 10))
-						.second(0)
-						.millisecond(0)
-						.toISOString();
-					this.setState({startTime: newStartTime})
-					
-					// Changes number of slots
-					this.updateSlotNumber(start, this.state.end, this.state.appointmentDuration);
-				}
+				this.setState({start: start});
+				this.setState({timeChanged:true})
+				
 			} else if (name === "end") { 
-				// Validate
+				// just change display end time
 				let end = value;
-				if (moment(end, "HH:mm").isValid()) {
-					if (moment(end, "HH:mm") < moment(this.state.start, "HH:mm")) {
-						end = this.state.start;
-					}
-					this.setState({end: end});
-					
-					// Changes number of slots
-					this.updateSlotNumber(this.state.start, end, this.state.appointmentDuration);
-				}
+				this.setState({end: end});
+				this.setState({timeChanged:true})
+
+				
 			} else if (name === "date") {
 				// ValiDATE
 				let date = value;
@@ -252,7 +237,39 @@ export default class BlockContainer extends React.Component {
 	updateBlock() {
 		this.update("block");
 	}
+
+	//checks inputted time, validates it and updates slots accordingly
+	//doesn't post the block.
+	submitTime(){
+		console.log("hey");
+		if (!this.state.locked && this.state.visible) {
+		this.setState({timeChanged:false});
 	
+			let start = this.state.start;
+			let end = this.state.end;
+			
+			// Validate
+			if (moment(start, "HH:mm").isValid() && moment(end, "HH:mm").isValid()) {
+				if (moment(start, "HH:mm") > moment(end, "HH:mm")) {
+					end = this.state.start;
+					this.setState({end:end});
+				}
+
+				// Need to update block's actual startTime which includes date
+				let newStartTime = this.state.startTime;  // String immutable
+				newStartTime = moment(newStartTime)
+					.hour(parseInt(start.slice(0, 2), 10))
+					.minute(parseInt(start.slice(3, 5), 10))
+					.second(0)
+					.millisecond(0)
+					.toISOString();
+				this.setState({startTime: newStartTime})
+				
+				// Changes number of slots
+				this.updateSlotNumber(start, end, this.state.appointmentDuration);
+			}
+		}
+	}
 	deleteBlock() {
 		if (!this.state.locked && this.state.visible) {
 			if (!this.state.blockId) {
@@ -430,7 +447,7 @@ export default class BlockContainer extends React.Component {
 				<BlockView 
 					handleInputChange={this.handleInputChange}
 					onClose={this.onClose}
-					
+					submitTime={this.submitTime}
 					startTime={this.state.startTime}
 					appointmentDuration={this.state.appointmentDuration}
 					owners={this.state.owners}
@@ -444,6 +461,7 @@ export default class BlockContainer extends React.Component {
 					
 					role={this.props.role}
 					id={this.props.id}
+					timeChanged={this.state.timeChanged}
 				/>
 				
 				{this.renderButtons(this.props.role, this.state.blockId)}

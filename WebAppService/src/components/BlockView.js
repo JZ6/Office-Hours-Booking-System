@@ -47,6 +47,7 @@ export default class BlockView extends React.Component {
 						value={this.props.end} 
 						onChange={this.props.handleInputChange}
 					/>
+					{this.props.timeChanged ? <button className="submit-button" onClick={this.props.submitTime}>Refresh slots</button>:" "}
 					<input
 						name="date"
 						type="date"
