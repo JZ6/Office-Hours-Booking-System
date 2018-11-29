@@ -206,10 +206,10 @@ class App extends Component {
 						onSelectSlot={this.onSelectSlot}
 						resizable
 						style={{
-							height: "95vh",
-							paddingTop: '1em'
+							height: "100vh",
+							padding: '0.5em'
 						}}
-						components={{toolbar: DateTimePicker}}
+						// components={{toolbar: DateTimePicker}}
 					/>
 				</div>
 				{this.state.locked ? <div className="App-LockOverlay" /> : null}
