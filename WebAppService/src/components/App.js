@@ -13,7 +13,8 @@ import dummyAPI from './common/dummyApi'
 import components from './';
 const {
 	LoginView,
-	BlockContainer
+	BlockContainer,
+	DateTimePicker
 } = components
 
 // console.log(LoginView)
@@ -208,6 +209,7 @@ class App extends Component {
 							height: "95vh",
 							paddingTop: '1em'
 						}}
+						components={{toolbar: DateTimePicker}}
 					/>
 				</div>
 				{this.state.locked ? <div className="App-LockOverlay" /> : null}
