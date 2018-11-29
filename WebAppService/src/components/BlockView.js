@@ -9,8 +9,8 @@ export default class BlockView extends React.Component {
 			<label>
 				Slot duration:
 				<select 
-					name = "appointmentDuration" 
-					value={this.props.appointmentDuration} 
+					name = "duration" 
+					value={this.props.duration} 
 					onChange={this.props.handleInputChange}
 				>
 						<option value="300000">5 minutes</option>
@@ -27,7 +27,7 @@ export default class BlockView extends React.Component {
 				<div className="blockTimes">
 					From: {moment(this.props.start, "HH:mm").format("hh:mmA")}, 
 					To: {moment(this.props.end, "HH:mm").format("hh:mmA")}, 
-					Date: {moment(this.props.startTime).format("YYYY-MM-DD")}
+					Date: {this.props.date}
 				</div>
 			);
 		} else {
@@ -47,17 +47,35 @@ export default class BlockView extends React.Component {
 						value={this.props.end} 
 						onChange={this.props.handleInputChange}
 					/>
-					{this.props.timeChanged ? <button className="submit-button" onClick={this.props.submitTime}>Refresh slots</button>:" "}
 					<input
 						name="date"
 						type="date"
-						value={moment(this.props.startTime).format("YYYY-MM-DD")}
+						value={this.props.date}
 						onChange={this.props.handleInputChange}
 					/>
 					{this.renderDurationList()}
-					Slot number: {this.props.appointmentSlots.length}
+					Slot number: {this.props.slotNumber}
+					<br/>
+					{this.renderTimeSubmit()}
 				</div>
+				
 			);
+		}
+	}
+	
+	renderTimeSubmit() {
+		if (this.props.isCreating) {
+			// If creating, this button's functionality is bundled in the other 
+			// Submit button in BlockContainer's render.
+			return null;
+		} else {
+			return <button 
+					className="submit-button"
+					onClick={this.props.submitTime}
+					disabled={!this.props.timeChanged}
+				>
+					Change Time
+				</button>;
 		}
 	}
 	
