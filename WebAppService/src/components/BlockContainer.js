@@ -72,7 +72,6 @@ export default class BlockContainer extends React.Component {
 				if (data.appointmentSlots) {
 					// Extract data from json promise, undefined if failure
 					if (scope === "block") {
-						console.log(data);
 						this.setState({prevSlots: this.copySlots(data.appointmentSlots)});
 						this.setState({...data});
 						this.setState({appointmentSlots: this.copySlots(data.appointmentSlots)});
