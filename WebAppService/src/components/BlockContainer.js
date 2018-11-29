@@ -19,8 +19,8 @@ export default class BlockContainer extends React.Component {
 		// Block
 		this.handleInputChange = this.handleInputChange.bind(this);
 		this.updateBlock = this.updateBlock.bind(this);
-		this.submitBlock = this.submitBlock.bind(this);
-		this.submitTime = this.submitTime.bind(this);
+		this.handleSubmitBlock = this.handleSubmitBlock.bind(this);
+		this.handleSubmitTime = this.handleSubmitTime.bind(this);
 		this.deleteBlock = this.deleteBlock.bind(this);
 		this.onClose = this.onClose.bind(this)
 	}
@@ -31,7 +31,7 @@ export default class BlockContainer extends React.Component {
 			...block,
 			
 			start: moment(block.startTime).format("HH:mm"),
-			end: this.getEnd(block),
+			end: this.calculateEnd(block),
 			date: moment(block.startTime).format("YYYY-MM-DD"),
 			duration: block.appointmentDuration,
 			timeChanged: false,
@@ -49,13 +49,15 @@ export default class BlockContainer extends React.Component {
 		}
 	}
 	
+	// Update the shown block, "block" for everything, "slot, i" for one slot
 	update(scope, i) {
-		// If creating (empty block ID) just close box.
+		
 		if (!this.state.blockId) {
-			// Update the calendar
+			// If creating (empty block ID) just close BlockContainer.
 			this.props.blockContainerCallback();
 			this.onClose();
 		}
+		
 		if (!this.state.locked && this.state.visible) {
 			this.setState({locked: true});
 			this.props.api.getBlock(this.state.blockId)
@@ -77,7 +79,7 @@ export default class BlockContainer extends React.Component {
 						this.setState({appointmentSlots: this.copySlots(data.appointmentSlots)});
 						this.setState({
 							start: moment(data.startTime).format("HH:mm"),
-							end: this.getEnd(data),
+							end: this.calculateEnd(data),
 							date: moment(data.startTime).format("YYYY-MM-DD"),
 							duration: data.appointmentDuration,
 							timeChanged: false
@@ -106,14 +108,51 @@ export default class BlockContainer extends React.Component {
 		}
 	}
 	
-	//----------------------------------------------------------------------------
-	//---------------------------------- Block -----------------------------------
-	//----------------------------------------------------------------------------
-	
-	getEnd(block) {
-		return moment(block.startTime).add(block.appointmentDuration * block.appointmentSlots.length).format("HH:mm");
+	// POST block, "info" for just details, "time" for start/end/duration, "all"
+	// for both.
+	submitBlock(scope) {
+		if (!this.state.locked && this.state.visible) {
+			this.setState({locked: true});
+			
+			let block = {blockId: this.state.blockId};
+			if (scope === "info" || scope === "all") {
+				block.owners = this.state.owners;
+				block.courseCodes = this.state.courseCodes;
+				block.comment = this.state.comment;
+			}
+			if (scope === "time" || scope === "all") {
+				let times = this.validateTime();
+				if (times) {
+					block.startTime = times.startTime;
+					block.appointmentDuration = times.appointmentDuration;
+					block.appointmentSlots = times.appointmentSlots;
+				} else {
+					// Invalid time parameters, abort
+					window.alert("Invalid time settings.");
+					this.setState({locked: false});
+					return;
+				}
+			}
+			
+			// Make API call
+			this.props.api.postBlock(block)
+			.then((response) => {
+				if (response.status !== 200) {
+					window.alert(response.status, response.statusText);
+				}
+				this.setState({locked: false});
+				this.update("block");
+			})
+			.catch((error) => {
+				window.alert(error.message);
+				this.setState({locked: false});
+			});
+		}
 	}
 	
+	//============================================================================
+	//================================== Block ===================================
+	//============================================================================
 	
 	handleInputChange(event) {
 		if (!this.state.locked && this.state.visible) {
@@ -143,108 +182,48 @@ export default class BlockContainer extends React.Component {
 			}
 		}
 	}
-
-	//update relevant selectedCourses when a course is selected
-	handleCourseSelection(event){
-		if (!this.state.locked && this.state.visible) {
-			var newSelectedCourses = this.state.selectedCourses;
-			var course = event.target.id;
-
-			var target = event.target;
-			const value = target.type === 'checkbox' ? target.checked : target.value;
-			//add course to course list if checked
-			if (value === true){
-				if(!newSelectedCourses.includes(course)){
-					//add course to selected courses
-					newSelectedCourses.push(course);
-					this.setState({selectedCourses:newSelectedCourses});
-				}
-			} else { //remove course from selected courses
-				var index = newSelectedCourses.indexOf(course);
-				if (index > -1) {
-					newSelectedCourses.splice(index, 1);
-				}
-			}
-			console.log(this.state.selectedCourses);
-		}
-	}
-
-	// POSTs block excluding startTime, appointmentDuration, appointmentSlots
-	// unless creating a block.
-	submitBlock() {
-		if (!this.state.locked && this.state.visible) {
-			this.setState({locked: true});
-			
-			let block = {
-				blockId: this.state.blockId,
-				owners: this.state.owners,
-				courseCodes: this.state.courseCodes,
-				comment: this.state.comment,
-			}
-			
-			// If creating, append times then post
-			if (this.state.blockId === "") {
-				let times = this.__processTime();
-				if (times) {
-					block.startTime = times.startTime;
-					block.appointmentDuration = times.appointmentDuration;
-					block.appointmentSlots = times.appointmentSlots;
-					this.setState({locked: false});
-					this.__postBlock(block);
-				} else {
-					window.alert("Invalid time settings.");
-					this.setState({locked: false});
-				}
-			} else {
-				// If editing, just post
-				this.setState({locked: false});
-				this.__postBlock(block);
-			}
-		}
+	
+	handleSubmitBlock(event) {
+		if (this.state.blockId)
+			this.submitBlock("info");  // If editing, submit only block details
+		else
+			this.submitBlock("all");  // If creating, submit all
 	}
 	
-	// POSTs startTime, appointmentDuration, appointmentSlots, to be called only
-	// when time changes.
-	submitTime() {
-		if (!this.state.locked && this.state.visible) {
-			this.setState({locked: true});
-			
-			let times = this.__processTime();
-			if (times) {
-				let block = {
-					blockId: this.state.blockId,
-					startTime: times.startTime,
-					appointmentDuration: times.appointmentDuration,
-					appointmentSlots: times.appointmentSlots
-				}
-				this.setState({locked: false});
-				this.__postBlock(block);
-			} else {
-				window.alert("Invalid time settings.");
-				this.setState({locked: false});
-			}
-		}
+	handleSubmitTime(event) {
+		this.submitBlock("time");
 	}
 	
-	__postBlock(block) {
+	updateBlock() {
+		this.update("block");
+	}
+	
+	deleteBlock() {
 		if (!this.state.locked && this.state.visible) {
+			if (!this.state.blockId) {
+				this.onClose();
+				return false;
+			}
 			this.setState({locked: true});
-			this.props.api.postBlock(block)
+			this.props.api.deleteBlock(this.state.blockId)
 			.then((response) => {
 				if (response.status !== 200) {
 					window.alert(response.status, response.statusText);
 				}
 				this.setState({locked: false});
-				this.update("block");
 			})
 			.catch((error) => {
 				window.alert(error.message);
 				this.setState({locked: false});
 			});
+			
+			this.props.blockContainerCallback(this.state.blockId);
+			this.onClose();
 		}
 	}
 	
-	__processTime() {
+	// Process the staged time parameters into properties fit for a block
+	validateTime() {
 		let start = moment(this.state.start, "HH:mm");
 		let end = moment(this.state.end, "HH:mm");
 		let date = moment(this.state.date, "YYYY-MM-DD");
@@ -280,7 +259,7 @@ export default class BlockContainer extends React.Component {
 				// Do not divide by zero
 				appointmentSlots = [];
 			} else {
-				let slotNumber = Math.floor((end - start) / duration);
+				let slotNumber = this.calculateSlotNumber(start, end, duration);
 				if (slotNumber === 0) {
 					// Create array with no slots
 					appointmentSlots = [];
@@ -296,42 +275,23 @@ export default class BlockContainer extends React.Component {
 				appointmentDuration: duration,
 				appointmentSlots: appointmentSlots
 			};
-		} else {
-			return null;
 		}
 	}
 	
-	updateBlock() {
-		this.update("block");
+	calculateEnd(block) {
+		return moment(block.startTime).add(block.appointmentDuration * block.appointmentSlots.length).format("HH:mm");
 	}
 	
-	deleteBlock() {
-		if (!this.state.locked && this.state.visible) {
-			if (!this.state.blockId) {
-				this.onClose();
-				return false;
-			}
-			this.setState({locked: true});
-			this.props.api.deleteBlock(this.state.blockId)
-			.then((response) => {
-				if (response.status !== 200) {
-					window.alert(response.status, response.statusText);
-				}
-				this.setState({locked: false});
-			})
-			.catch((error) => {
-				window.alert(error.message);
-				this.setState({locked: false});
-			});
-			
-			this.props.blockContainerCallback(this.state.blockId);
-			this.onClose();
-		}
+	calculateSlotNumber(start, end, duration) {
+		return Math.floor((
+			moment(end, "HH:mm") - 
+			moment(start, "HH:mm")) / 
+			duration);
 	}
 	
-	//----------------------------------------------------------------------------
-	//---------------------------------- Slots -----------------------------------
-	//----------------------------------------------------------------------------
+	//============================================================================
+	//================================== Slots ===================================
+	//============================================================================
 	
 	handleSlotClick = (i) => () => {
 		if (!this.state.locked && this.state.visible) {
@@ -469,7 +429,7 @@ export default class BlockContainer extends React.Component {
 			</div>;
 		} else {
 			return <div className="ButtonContainer">
-				<button className="submit-button" onClick={this.submitBlock}>Submit</button>
+				<button className="submit-button" onClick={this.handleSubmitBlock}>Submit</button>
 				{blockId ? 
 					<React.Fragment>
 						<button id="refresh-button" className="submit-button" onClick={this.updateBlock}>Refresh</button> 
@@ -487,15 +447,15 @@ export default class BlockContainer extends React.Component {
 				<BlockView 
 					handleInputChange={this.handleInputChange}
 					onClose={this.onClose}
-					submitTime={this.submitTime}
+					handleSubmitTime={this.handleSubmitTime}
 					
 					owners={this.state.owners}
 					courseCodes={this.state.courseCodes}
 					comment={this.state.comment}
 					
-					slotNumber={Math.floor((
-						moment(this.state.end, "HH:mm") - 
-						moment(this.state.start, "HH:mm")) / 
+					slotNumber={this.calculateSlotNumber(
+						this.state.start, 
+						this.state.end, 
 						this.state.duration)}
 					
 					start={this.state.start}
@@ -506,7 +466,7 @@ export default class BlockContainer extends React.Component {
 					role={this.props.role}
 					id={this.props.id}
 					timeChanged={this.state.timeChanged}
-					isCreating={this.state.blockId === ""}
+					blockId={this.state.blockId}
 				/>
 				
 				{this.renderButtons(this.props.role, this.state.blockId)}

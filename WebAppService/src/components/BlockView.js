@@ -16,6 +16,8 @@ export default class BlockView extends React.Component {
 						<option value="300000">5 minutes</option>
 						<option value="600000">10 minutes</option>
 						<option value="900000">15 minutes</option>
+						<option value="1800000">30 minutes</option>
+						<option value="3600000">60 minutes</option>
 				</select>
 			</label>
 		);
@@ -33,7 +35,6 @@ export default class BlockView extends React.Component {
 		} else {
 			return (
 				<div className="BlockTimes">
-					<div>Warning: Changing times will clear slots!</div>
 					<input
 						name="start"
 						type="time"
@@ -64,18 +65,21 @@ export default class BlockView extends React.Component {
 	}
 	
 	renderTimeSubmit() {
-		if (this.props.isCreating) {
-			// If creating, this button's functionality is bundled in the other 
-			// Submit button in BlockContainer's render.
-			return null;
-		} else {
-			return <button 
+		if (this.props.blockId) {
+			// If editing...
+			return <div>
+				<button 
 					className="submit-button"
-					onClick={this.props.submitTime}
+					onClick={this.props.handleSubmitTime}
 					disabled={!this.props.timeChanged}
 				>
 					Change Time
-				</button>;
+				</button> Warning: Changing times will clear slots!
+			</div>;
+		} else {
+			// If creating, this button's functionality is bundled in the other 
+			// Submit button in BlockContainer's render.
+			return null;
 		}
 	}
 	
