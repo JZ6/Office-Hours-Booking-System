@@ -102,17 +102,11 @@ describe("instructor view", () => {
 		expect(wrapper.find("#note0").props().value).toEqual("Honor is for fools.");
 	});
 	
-	test("handleSlotCancel cancels changes", async () => {
+	test("handleSlotCancel cancels changes", () => {
 		wrapper.find("#identity0").simulate("change", {target: {value: "osbornharry31"}});
 		wrapper.find("#note0").simulate("change", {target: {value: "Honor is for fools."}});
 		wrapper.find("#cancel0").simulate("click");
 		
-		await mockGetBlockPromise;
-		await mockJsonPromise;
-		wrapper = wrapper.update();
-		
-		expect(mockGetBlock).toHaveBeenCalledTimes(1);
-		expect(mockGetBlock).toHaveBeenCalledWith("0");
 		expect(wrapper.find("#identity0").props().value).toEqual("parkerpeter15");
 		expect(wrapper.find("#note0").props().value).toEqual("Everyone gets one.");
 	});
@@ -215,18 +209,12 @@ describe("student view", () => {
 		expect(wrapper.find("#note2").props().value).toEqual("With great powers...");
 	});
 	
-	test("handleSlotCancel cancels changes", async () => {
+	test("handleSlotCancel cancels changes", () => {
 		// Edit identity and note
 		wrapper.find("#identity2").simulate("click");
 		wrapper.find("#note2").simulate("change", {target: {value: "With great powers..."}});
 		wrapper.find("#cancel2").simulate("click");
 		
-		await mockGetBlockPromise;
-		await mockJsonPromise;
-		wrapper = wrapper.update();
-		
-		expect(mockGetBlock).toHaveBeenCalledTimes(1);
-		expect(mockGetBlock).toHaveBeenCalledWith("0");
 		expect(wrapper.find("#identity2").props().children).toEqual("Register");
 		expect(wrapper.find("#note2").props().value).toEqual(undefined);
 	});

@@ -169,13 +169,18 @@ class App extends Component {
 
 	blockContainerCallback = (blockId, block) => {
 		if (!this.state.authenticated) return false;
-
-		if (block) {
-			console.log("POST", blockId, block);
-			this.modifyBlock(blockId, block);
+		
+		if (!blockId) {
+			console.log("Create");
+			// No blockId, have to wait for server to send back the block with it
 		} else {
-			console.log("DELETE", blockId);
-			this.deleteBlock(blockId);
+			if (block) {
+				console.log("Edit", blockId, block);
+				this.modifyBlock(blockId, block);
+			} else {
+				console.log("Delete", blockId);
+				this.deleteBlock(blockId);
+			}
 		}
 		this.fetchBlocks(7);
 	};

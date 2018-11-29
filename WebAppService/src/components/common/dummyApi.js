@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export default class DummyApi {
 	constructor(url) {
 		this.url = url;
@@ -365,26 +367,67 @@ export default class DummyApi {
 			}
 			resolve(foundBlock)
 		});
-		const promise = new Promise((resolve, reject) => {
-			setTimeout(() => resolve({
-				status: 200,
-				statusText: "OK",
-				json: jsonPromise
-			}), this.delay);
-		});
+		let promise;
+		if (!foundBlock) {
+			promise = new Promise((resolve, reject) => {
+				setTimeout(() => resolve({
+					status: 404,
+					statusText: "Block not Found",
+				}), this.delay);
+			});
+		} else {
+			promise = new Promise((resolve, reject) => {
+				setTimeout(() => resolve({
+					status: 200,
+					statusText: "OK",
+					json: jsonPromise
+				}), this.delay);
+			});
+		}
+		
 		return promise;
 	}
 
-	postBlock(block) {
-		if (!block.blockId) {
-			// If blank/no blockId, create block with new id
+	postBlock(data) {
+		let block = this.currentBlocks.blocks.find(element =>
+			element.blockId === data.blockId);
+		if (block === undefined) {
+			// Create default blank block with unique ID
 			this.currentBlockId ++;
-			block.blockId = this.currentBlockId.toString();
+			block = {
+				blockId: this.currentBlockId.toString(),
+				owners: "",
+				courseCodes: "",
+				comment: "",
+				startTime: moment().toISOString(),
+				appointmentDuration: 0,
+				appointmentSlots: []
+			}
 		} else {
 			// Otherwise delete and re-add existing block
 			this.currentBlocks.blocks = this.currentBlocks.blocks.filter(
 				currentBlock => currentBlock.blockId !== block.blockId)
 		}
+		
+		if (data.owners !== undefined) {
+			block.owners = data.owners;
+		}
+		if (data.courseCodes !== undefined) {
+			block.courseCodes = data.courseCodes;
+		}
+		if (data.comment !== undefined) {
+			block.comment = data.comment;
+		}
+		if (data.startTime !== undefined) {
+			block.startTime = data.startTime;
+		}
+		if (data.appointmentDuration !== undefined) {
+			block.appointmentDuration = data.appointmentDuration;
+		}
+		if (data.appointmentSlots !== undefined) {
+			block.appointmentSlots = data.appointmentSlots;
+		}
+		
 		this.currentBlocks.blocks.push(block);
 		
 		const promise = new Promise((resolve, reject) => {
