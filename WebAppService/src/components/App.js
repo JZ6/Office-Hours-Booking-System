@@ -200,8 +200,8 @@ class App extends React.Component {
 		return (
 			<div className="App">
 				<LoginView api={this.api} authenticate={this.authenticate} />
-				<DateTimePicker currentDate={this.state.currentDate} changeDate={this.changeDate} authenticated={this.state.authenticated} />
 				<div className={this.state.locked ? "App-container--locked" : "App-container"}>
+					<DateTimePicker currentDate={this.state.currentDate} changeDate={this.changeDate} authenticated={this.state.authenticated} />
 					<DnDCalendar
 						date={this.state.currentDate}
 						defaultView="week"

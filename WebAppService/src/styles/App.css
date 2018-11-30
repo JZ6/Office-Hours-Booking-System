@@ -14,7 +14,7 @@
 
 .App-container--locked {
 	flex-grow: 1;
-	filter: blur(10px);
+	filter: blur(8px);
 }
 
 .App-intro {
