@@ -34,12 +34,14 @@ class App extends React.Component {
 			authenticated: false,
 			locked: true,
 			id: "",
-			role: ""
+			role: "",
+			currentDate: new Date()
 		};
 		// this.api = new api("localhost/");
 
 		this.api = new dummyAPI('Test');
 		this.authenticate = this.authenticate.bind(this)
+		this.setState = this.setState.bind(this)
 
 		// setTimeout(() => this.deleteBlock('blockid2')
 		// , 2000);
@@ -191,14 +193,20 @@ class App extends React.Component {
 	};
 
 	blockContainerClose = () => {
-		this.setState({ locked: false });	
+		this.setState({ locked: false });
+	}
+
+	changeDate(day) {
+		this.setState({
+			currentDate: day,
+		});
 	}
 
 	render() {
 		return (
 			<div className="App">
 				<LoginView api={this.api} authenticate={this.authenticate} />
-				<DateTimePicker selected={this.state.date} onChange={this.handleChange} authenticated={this.state.authenticated} />
+				<DateTimePicker currentDate={this.state.currentDate} changeDate={this.changeDate} authenticated={this.state.authenticated} />
 				<div className={this.state.locked ? "App-container--locked" : "App-container"}>
 					<DnDCalendar
 						date={this.state.currentDate}
@@ -214,11 +222,7 @@ class App extends React.Component {
 							height: "100vh",
 							padding: '0.5em'
 						}}
-						onNavigate={(day) => {
-							this.setState({
-								currentDate:day,
-							});
-						 }}
+						onNavigate={day => this.changeDate(day)}
 					// components={{toolbar: DateTimePicker}}
 					/>
 				</div>
