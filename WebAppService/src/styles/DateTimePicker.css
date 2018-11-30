@@ -1,0 +1,15 @@
+.react-datepicker-wrapper {
+    z-index: 3;
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, 0);
+    top: 10px
+
+}
+
+#DateTimePicker{
+	background: none;
+	text-shadow: 0 0 3px whitesmoke;
+    font-size: 1.2em;
+    text-align: center
+}

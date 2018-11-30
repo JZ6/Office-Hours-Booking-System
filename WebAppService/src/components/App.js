@@ -198,6 +198,7 @@ class App extends React.Component {
 		return (
 			<div className="App">
 				<LoginView api={this.api} authenticated={this.authenticated} />
+				<DateTimePicker selected={this.state.date} onChange={this.handleChange} />
 				<div className={this.state.locked ? "App-container--locked" : "App-container"}>
 					<DnDCalendar
 						date={this.state.currentDate}
