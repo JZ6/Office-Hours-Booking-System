@@ -191,6 +191,9 @@ class App extends Component {
 	}
 
 	render() {
+		const dateTimePicker = document.querySelector('span.rbc-toolbar-label')
+		if(dateTimePicker) dateTimePicker.id = 'dateTimePicker';
+		
 		return (
 			<div className="App">
 				<LoginView api={this.api} authenticated={this.authenticated} />
