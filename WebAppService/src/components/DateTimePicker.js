@@ -10,23 +10,18 @@ import '../styles/DateTimePicker.css'
 export default class DateTimePicker extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            startDate: new Date()
-        };
         this.handleChange = this.handleChange.bind(this);
     }
 
     handleChange(date) {
-        this.setState({
-            startDate: date
-        });
+        this.props.changeDate(date)
     }
 
     render() {
         return this.props.authenticated ? (
             <DatePicker
                 id='DateTimePicker'
-                selected={this.state.startDate}
+                selected={this.props.currentDate}
                 onChange={this.handleChange}
             />
         ): null;

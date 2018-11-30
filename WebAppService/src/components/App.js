@@ -40,8 +40,8 @@ class App extends React.Component {
 		// this.api = new api("localhost/");
 
 		this.api = new dummyAPI('Test');
-		this.authenticate = this.authenticate.bind(this)
-		this.setState = this.setState.bind(this)
+		this.authenticate = this.authenticate.bind(this);
+		this.setState = this.setState.bind(this);
 
 		// setTimeout(() => this.deleteBlock('blockid2')
 		// , 2000);
@@ -192,16 +192,10 @@ class App extends React.Component {
 		this.fetchBlocks(7);
 	};
 
-	blockContainerClose = () => {
-		this.setState({ locked: false });
-	}
+	blockContainerClose = () => this.setState({ locked: false });
 
-	changeDate(day) {
-		this.setState({
-			currentDate: day,
-		});
-	}
-
+	changeDate = day => this.setState({currentDate: day});
+	
 	render() {
 		return (
 			<div className="App">
