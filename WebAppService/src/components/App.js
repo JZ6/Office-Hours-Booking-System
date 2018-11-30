@@ -1,4 +1,7 @@
-import React, { Component } from "react";
+import React, {
+	createElement as h
+} from "react"
+
 import Calendar from "react-big-calendar";
 import moment from "moment";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
@@ -23,7 +26,7 @@ Calendar.setLocalizer(Calendar.momentLocalizer(moment));
 
 const DnDCalendar = withDragAndDrop(Calendar);
 
-class App extends Component {
+class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -47,7 +50,8 @@ class App extends Component {
 			authenticated: true,
 			locked: false,
 			role: role,
-			id: id
+			id: id,
+			currentDate: new Date()
 		});
 		console.log('Logged in as:', role)
 		this.fetchBlocks(7);
@@ -141,8 +145,8 @@ class App extends Component {
 	};
 
 	onSelectSlot = (event) => {
-		if (!this.state.authenticated || 
-			this.state.locked || 
+		if (!this.state.authenticated ||
+			this.state.locked ||
 			this.state.role === "student") return false;
 
 		let block = {
@@ -155,7 +159,7 @@ class App extends Component {
 			appointmentSlots: [...Array(Math.floor((event.end - event.start) / 300000))]
 				.map(() => ({ "identity": "", "courseCode": "", "note": "" }))
 		}
-		
+
 		this.setState({ locked: true });
 		this.refs.blockContainer.onOpen(block);
 	}
@@ -170,7 +174,7 @@ class App extends Component {
 
 	blockContainerCallback = (blockId, block) => {
 		if (!this.state.authenticated) return false;
-		
+
 		if (!blockId) {
 			console.log("Create");
 			// No blockId, have to wait for server to send back the block with it
@@ -185,21 +189,18 @@ class App extends Component {
 		}
 		this.fetchBlocks(7);
 	};
-	
+
 	blockContainerClose = () => {
-		this.setState({ locked: false });
+		this.setState({ locked: false });	
 	}
 
 	render() {
-		const dateTimePicker = document.querySelector('span.rbc-toolbar-label')
-		if(dateTimePicker) dateTimePicker.id = 'dateTimePicker';
-		
 		return (
 			<div className="App">
 				<LoginView api={this.api} authenticated={this.authenticated} />
 				<div className={this.state.locked ? "App-container--locked" : "App-container"}>
 					<DnDCalendar
-						defaultDate={new Date()}
+						date={this.state.currentDate}
 						defaultView="week"
 						events={this.state.events}
 						onEventDrop={this.onEventDrop}
@@ -212,7 +213,12 @@ class App extends Component {
 							height: "100vh",
 							padding: '0.5em'
 						}}
-						// components={{toolbar: DateTimePicker}}
+						onNavigate={(day) => {
+							this.setState({
+								currentDate:day,
+							});
+						 }}
+					// components={{toolbar: DateTimePicker}}
 					/>
 				</div>
 				{this.state.locked ? <div className="App-LockOverlay" /> : null}
