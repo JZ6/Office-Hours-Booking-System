@@ -23,12 +23,12 @@ export default class DateTimePicker extends React.Component {
     }
 
     render() {
-        return (
+        return this.props.authenticated ? (
             <DatePicker
                 id='DateTimePicker'
                 selected={this.state.startDate}
                 onChange={this.handleChange}
             />
-        );
+        ): null;
     }
 }

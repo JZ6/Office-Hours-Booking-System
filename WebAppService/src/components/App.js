@@ -39,13 +39,13 @@ class App extends React.Component {
 		// this.api = new api("localhost/");
 
 		this.api = new dummyAPI('Test');
-		this.authenticated = this.authenticated.bind(this)
+		this.authenticate = this.authenticate.bind(this)
 
 		// setTimeout(() => this.deleteBlock('blockid2')
 		// , 2000);
 	}
 
-	authenticated(role, id) {
+	authenticate(role, id) {
 		this.setState({
 			authenticated: true,
 			locked: false,
@@ -197,8 +197,8 @@ class App extends React.Component {
 	render() {
 		return (
 			<div className="App">
-				<LoginView api={this.api} authenticated={this.authenticated} />
-				<DateTimePicker selected={this.state.date} onChange={this.handleChange} />
+				<LoginView api={this.api} authenticate={this.authenticate} />
+				<DateTimePicker selected={this.state.date} onChange={this.handleChange} authenticated={this.state.authenticated} />
 				<div className={this.state.locked ? "App-container--locked" : "App-container"}>
 					<DnDCalendar
 						date={this.state.currentDate}
