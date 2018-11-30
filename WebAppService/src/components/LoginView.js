@@ -48,7 +48,7 @@ export default class LoginView extends React.Component {
                             instructor: "rossbob2"
                         }
 
-                        this.props.authenticated(permissions, permID[permissions]);
+                        this.props.authenticate(permissions, permID[permissions]);
 
                         
                         sessionStorage.setItem('sessionToken', result.sessionToken);

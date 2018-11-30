@@ -14,7 +14,7 @@
 
 .App-container--locked {
 	flex-grow: 1;
-	filter: blur(10px);
+	filter: blur(8px);
 }
 
 .App-intro {
@@ -32,4 +32,8 @@
 	width: 100%;
 	height: 100%;
 	background-color: rgba(0, 0, 0, .5);
+}
+
+.rbc-toolbar-label{
+	visibility: hidden;
 }

@@ -1,0 +1,19 @@
+.react-datepicker-wrapper {
+    z-index: 5;
+    position: fixed;
+    left: 50%;
+    transform: translate(-50%, 0);
+    top: 10px
+}
+
+.react-datepicker-popper {
+	z-index: 5;
+}
+
+#DateTimePicker{
+	background: none;
+	text-shadow: 0 0 3px whitesmoke;
+    font-size: 1.2em;
+    text-align: center;
+    border: none;
+}
