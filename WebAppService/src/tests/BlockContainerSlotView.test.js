@@ -71,9 +71,10 @@ describe("instructor view", () => {
 		// Edit empty
 		wrapper.find("#identity2").simulate("change", {target: {value: "osbornharry31"}});
 		expect(wrapper.find("#identity2").props().value).toEqual("osbornharry31");
-		// Edit occupied (should clear note)
+		// Edit occupied (should clear course and note)
 		wrapper.find("#identity0").simulate("change", {target: {value: "osbornharry31"}});
 		expect(wrapper.find("#identity0").props().value).toEqual("osbornharry31");
+		expect(wrapper.find("#course0").props().value).toEqual("");
 		expect(wrapper.find("#note0").props().value).toEqual("");
 	});
 	
@@ -97,6 +98,7 @@ describe("instructor view", () => {
 	
 	test("handleSlotConfirm applies slot changes", async () => {
 		wrapper.find("#identity0").simulate("change", {target: {value: "osbornharry31"}});
+		wrapper.find("#course0").simulate("change", {target: {value: "csc300"}});
 		wrapper.find("#note0").simulate("change", {target: {value: "Honor is for fools."}});
 		wrapper.find("#confirm0").simulate("click");
 		
@@ -106,7 +108,7 @@ describe("instructor view", () => {
 		wrapper = wrapper.update();
 		
 		expect(mockEditSlot).toHaveBeenCalledTimes(1);
-		expect(mockEditSlot).toHaveBeenCalledWith("0", 0, {courseCode: "csc302", identity: "osbornharry31", note: "Honor is for fools."});
+		expect(mockEditSlot).toHaveBeenCalledWith("0", 0, {courseCode: "csc300", identity: "osbornharry31", note: "Honor is for fools."});
 		expect(wrapper.find("#identity0").props().value).toEqual("osbornharry31");
 		expect(wrapper.find("#note0").props().value).toEqual("Honor is for fools.");
 	});
@@ -214,6 +216,7 @@ describe("student view", () => {
 	
 	test("handleSlotConfirm applies slot changes", async () => {
 		wrapper.find("#identity2").simulate("click");
+		wrapper.find("#course2").simulate("change", {target: {value: "csc300,csc301"}});
 		wrapper.find("#note2").simulate("change", {target: {value: "With great powers..."}});
 		wrapper.find("#confirm2").simulate("click");
 		
@@ -223,7 +226,7 @@ describe("student view", () => {
 		wrapper = wrapper.update();
 		
 		expect(mockEditSlot).toHaveBeenCalledTimes(1);
-		expect(mockEditSlot).toHaveBeenCalledWith("0", 2, {identity: "parkerpeter15", courseCode: "", note: "With great powers..."});
+		expect(mockEditSlot).toHaveBeenCalledWith("0", 2, {identity: "parkerpeter15", courseCode: "csc300,csc301", note: "With great powers..."});
 		expect(wrapper.find("#identity2").props().children).toEqual("Unregister");
 		expect(wrapper.find("#note2").props().value).toEqual("With great powers...");
 	});

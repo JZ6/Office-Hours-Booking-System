@@ -320,7 +320,7 @@ export default class BlockContainer extends React.Component {
 		if (!this.state.locked && this.state.visible) {
 			this.updateSlot(i, 
 				event.target.value, 
-				this.state.appointmentSlots[i].courseCode, 
+				"",   // Course code is no longer relevant
 				"");  // Delete note to protect privacy
 		}
 	}
