@@ -90,11 +90,13 @@ export default class BlockContainer extends React.Component {
 					} else if (scope === "slot") {
 						let prevSlots = this.copySlots(this.state.prevSlots);
 						prevSlots[i].identity = data.appointmentSlots[i].identity;
+						prevSlots[i].courseCode = data.appointmentSlots[i].courseCode;
 						prevSlots[i].note = data.appointmentSlots[i].note;
 						this.setState({prevSlots: prevSlots});
-						this.editSlot(
+						this.updateSlot(
 							i, 
 							data.appointmentSlots[i].identity, 
+							data.appointmentSlots[i].courseCode, 
 							data.appointmentSlots[i].note
 						);
 					}
@@ -297,11 +299,17 @@ export default class BlockContainer extends React.Component {
 		if (!this.state.locked && this.state.visible) {
 			if (this.state.appointmentSlots[i].identity === "") {
 				// Click on empty slot to assign
-				this.editSlot(i, this.props.id, "");
+				this.updateSlot(i, 
+					this.props.id, 
+					"",
+					"");
 			} else {
 				if (this.props.id === this.state.appointmentSlots[i].identity) {
 					// Click on own slot to delete
-					this.editSlot(i, "", "");
+					this.updateSlot(i, 
+					"", 
+					"", 
+					"");
 				}
 				//Click on occupied slot to do nothing
 			}
@@ -310,8 +318,19 @@ export default class BlockContainer extends React.Component {
 	
 	handleIdentityChange = (i) => (event) => {
 		if (!this.state.locked && this.state.visible) {
-			// Delete note to protect privacy
-			this.editSlot(i, event.target.value, "");
+			this.updateSlot(i, 
+				event.target.value, 
+				this.state.appointmentSlots[i].courseCode, 
+				"");  // Delete note to protect privacy
+		}
+	}
+	
+	handleCourseChange = (i) => (event) => {
+		if (!this.state.locked && this.state.visible) {
+			this.updateSlot(i, 
+				this.state.appointmentSlots[i].identity, 
+				event.target.value, 
+				this.state.appointmentSlots[i].note);
 		}
 	}
 	
@@ -319,7 +338,10 @@ export default class BlockContainer extends React.Component {
 		if (!this.state.locked && this.state.visible) {
 			// Can't edit note that belongs to nobody
 			if (this.state.appointmentSlots[i].identity !== "") {
-				this.editSlot(i, this.state.appointmentSlots[i].identity, event.target.value);
+				this.updateSlot(i, 
+					this.state.appointmentSlots[i].identity, 
+					this.state.appointmentSlots[i].courseCode, 
+					event.target.value);
 			} else {
 				window.alert("Can't edit note of an unregistered slot.");
 			}
@@ -353,9 +375,10 @@ export default class BlockContainer extends React.Component {
 	
 	handleSlotCancel = (i) => () => {
 		//this.update("slot", i);
-		this.editSlot(
+		this.updateSlot(
 			i, 
 			this.state.prevSlots[i].identity, 
+			this.state.prevSlots[i].courseCode, 
 			this.state.prevSlots[i].note
 		);
 	}
@@ -400,9 +423,10 @@ export default class BlockContainer extends React.Component {
 		}
 	}
 	
-	editSlot(i, identity, note) {
+	updateSlot(i, identity, courseCode, note) {
 		const newSlots = this.copySlots(this.state.appointmentSlots);
 		newSlots[i].identity = identity;
+		newSlots[i].courseCode = courseCode;
 		newSlots[i].note = note;
 		this.setState({appointmentSlots: newSlots});
 	}
@@ -476,6 +500,7 @@ export default class BlockContainer extends React.Component {
 					<SlotView 
 						handleSlotClick={this.handleSlotClick}
 						handleIdentityChange={this.handleIdentityChange}
+						handleCourseChange={this.handleCourseChange}
 						handleNoteChange={this.handleNoteChange}
 						handleSlotConfirm={this.handleSlotConfirm}
 						handleSlotCancel={this.handleSlotCancel}
