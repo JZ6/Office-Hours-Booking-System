@@ -77,6 +77,7 @@ export default class Api {
 		const body = {
 			startTime: slotId,
 			identity: slot.identity,
+			courseCode: slot.courseCode,
 			note: slot.note
 		}
 		return this.__call("POST", `/blocks/${blockId}/booking`, body);

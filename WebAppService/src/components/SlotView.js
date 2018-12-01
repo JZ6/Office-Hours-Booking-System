@@ -5,7 +5,10 @@ import "../styles/SlotView.css";
 
 export default class SlotView extends React.Component {
 	slotsEqual(a, b) {
-		return (a && b && a.identity === b.identity && a.note === b.note);
+		return (a && b && 
+			a.identity === b.identity && 
+			a.courseCode === b.courseCode && 
+			a.note === b.note);
 	}
 	
 	renderIdentity(i) {
@@ -37,6 +40,27 @@ export default class SlotView extends React.Component {
 					onChange={this.props.handleIdentityChange(i)}
 				/>
 			);
+		}
+	}
+	
+	renderCourse(i) {
+		if (this.props.role !== "student" || 
+			this.props.id === this.props.slots[i].identity) {
+			return (
+				<input
+					className="text-input"
+					name={`course${i}`}
+					id={`course${i}`}
+					type="text"
+					value={this.props.slots[i].courseCode}
+					placeholder="Course(s)..."
+					maxLength={50}
+					onChange={this.props.handleCourseChange(i)}
+				/>
+			);
+		} else {
+			// Note by someone else hidden
+			return <span id={`course${i}`} />;
 		}
 	}
 	
@@ -100,6 +124,7 @@ export default class SlotView extends React.Component {
 					{moment(moment(this.props.startTime) + this.props.slotDuration * i).format("h:mmA - ")}
 					{moment(moment(this.props.startTime) + this.props.slotDuration * (i + 1)).format("h:mmA")}
 					{this.renderIdentity(i)}
+					{this.renderCourse(i)}
 					{this.renderNote(i)}
 					{this.renderSlotButtons(i)}
 				</div>
