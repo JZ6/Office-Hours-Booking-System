@@ -77,6 +77,15 @@ describe("instructor view", () => {
 		expect(wrapper.find("#note0").props().value).toEqual("");
 	});
 	
+	test("handleCourseChange changes courses", () => {
+		// Edit empty (shouldn't allow changes)
+		wrapper.find("#course2").simulate("change", {target: {value: "csc300,csc301,csc302"}});
+		expect(wrapper.find("#course2").props().value).toEqual("csc300,csc301,csc302");
+		// Edit occupied
+		wrapper.find("#course0").simulate("change", {target: {value: "csc300,csc301,csc302"}});
+		expect(wrapper.find("#course0").props().value).toEqual("csc300,csc301,csc302");
+	});
+	
 	test("handleNoteChange changes note", () => {
 		// Edit empty (shouldn't allow changes)
 		wrapper.find("#note2").simulate("change", {target: {value: "Honor is for fools."}});
@@ -181,6 +190,16 @@ describe("student view", () => {
 		wrapper.find("#identity2").simulate("click");
 		expect(wrapper.find("#identity2").props().children).toEqual("Unregister");
 		expect(wrapper.find("#note2").props().value).toEqual("");
+	});
+	
+	test("handleCourseChange changes only own courses", () => {
+		// Edit empty (shouldn't allow changes)
+		expect(wrapper.find("#course2").props().onChange).toEqual(undefined);
+		// Edit occupied (shouldn't allow changes)
+		expect(wrapper.find("#course1").props().onChange).toEqual(undefined);
+		// Edit own
+		wrapper.find("#course0").simulate("change", {target: {value: "csc300,csc301,csc302"}});
+		expect(wrapper.find("#course0").props().value).toEqual("csc300,csc301,csc302");
 	});
 	
 	test("handleNoteChange changes only own notes", () => {

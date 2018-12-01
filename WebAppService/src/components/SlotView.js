@@ -58,6 +58,9 @@ export default class SlotView extends React.Component {
 					onChange={this.props.handleCourseChange(i)}
 				/>
 			);
+		} else {
+			// Note by someone else hidden
+			return <span id={`course${i}`} />;
 		}
 	}
 	
