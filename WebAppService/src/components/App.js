@@ -10,7 +10,7 @@ import '../styles/App.css'
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 
-//import api from "./common/api";
+import api from "./common/api";
 import dummyAPI from './common/dummyApi'
 
 import components from './';
@@ -20,7 +20,8 @@ const {
 	DateTimePicker
 } = components
 
-// console.log(LoginView)
+var config = require('../config.json');
+// console.log(config)
 
 Calendar.setLocalizer(Calendar.momentLocalizer(moment));
 
@@ -37,9 +38,12 @@ class App extends React.Component {
 			role: "",
 			currentDate: new Date()
 		};
-		// this.api = new api("localhost/");
+		if (config.useDummyAPI) {
+			this.api = new dummyAPI('Test');
+		} else {
+			this.api = new api(config.apiURL);
+		}
 
-		this.api = new dummyAPI('Test');
 		this.authenticate = this.authenticate.bind(this);
 		this.setState = this.setState.bind(this);
 
@@ -194,8 +198,8 @@ class App extends React.Component {
 
 	blockContainerClose = () => this.setState({ locked: false });
 
-	changeDate = day => this.setState({currentDate: day});
-	
+	changeDate = day => this.setState({ currentDate: day });
+
 	render() {
 		return (
 			<div className="App">
