@@ -21,7 +21,7 @@ const {
 	DateTimePicker
 } = components
 
-var config = require('../config.json');
+const config = require('../config.json');
 // console.log(config)
 
 Calendar.setLocalizer(Calendar.momentLocalizer(moment));

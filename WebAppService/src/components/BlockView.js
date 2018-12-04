@@ -34,7 +34,7 @@ export default class BlockView extends React.Component {
 			);
 		} else {
 			return (
-				<div className="BlockTimes">
+				<div className="blockTimes">
 					<input
 						name="start"
 						type="time"
@@ -87,11 +87,10 @@ export default class BlockView extends React.Component {
 		if (role === "student") {
 			return (
 				<div className="blockInfo">
-					Owners: {this.props.owners}
+					<p>Owners: {this.props.owners}</p>
+					<p>Courses:{this.props.courseCodes}</p>
+					<p><h3>Block Description</h3></p>
 					<br/>
-					Courses:{this.props.courseCodes}
-					<br/>
-					<h3>Block Description</h3>
 					<div> {this.props.comment}  </div>
 				</div>
 			);
@@ -105,7 +104,6 @@ export default class BlockView extends React.Component {
 						value={this.props.owners}
 						onChange={this.props.handleInputChange}
 					/>
-					<br/>
 					Courses:
 					<input
 						name="courseCodes"
@@ -113,7 +111,6 @@ export default class BlockView extends React.Component {
 						value={this.props.courseCodes}
 						onChange={this.props.handleInputChange}
 					/>
-					<br/>
 					Block Description
 					<textarea
 						value = {this.props.comment} 
