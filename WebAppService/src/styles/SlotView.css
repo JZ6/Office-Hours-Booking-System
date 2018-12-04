@@ -21,17 +21,10 @@
 	margin-top: 6px
 }
 
-.Slot {
+.slot-container>div {
+	border-radius: 36px;
     display: flex;
     justify-content: center;
-    margin: 6px;
-}
-
-.Slot button {
-    background-color: lightblue;
-    border-radius: 36px;
-    border-color: #11ccee;
-    text-shadow: 0 0 3px #11ccee;
-    margin: 0 1em;
-    box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.6), 0 17px 50px 0 rgba(0, 0, 0, 0.6);
+	margin: 6px auto;
+	max-width: 60%;
 }

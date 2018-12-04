@@ -9,4 +9,14 @@
 	z-index: 6;
 	border-radius: 36px;
 	box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.6), 0 17px 50px 0 rgba(0, 0, 0, 0.6);
+	background-image: linear-gradient(#eaf6ff,#3174ad);
+}
+
+.BlockContainer button {
+    background-color: lightblue;
+    border-radius: 36px;
+    border-color: #11ccee;
+    text-shadow: 0 0 3px #11ccee;
+    margin: 0 1em;
+    box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.6), 0 17px 50px 0 rgba(0, 0, 0, 0.6);
 }
