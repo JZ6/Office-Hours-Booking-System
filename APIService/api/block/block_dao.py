@@ -2,6 +2,7 @@
 # NOTE: These methods assume authorization is granted for all requests
 
 from bson.objectid import ObjectId
+from datetime import datetime
 from ..db import get_db
 
 
@@ -16,11 +17,12 @@ def get_block_by_id(block_id, utor_id=None):
 
 def delete_block_by_id(block_id):
     """Return `True` if deletion is successful, `False` otherwise."""
+    bookings_deleted = delete_bookings(block_id)
+
     query = {'blockId': block_id}
     block_deletion = get_db().blocks.delete_one(query)
 
-    # TODO: Make sure no accidental booking deletions can happen here
-    return block_deletion.deleted_count == 1 and delete_bookings(block_id)
+    return block_deletion.deleted_count == 1 and bookings_deleted
 
 
 def delete_bookings(block_id):
@@ -28,10 +30,13 @@ def delete_bookings(block_id):
     block = get_block_by_id(block_id)
     if block is None:
         return False
+    unmap_bookings(block)  # Block is returned with unneeded mapped values
 
     bookings = block['slots'] if 'slots' in block else []
     success = True
     for booking_id in bookings:
+        if booking_id == ObjectId('000000000000000000000000'):
+            continue
         query = {'_id': booking_id}
         deletion = get_db().bookings.delete_one(query)
         success = success and (deletion.deleted_count == 1)
@@ -47,7 +52,7 @@ def filter_blocks(owner=None, start_time=None, course_code=None, utor_id=None):
 
     # Convert returned Cursor object into a list
     blocks = get_db().blocks.find(query)
-    filtered_blocks = blocks[:]
+    filtered_blocks = list(blocks)
 
     if owner is not None:
         filtered_blocks = filter(
@@ -60,7 +65,9 @@ def filter_blocks(owner=None, start_time=None, course_code=None, utor_id=None):
             filtered_blocks
         )
 
-    map_bookings(filtered_blocks, utor_id)
+    for block in filtered_blocks:
+        if block is not None:
+            map_bookings(block, utor_id)
 
     return filtered_blocks
 
@@ -85,17 +92,19 @@ def get_booking_by_id(booking_id, utor_id=None):
 
 def map_bookings(block, utor_id=None):
     """Fill in given Block's slot info using the Bookings collection."""
-    map(lambda slot: get_booking_by_id(slot, utor_id) or {},
-        block['slots'])
+    block['slots'] = list(map(
+        lambda slot: get_booking_by_id(slot, utor_id) or {},
+        block['slots']))
 
 
 def unmap_bookings(block):
     """Remove booking details from given Block, to prepare for DB insertion."""
     if block is not None:
         # While unbooked, slots are empty dictionary objects
-        map(lambda slot: slot['_id'] if '_id' in slot
+        block['slots'] = list(map(
+            lambda slot: slot['_id'] if '_id' in slot
             else ObjectId('000000000000000000000000'),
-            block['slots'])
+            block['slots']))
 
 
 def book_slot(block_id, identity, slot_number, note):
@@ -121,7 +130,7 @@ def book_slot(block_id, identity, slot_number, note):
         'note': note
     })
 
-    if insertion.inserted_count != 1:
+    if not insertion.acknowledged:
         return False
 
     # I add only the `_id` field since the next step is to strip booking data
@@ -129,4 +138,12 @@ def book_slot(block_id, identity, slot_number, note):
     unmap_bookings(block)
     update = upsert_block(block)
 
-    return update.upserted_count == 1
+    return update.modified_count == 1
+
+def prepare_block(block):
+    """Clean up the block so that it can be returned to the user."""
+    block.pop('_id')
+    block.pop('endTime')
+    block['startTime'] = block['startTime'].isoformat()
+    block['appointmentSlots'] = block.pop('slots')
+    block['appointmentDuration'] = block.pop('slotDuration')
