@@ -15,15 +15,15 @@ from .block_dao import prepare_block
 
 
 class Block(Resource):
-    success_booking_complete   = 'Successfully booked appointment.',    200
-    success_block_returned     = 'Successfully returned block.',        200
-    success_block_deleted      = 'Successfully deleted block.',         200
-    success_block_added        = 'Successfully added block.',           200
+    success_booking_complete = 'Successfully booked appointment.', 200
+    success_block_returned = 'Successfully returned block.', 200
+    success_block_deleted = 'Successfully deleted block.', 200
+    success_block_added = 'Successfully added block.', 200
 
-    failure_invalid_body       = 'Invalid request.',                    400
-    failure_block_not_deleted  = 'Could not delete block.',             403
-    failure_block_not_added    = 'Could not add block.',                403
-    failure_block_not_found    = 'Requested block not found.',          404
+    failure_invalid_body = 'Invalid request.', 400
+    failure_block_not_deleted = 'Could not delete block.', 403
+    failure_block_not_added = 'Could not add block.', 403
+    failure_block_not_found = 'Requested block not found.', 404
     failure_booking_incomplete = 'Appointment slot is already booked.', 409
 
     failure_auth = 'Bearer token and/or API key is missing or invalid', 401
@@ -43,7 +43,7 @@ class Block(Resource):
             blocks = filter_blocks(owner, start_time, course_code, identity)
             for block in blocks:
                 prepare_block(block)
-            return {'blocks': loads(dumps(blocks))}, 200  # TODO: Return as body
+            return {'blocks': loads(dumps(blocks))}, 200  # TODO: Return a body
 
         # GET /blocks/<block_id>
         block = get_block_by_id(block_id, identity)

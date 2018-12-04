@@ -140,6 +140,7 @@ def book_slot(block_id, identity, slot_number, note):
 
     return update.modified_count == 1
 
+
 def prepare_block(block):
     """Clean up the block so that it can be returned to the user."""
     block.pop('_id')
