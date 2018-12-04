@@ -62,11 +62,12 @@ export default class BlockContainer extends React.Component {
 			this.setState({locked: true});
 			this.props.api.getBlock(this.state.blockId)
 			.then((response) => {
+				console.log("Response:", response);
 				if (response.status === 200) {
 					// Successful, return json promise to next .then
 					return response.json();
 				} else {
-					window.alert(response.status, response.statusText);
+					window.alert(`${response.status}: ${response.statusText}`);
 				}
 				this.setState({locked: false});
 			})
@@ -104,6 +105,7 @@ export default class BlockContainer extends React.Component {
 				this.setState({locked: false});
 			})
 			.catch((error) => {
+				console.log(error);
 				window.alert(error.message);
 				this.setState({locked: false});
 			});
@@ -139,13 +141,15 @@ export default class BlockContainer extends React.Component {
 			// Make API call
 			this.props.api.postBlock(block)
 			.then((response) => {
+				console.log("Response:", response);
 				if (response.status !== 200) {
-					window.alert(response.status, response.statusText);
+					window.alert(`${response.status}: ${response.statusText}`);
 				}
 				this.setState({locked: false});
 				this.update("block");
 			})
 			.catch((error) => {
+				console.log(error);
 				window.alert(error.message);
 				this.setState({locked: false});
 			});
@@ -209,12 +213,14 @@ export default class BlockContainer extends React.Component {
 			this.setState({locked: true});
 			this.props.api.deleteBlock(this.state.blockId)
 			.then((response) => {
+				console.log("Response:", response);
 				if (response.status !== 200) {
-					window.alert(response.status, response.statusText);
+					window.alert(`${response.status}: ${response.statusText}`);
 				}
 				this.setState({locked: false});
 			})
 			.catch((error) => {
+				console.log(error);
 				window.alert(error.message);
 				this.setState({locked: false});
 			});
@@ -359,13 +365,15 @@ export default class BlockContainer extends React.Component {
 					note: this.state.appointmentSlots[i].note
 				})
 			.then((response) => {
+				console.log("Response:", response);
 				if (response.status !== 200) {
-					window.alert(response.status, response.statusText);
+					window.alert(`${response.status}: ${response.statusText}`);
 				}
 				this.setState({locked: false});
 				this.update("slot", i);
 			})
 			.catch((error) => {
+				console.log(error);
 				window.alert(error.message);
 				this.setState({locked: false});
 				this.update("slot", i);
@@ -408,14 +416,16 @@ export default class BlockContainer extends React.Component {
 			Promise.all(promises)
 			.then((responses) => {
 				responses.forEach((response) => {
+					console.log("Response:", response);
 					if (response.status !== 200) {
-						window.alert(response.status, response.statusText);
+						window.alert(`${response.status}: ${response.statusText}`);
 					}
 				});
 				this.setState({locked: false});
 				this.update("block");
 			})
 			.catch((error) => {
+				console.log(error);
 				window.alert(error.message);
 				this.setState({locked: false});
 				this.update("block");
