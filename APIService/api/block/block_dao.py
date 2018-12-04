@@ -18,6 +18,8 @@ def delete_block_by_id(block_id):
     """Return `True` if deletion is successful, `False` otherwise."""
     query = {'blockId': block_id}
     block_deletion = get_db().blocks.delete_one(query)
+
+    # TODO: Make sure no accidental booking deletions can happen here
     return block_deletion.deleted_count == 1 and delete_bookings(block_id)
 
 
@@ -97,6 +99,7 @@ def unmap_bookings(block):
 
 
 def book_slot(block_id, identity, slot_number, note):
+    """Create a Booking and return `True` if successful, `False` otherwise."""
     block = get_block_by_id(block_id)
     if block is None:
         return False
