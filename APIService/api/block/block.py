@@ -2,16 +2,59 @@ from datetime import datetime, timedelta
 from bson.json_util import dumps
 from bson.objectid import ObjectId
 from json import loads
+from random import getrandbits
 from flask_restful import Resource
 from flask import request
 
 from .block_dao import filter_blocks, get_block_by_id
 from .block_dao import upsert_block, delete_block_by_id
 from .block_dao import unmap_bookings, delete_bookings
-from .block_dao import book_slot
+from .block_dao import book_slot, delete_booking
 from .block_dao import prepare_block
 
 # TODO: Logging
+
+
+def rebook(old_booking_ids, new_bookings, block_id):
+    """Return a list of booking IDs according to the new bookings."""
+    # old_booking_ids is a list of booking IDs
+    # new_bookings is a list of {'identity': _, 'courseCode': _, 'note': _}
+    slots = []
+
+    for i in range(min(len(old_booking_ids), len(new_bookings))):
+        new_booking = new_bookings[i]
+        delete_booking(block_id, i)
+        if new_booking['identity'] == '' \
+                and new_booking['courseCode'] == '' \
+                and new_booking['note'] == '':
+            slots.append(ObjectId('000000000000000000000000'))
+        else:
+            booking_id = book_slot(
+                block_id,
+                new_booking['identity'],
+                i,
+                new_booking['note']
+            )
+            if booking_id is None:
+                booking_id = ObjectId('000000000000000000000000')
+            slots.append(booking_id)
+
+    if len(old_booking_ids) > len(new_bookings):
+        for i in range(len(new_bookings), len(old_booking_ids)):
+            delete_booking(block_id, i)
+    elif len(new_bookings) > len(old_booking_ids):
+        for i in range(len(old_booking_ids), len(new_bookings)):
+            booking_id = book_slot(
+                block_id,
+                new_booking['identity'],
+                i,
+                new_booking['note']
+            )
+            if booking_id is None:
+                booking_id = ObjectId('000000000000000000000000')
+            slots.append(booking_id)
+
+    return slots
 
 
 class Block(Resource):
@@ -75,8 +118,23 @@ class Block(Resource):
             slot_num = booking['slotNum']
             note = booking['note']
 
-            successful = book_slot(block_id, identity, slot_num, note)
-            if not successful:
+            # TODO: Update API and add courseCode field here
+
+            # Clear a booking
+            if identity == '' and note == '':
+                # TODO: Make sure user is permitted to delete the booking
+                if False:
+                    return Block.failure_auth
+
+                success = delete_booking(block_id, slot_num)
+                if success:
+                    return Block.success_booking_complete
+                else:
+                    return Block.failure_booking_incomplete
+
+            # Create a new booking
+            insertion_id = book_slot(block_id, identity, slot_num, note)
+            if insertion_id is None:
                 return Block.failure_booking_incomplete
 
             return Block.success_booking_complete
@@ -89,10 +147,11 @@ class Block(Resource):
         if 'blockId' not in block:
             return Block.failure_invalid_body
 
-        # Massage Block data so it can be saved
         existing_block = get_block_by_id(block['blockId'])
-        if existing_block is None:
+        if existing_block is None or block['blockId'] == '':
             # Add a new block; make sure all fields are included
+            block['blockId'] = str(getrandbits(128))  # TODO: For now
+
             if 'owners' not in block \
                     or 'courseCodes' not in block \
                     or 'comment' not in block \
@@ -103,6 +162,7 @@ class Block(Resource):
 
             # Remap some field names and calculate endTime
             block['slotDuration'] = block.pop('appointmentDuration')
+            # NOTE: Assume new blocks are always created with no bookings
             block['slots'] = []
             for slot in block.pop('appointmentSlots'):
                 block['slots'].append(ObjectId('000000000000000000000000'))
@@ -140,14 +200,17 @@ class Block(Resource):
                 block['slotDuration'] = block.pop('appointmentDuration')
 
             # Slots
+            # TODO: Recalculate endTime (low priority; not used anywhere)
             if 'appointmentSlots' not in block:
-                block['slots'] = []
-                for _ in range(len(existing_block['slots'])):
-                    block['slots'].append(ObjectId('000000000000000000000000'))
+                # Keep old bookings
+                block['slots'] = existing_block['slots']
             else:
-                block['slots'] = []
-                for _ in range(len(block.pop('appointmentSlots'))):
-                    block['slots'].append(ObjectId('000000000000000000000000'))
+                block['slots'] = rebook(
+                    existing_block['slots'],
+                    block['appointmentSlots'],
+                    block['blockId']
+                )
+                block.pop('appointmentSlots')
 
             # Start time
             if 'startTime' not in block:
@@ -164,7 +227,6 @@ class Block(Resource):
                     milliseconds=block['slotDuration'] * len(block['slots'])
                 )
 
-        delete_bookings(block['blockId'])
         upsert_block(block)  # TODO: Successful if no mongo exceptions
         return Block.success_block_added
 

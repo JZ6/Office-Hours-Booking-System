@@ -43,6 +43,21 @@ def delete_bookings(block_id):
     return success
 
 
+def delete_booking(block_id, slot_num):
+    """Delete a booking and return `True` if successful."""
+    block = get_block_by_id(block_id)
+    if block is None:
+        return False
+    if slot_num >= len(block['slots']):
+        return False
+    unmap_bookings(block)
+
+    booking_id = block['slots'][slot_num]
+    query = {'_id': booking_id}
+    deletion = get_db().bookings.delete_one(query)
+    return deletion.deleted_count == 1
+
+
 def filter_blocks(owner=None, start_time=None, course_code=None, utor_id=None):
     """Return a list of Blocks that match the given arguments."""
     query = {}
@@ -108,10 +123,10 @@ def unmap_bookings(block):
 
 
 def book_slot(block_id, identity, slot_number, note):
-    """Create a Booking and return `True` if successful, `False` otherwise."""
+    """Create a Booking and return its ID if successful, `None` otherwise."""
     block = get_block_by_id(block_id)
     if block is None:
-        return False
+        return None
 
     # TODO: courseCode not provided; default to Block's data
     course_codes = block['courseCodes']
@@ -119,10 +134,10 @@ def book_slot(block_id, identity, slot_number, note):
 
     slots = block['slots']
     if slot_number >= len(slots):
-        return False
+        return None
 
     if slots[slot_number] != {}:
-        return False
+        return None
 
     insertion = get_db().bookings.insert_one({
         'utorId': identity,
@@ -131,14 +146,17 @@ def book_slot(block_id, identity, slot_number, note):
     })
 
     if not insertion.acknowledged:
-        return False
+        return None
 
     # I add only the `_id` field since the next step is to strip booking data
     block['slots'][slot_number] = {'_id': insertion.inserted_id}
     unmap_bookings(block)
     update = upsert_block(block)
 
-    return update.modified_count == 1
+    if update.modified_count != 1:
+        return None
+
+    return insertion.inserted_id
 
 
 def prepare_block(block):
