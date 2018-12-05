@@ -10,21 +10,3 @@
     background-color: rgb(255, 200, 200);
 }
 
-.slot-container {
-    height: 360px;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    background-image: linear-gradient(#11ccee, lightblue);
-	border: 6px;
-	border-radius: 36px;
-	border-color: #11ccee;
-	margin-top: 6px
-}
-
-.slot-container>div {
-	border-radius: 36px;
-    display: flex;
-    justify-content: center;
-	margin: 6px auto;
-	max-width: 60%;
-}
