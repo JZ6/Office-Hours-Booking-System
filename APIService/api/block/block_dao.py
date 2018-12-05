@@ -9,10 +9,10 @@ from ..db import get_db
 def is_admin(identity):
     """Return `True` if user has admin permissions."""
     # TODO: This function is repeated verbatim in block.py
-    result = get_db().identity.find_one({"id": identity})
+    result = get_db().identity.find_one({'id': identity})
     if result is None:
         return False
-    return result["role"] == "instructor" or result["role"] == "ta"
+    return result['role'] == 'instructor' or result['role'] == 'ta'
 
 
 def get_block_by_id(block_id, utor_id=None):

@@ -63,10 +63,10 @@ def verify_token(auth_header):
     """If valid, return token's associated username or `None`."""
     if not auth_header:
         return None
-    auth_token = auth_header.split(" ")[1]
+    auth_token = auth_header.split(' ')[1] if 'Bearer ' in auth_header else ''
     if auth_token == '':
         return None
-    result = get_db().tokens.find_one({"token": auth_token})
+    result = get_db().tokens.find_one({'token': auth_token})
     if result is None:
         return None
     return result['utorId']
@@ -74,10 +74,10 @@ def verify_token(auth_header):
 
 def is_admin(identity):
     """Return `True` if user has admin permissions."""
-    result = get_db().identity.find_one({"id": identity})
+    result = get_db().identity.find_one({'id': identity})
     if result is None:
         return False
-    return result["role"] == "instructor" or result["role"] == "ta"
+    return result['role'] == 'instructor' or result['role'] == 'ta'
 
 
 class Block(Resource):
@@ -196,7 +196,7 @@ class Block(Resource):
             for slot in block.pop('appointmentSlots'):
                 block['slots'].append(ObjectId('000000000000000000000000'))
             block['startTime'] = datetime.strptime(
-                block['startTime'], "%Y-%m-%dT%H:%M:%S"
+                block['startTime'], '%Y-%m-%dT%H:%M:%S'
             )
             block['endTime'] = block['startTime'] + timedelta(
                 milliseconds=block['slotDuration'] * len(block['slots'])
@@ -246,7 +246,7 @@ class Block(Resource):
                 block['startTime'] = existing_block['startTime']
             else:
                 block['startTime'] = \
-                    datetime.strptime(block['startTime'], "%Y-%m-%dT%H:%M:%S")
+                    datetime.strptime(block['startTime'], '%Y-%m-%dT%H:%M:%S')
 
             # End time
             if 'endTime' not in block:
