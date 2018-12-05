@@ -53,7 +53,7 @@ export default class BlockView extends React.Component {
 						type="date"
 						value={this.props.date}
 						onChange={this.props.handleInputChange}
-					/>
+					/><br/>
 					{this.renderDurationList()}
 					Slot number: {this.props.slotNumber}
 					<br/>
@@ -108,7 +108,7 @@ export default class BlockView extends React.Component {
 						type="text"
 						value={this.props.courseCodes}
 						onChange={this.props.handleInputChange}
-					/>
+					/><br/>
 					Comment:
 					<textarea
 						value = {this.props.comment} 
