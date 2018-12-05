@@ -20,7 +20,7 @@ export default class LoginView extends React.Component {
             loading: true
         })
 
-        const authPromise = this.authenticate(1, 2)
+        const authPromise = this.authenticate("username", "password")
         if (authPromise) {
             authPromise.then(result => {
 
@@ -71,7 +71,7 @@ export default class LoginView extends React.Component {
     }
 
     authenticate(username, password) {
-        return this.props.api.login();
+        return this.props.api.login(username, password);
     }
 
     getLoadingAnimation() {

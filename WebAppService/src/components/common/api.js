@@ -7,18 +7,30 @@ export default class Api {
 	login(username, password) {
 		// Special call bypassing sessionToken.
 		let fetchData = {
-			headers: new Headers({
+			headers: {
 				"Accept": "application/json",
-				"Authorization": `Basic ${username}:${password}`.toString("base64")
-			}),
+				"Authorization": `Basic ${username}:${password}`.toString("base64"),
+				"Access-Control-Allow-Origin": `${this.url}`,
+			},
 			method: "GET"
 		};
+		console.log("Request:", `${this.url}/auth`, fetchData);
 		let promise = fetch(`${this.url}/auth`, fetchData);
 		promise.then((response) => {
-			this.sessionToken = response.json().sessionToken;
-			if (typeof (Storage) !== "undefined") {
-				sessionStorage.setItem('sessionToken', this.sessionToken);
+			console.log("Response:", response);
+			if (response.status !== 200) {
+				window.alert(`${response.status}: ${response.statusText}`);
 			}
+			response.json().then((data) => {
+				this.sessionToken = data.token;
+			});
+			if (typeof (Storage) !== "undefined") {
+				sessionStorage.setItem("sessionToken", this.sessionToken);
+			}
+		})
+		.catch((error) => {
+			console.log(error);
+			window.alert(error.message);
 		});
 		return promise;
 	}
@@ -35,7 +47,7 @@ export default class Api {
 			role: identity.role,
 			courses: identity.courses
 		};
-		return this.__call("POST", "/identity", body);
+		return this.__call("POST", "/identity", JSON.stringify(body));
 	}
 	deleteIdentity(id) {
 		return this.__call("DELETE", `/identity/${id}`);
@@ -50,14 +62,14 @@ export default class Api {
 			tas: course.tas,
 			students: course.students
 		};
-		return this.__call("POST", `/course/${courseCode}`, body);
+		return this.__call("POST", `/course/${courseCode}`, JSON.stringify(body));
 	}
 	deleteCourse(courseCode) {
 		return this.__call("DELETE", `/course/${courseCode}`);
 	}
 
 	getBlocks(startDate, endDate) {
-		return this.__call("GET", `/blocks?from=${startDate}&to=${endDate}`);
+		return this.__call("GET", `/blocks`);
 	}
 	
 	getBlock(blockId) {  // Also use for getting slots en masse
@@ -65,8 +77,7 @@ export default class Api {
 	}
 
 	postBlock(block) {
-	
-		return this.__call("POST", "/blocks", block);
+		return this.__call("POST", "/blocks", JSON.stringify(block));
 	}
 
 	deleteBlock(blockId) {
@@ -80,7 +91,7 @@ export default class Api {
 			courseCode: slot.courseCode,
 			note: slot.note
 		}
-		return this.__call("POST", `/blocks/${blockId}/booking`, body);
+		return this.__call("POST", `/blocks/${blockId}/booking`, JSON.stringify(body));
 	}
 
 	__call(method, path, body) {
@@ -90,14 +101,14 @@ export default class Api {
 		}
 
 		let fetchData;
-		let headers = new Headers({
-			Accept: "application/json",
-		});
-
-		headers.append("Authorization", `Bearer ${this.sessionToken}`);
+		let headers = {
+			"Accept": "application/json",
+			"Authorization": `Bearer ${this.sessionToken}`,
+			"Access-Control-Allow-Origin": `${this.url}`
+		};
 
 		if (body) {
-			headers.append("Content-Type", "application/json");
+			headers["Content-Type"] = "application/json";
 			fetchData = {
 				headers: headers,
 				method: method,
@@ -106,9 +117,11 @@ export default class Api {
 		} else {
 			fetchData = {
 				headers: headers,
-				method: method,
+				method: method
 			};
 		}
+		console.log("Request:", `${this.url}${path}`, fetchData);
+		
 		// Return a Promise
 		return fetch(`${this.url}${path}`, fetchData);
 	}

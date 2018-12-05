@@ -1,6 +1,4 @@
-import React, {
-	createElement as h
-} from "react"
+import React from "react"
 
 import Calendar from "react-big-calendar";
 import moment from "moment";
@@ -71,25 +69,26 @@ class App extends React.Component {
 		const blocksPromise = this.api.getBlocks(startDate.toISOString(), endDate.toISOString());
 
 		blocksPromise.then(
-			result => {
-
-				const {
-					status,
-					statusText,
-					json: jsonPromise
-				} = result
-
-				if (status !== 200 || statusText !== "OK") { return false };
+			response => {
+				console.log("Response:", response);
+				if (response.status !== 200) {
+					window.alert(`${response.status}: ${response.statusText}`);
+					return false;
+				}
 
 				this.setState({ events: [] });  // Empty out existing events
 
-				jsonPromise().then(
-					result => {
-						result.blocks.forEach(block => this.addNewBlock(block));
+				response.json().then(
+					data => {
+						data.blocks.forEach(block => this.addNewBlock(block));
 					}
 				)
 			}
 		)
+		.catch(error => {
+			console.log(error);
+			window.alert(error.message);
+		})
 	}
 
 	addNewBlock(block) {
