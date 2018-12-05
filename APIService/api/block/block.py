@@ -77,7 +77,7 @@ def is_admin(identity):
     result = get_db().identity.find_one({'id': identity})
     if result is None:
         return False
-    return result['role'] == 'instructor' or result['role'] == 'ta'
+    return result['role'] == 'admin'
 
 
 class Block(Resource):
@@ -148,7 +148,9 @@ class Block(Resource):
                 block = get_block_by_id(block_id)
                 slots = block['slots']
                 slot = slots[slot_num]
-                if identity != slot['utorId'] and not is_admin(identity):
+                if identity != slot['utorId'] \
+                        and not is_admin(identity) \
+                        and identity not in block['owners']:
                     return Block.failure_auth
 
                 success = delete_booking(block_id, slot_num)
@@ -165,7 +167,10 @@ class Block(Resource):
             return Block.success_booking_complete
 
         # Only admin users can modify blocks
-        if not is_admin(identity):
+        block = get_block_by_id(block_id)
+        if block is None:
+            return Block.failure_block_not_found
+        if not is_admin(identity) and identity not in block['owners']:
             return Block.failure_auth
 
         # POST /blocks
@@ -265,8 +270,11 @@ class Block(Resource):
         if not identity:
             return Block.failure_auth
 
+        block = get_block_by_id(block_id)
+        if block is None:
+            return Block.failure_block_not_found
         # Fail if user is not an instructor/ta
-        if not is_admin(identity):
+        if not is_admin(identity) and identity not in block['owners']:
             return Block.failure_block_not_deleted
 
         # DELETE /blocks/<block_id>

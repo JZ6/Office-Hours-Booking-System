@@ -102,12 +102,14 @@ def upsert_block(block):
     return get_db().blocks.replace_one(query, block, upsert=True)
 
 
-def get_booking_by_id(booking_id, utor_id=None):
+def get_booking_by_id(block, booking_id, utor_id=None):
     """Return Booking if it exists, `None` otherwise."""
     query = {'_id': booking_id}
     booking = get_db().bookings.find_one(query)
     if booking is not None and utor_id is not None:
-        if booking['utorId'] != utor_id and not is_admin(utor_id):
+        if booking['utorId'] != utor_id \
+                and not is_admin(utor_id) \
+                and utor_id not in block['owners']:
             booking['utorId'] = ''
             booking['courseCode'] = ''  # TODO: Should this not be masked?
             booking['note'] = ''
@@ -117,7 +119,7 @@ def get_booking_by_id(booking_id, utor_id=None):
 def map_bookings(block, utor_id=None):
     """Fill in given Block's slot info using the Bookings collection."""
     block['slots'] = list(map(
-        lambda slot: get_booking_by_id(slot, utor_id) or {},
+        lambda slot: get_booking_by_id(block, slot, utor_id) or {},
         block['slots']))
 
 
