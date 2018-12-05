@@ -11,3 +11,4 @@ WebAppService/package.json
 
 # Python
 __pycache__
+*.pyc
