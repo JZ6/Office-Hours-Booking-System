@@ -1,6 +1,4 @@
-import React, {
-	createElement as h
-} from "react"
+import React from "react"
 
 import Calendar from "react-big-calendar";
 import moment from "moment";

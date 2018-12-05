@@ -7,22 +7,30 @@ export default class Api {
 	login(username, password) {
 		// Special call bypassing sessionToken.
 		let fetchData = {
-			headers: new Headers({
+			headers: {
 				"Accept": "application/json",
-				"Authorization": `Basic ${username}:${password}`.toString("base64")
-			}),
+				"Authorization": `Basic ${username}:${password}`.toString("base64"),
+				"Access-Control-Allow-Origin": `${this.url}`,
+			},
 			method: "GET"
 		};
 		console.log("Request:", `${this.url}/auth`, fetchData);
 		let promise = fetch(`${this.url}/auth`, fetchData);
 		promise.then((response) => {
 			console.log("Response:", response);
+			if (response.status !== 200) {
+				window.alert(`${response.status}: ${response.statusText}`);
+			}
 			response.json().then((data) => {
-				this.sessionToken = data.sessionToken;
+				this.sessionToken = data.token;
 			});
 			if (typeof (Storage) !== "undefined") {
-				sessionStorage.setItem('sessionToken', this.sessionToken);
+				sessionStorage.setItem("sessionToken", this.sessionToken);
 			}
+		})
+		.catch((error) => {
+			console.log(error);
+			window.alert(error.message);
 		});
 		return promise;
 	}
@@ -104,14 +112,12 @@ export default class Api {
 			fetchData = {
 				headers: headers,
 				method: method,
-				body: body,
-				credentials: "omit" 
+				body: body
 			};
 		} else {
 			fetchData = {
 				headers: headers,
-				method: method,
-				credentials: "omit" 
+				method: method
 			};
 		}
 		console.log("Request:", `${this.url}${path}`, fetchData);
