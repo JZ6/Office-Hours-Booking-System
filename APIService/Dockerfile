@@ -14,9 +14,6 @@ RUN set -ex && mkdir /app && pip install pipenv
 
 WORKDIR /app
 
-# -- Install dependencies:
-RUN pip install pipenv
-
 COPY Pipfile Pipfile
 
 COPY Pipfile.lock Pipfile.lock
