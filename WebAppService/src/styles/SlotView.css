@@ -1,12 +1,64 @@
-.Slot {
-    background-color: none;
+.slot-container{
+	width: 100%;
+	flex: 1;
+	overflow-y: scroll;
+	border-top: 1px solid lightgray;
 }
 
-.Slot--mine {
-    background-color: rgb(200, 255, 200);
+.slot-container div{
+	border-bottom: 1px solid lightgray;
+	display: flex;
+	padding: 4px;
+	background-color: none;
 }
 
-.Slot--taken {
-    background-color: rgb(255, 200, 200);
+.Slot{
+	background-color: none;
+}
+.Slot--mine{
+	background-color: rgb(200, 255, 200);
+}
+.Slot--taken{
+	background-color: rgb(255, 200, 200);
+}
+.slot-container input{
+	width:15%;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+.slot-container input.note-input{
+	flex: 1;
+}
+.slot-container button{
+	background-color: dodgerblue;
+	color: white;
+	font-size: 14px;
+	border-radius: 4px;
+	padding: 4px 8px;
+	min-width: 100px;
+	border: none;
+	margin: -2px 4px 2px 4px;
+	box-shadow: 0 4px rgb(0, 89, 179);
+}
+.slot-container button:disabled{
+	background-color: rgb(127, 127, 127);
+	box-shadow: 0 4px rgb(80, 80, 80);
+}
+.slot-container button:disabled:hover {
+	background-color: rgb(127, 127, 127);
+	box-shadow: 0 3px rgb(80, 80, 80);
+	transform: translateY(1px);
+}
+.slot-container button:disabled:active {
+	background-color: rgb(127, 127, 127);
+	box-shadow: 0 0px rgb(80, 80, 80);
+	transform: translateY(4px);
 }
 
+div.Time{
+	width: 12%;
+	text-align: right;
+	display: block;
+	font-size: 14px;
+	border-bottom: none;
+}
