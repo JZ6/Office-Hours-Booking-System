@@ -1,5 +1,5 @@
 from hashlib import sha256
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from flask_restful import Resource
 from flask import request
@@ -25,6 +25,13 @@ class Auth(Resource):
         if not self.check_password(username, password):
             return deny_authorization("Invalid credentials")
         token = self.generate_token(username)
+        get_db().tokens.remove({"utorId": username})
+        get_db().tokens.insert_one({
+            "utorId": username,
+            "token": token,
+            "creation": datetime.now(),
+            "expiration": datetime.now() + timedelta(days=1)
+        })
         # TODO: save hashed token w/ id, permissions, expiry
         return {'id': username, 'token': token}, 200
 
@@ -38,8 +45,13 @@ class Auth(Resource):
     @staticmethod
     def check_password(username, password):
         # TODO: actually check tho
-        return True
-    
+        # Hardcoded users
+        if username == 'user1' and password == 'pass1' \
+                or username == 'user2' and password == 'pass2' \
+                or username == 'admin' and password == 'admin':
+            return True
+        return False
+
     def delete(self, id):
         # TODO: delete all tokens for id
         return {'status': "success"}
