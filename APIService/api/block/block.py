@@ -12,6 +12,8 @@ from .block_dao import unmap_bookings, delete_bookings
 from .block_dao import book_slot, delete_booking
 from .block_dao import prepare_block
 
+from ..db import get_db
+
 # TODO: Logging
 
 
@@ -57,6 +59,27 @@ def rebook(old_booking_ids, new_bookings, block_id):
     return slots
 
 
+def verify_token(auth_header):
+    """If valid, return token's associated username or `None`."""
+    if not auth_header:
+        return None
+    auth_token = auth_header.split(" ")[1]
+    if auth_token == '':
+        return None
+    result = get_db().tokens.find_one({"token": auth_token})
+    if result is None:
+        return None
+    return result['utorId']
+
+
+def is_admin(identity):
+    """Return `True` if user has admin permissions."""
+    result = get_db().identity.find_one({"id": identity})
+    if result is None:
+        return False
+    return result["role"] == "instructor" or result["role"] == "ta"
+
+
 class Block(Resource):
     success_booking_complete = 'Successfully booked appointment.', 200
     success_block_returned = 'Successfully returned block.', 200
@@ -72,9 +95,9 @@ class Block(Resource):
     failure_auth = 'Bearer token and/or API key is missing or invalid', 401
 
     def get(self, block_id=None):
-        identity = None  # TODO: Determine identity
-        # TODO: Check to make sure identity is provided
-        if False:
+        auth_header = request.headers.get('Authorization')
+        identity = verify_token(auth_header)
+        if not identity:
             return Block.failure_auth
 
         owner = request.args.get('owner') or None
@@ -97,9 +120,9 @@ class Block(Resource):
         return loads(dumps(block)), 200  # TODO: Return this as body
 
     def post(self, block_id=None):
-        identity = None  # TODO: Determine identity
-        # TODO: Check to make sure identity is provided
-        if False:
+        auth_header = request.headers.get('Authorization')
+        identity = verify_token(auth_header)
+        if not identity:
             return Block.failure_auth
 
         # POST /blocks/<block_id>/booking
@@ -114,16 +137,18 @@ class Block(Resource):
                     or 'note' not in booking:
                 return Block.failure_invalid_body
 
-            identity = booking['identity']
+            utor_id = booking['identity']
             slot_num = booking['slotNum']
             note = booking['note']
 
             # TODO: Update API and add courseCode field here
 
             # Clear a booking
-            if identity == '' and note == '':
-                # TODO: Make sure user is permitted to delete the booking
-                if False:
+            if utor_id == '' and note == '':
+                block = get_block_by_id(block_id)
+                slots = block['slots']
+                slot = slots[slot_num]
+                if identity != slot['utorId'] and not is_admin(identity):
                     return Block.failure_auth
 
                 success = delete_booking(block_id, slot_num)
@@ -133,11 +158,15 @@ class Block(Resource):
                     return Block.failure_booking_incomplete
 
             # Create a new booking
-            insertion_id = book_slot(block_id, identity, slot_num, note)
+            insertion_id = book_slot(block_id, utor_id, slot_num, note)
             if insertion_id is None:
                 return Block.failure_booking_incomplete
 
             return Block.success_booking_complete
+
+        # Only admin users can modify blocks
+        if not is_admin(identity):
+            return Block.failure_auth
 
         # POST /blocks
         block = request.get_json()
@@ -231,18 +260,18 @@ class Block(Resource):
         return Block.success_block_added
 
     def delete(self, block_id=None):
-        identity = None  # TODO: Determine identity
-        # TODO: Check to make sure identity is provided
-        if False:
+        auth_header = request.headers.get('Authorization')
+        identity = verify_token(auth_header)
+        if not identity:
             return Block.failure_auth
+
+        # Fail if user is not an instructor/ta
+        if not is_admin(identity):
+            return Block.failure_block_not_deleted
 
         # DELETE /blocks/<block_id>
         if block_id is None:
             return Block.failure_block_not_deleted
-
-        # TODO: Check to make sure this user is permitted to delete the block
-        if False:
-            return Block.failure_auth
 
         successful = delete_block_by_id(block_id)
         if not successful:

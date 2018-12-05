@@ -6,6 +6,15 @@ from datetime import datetime
 from ..db import get_db
 
 
+def is_admin(identity):
+    """Return `True` if user has admin permissions."""
+    # TODO: This function is repeated verbatim in block.py
+    result = get_db().identity.find_one({"id": identity})
+    if result is None:
+        return False
+    return result["role"] == "instructor" or result["role"] == "ta"
+
+
 def get_block_by_id(block_id, utor_id=None):
     """Return user-limited Block data if it exists, `None` otherwise."""
     query = {'blockId': block_id}
@@ -98,7 +107,7 @@ def get_booking_by_id(booking_id, utor_id=None):
     query = {'_id': booking_id}
     booking = get_db().bookings.find_one(query)
     if booking is not None and utor_id is not None:
-        if booking['utorId'] != utor_id:
+        if booking['utorId'] != utor_id and not is_admin(utor_id):
             booking['utorId'] = ''
             booking['courseCode'] = ''  # TODO: Should this not be masked?
             booking['note'] = ''
