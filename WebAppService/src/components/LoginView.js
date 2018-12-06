@@ -123,7 +123,7 @@ export default class LoginView extends React.Component {
 		if (this.state.visible) {
 			return (
 				<div className="LoginContainer">
-					<img src={logo} alt="Projekt Cool-aid" />
+					<img src={logo} id='logingLogo' alt="Projekt Cool-aid" />
 					{this.renderLogin()}
 				</div>
 			);

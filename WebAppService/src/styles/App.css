@@ -37,3 +37,8 @@
 .rbc-toolbar-label{
 	visibility: hidden;
 }
+
+#logingLogo{
+	widows: 30%;
+	height: 30%;
+}
