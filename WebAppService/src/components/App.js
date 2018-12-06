@@ -37,7 +37,9 @@ class App extends React.Component {
 			role: "",
 			currentDate: new Date()
 		};
-		if (config.useDummyAPI) {
+		// console.log(process.env)
+		if (process.env.REACT_APP_useDummyAPI == 'true' && config.useDummyAPI) {
+			console.log('useDummyAPI')
 			this.api = new dummyAPI('Test');
 		} else {
 			this.api = new api(config.apiURL);
@@ -86,10 +88,10 @@ class App extends React.Component {
 				)
 			}
 		)
-		.catch(error => {
-			console.log(error);
-			window.alert(error.message);
-		})
+			.catch(error => {
+				console.log(error);
+				window.alert(error.message);
+			})
 	}
 
 	addNewBlock(block) {

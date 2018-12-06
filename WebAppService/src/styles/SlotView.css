@@ -62,3 +62,12 @@ div.Time{
 	font-size: 14px;
 	border-bottom: none;
 }
+
+ .slot-container>div {	
+	border-radius: 36px;	
+    display: flex;	
+	justify-content: center;
+	height:2.5em;	
+	width:50%;
+	margin:0.5em auto;
+} 
