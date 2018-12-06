@@ -7,6 +7,7 @@ let api, jsonPromise;
 
 beforeEach(() => {
 	api = new Api("localhost/test");
+	api.sessionToken = "token123";
 	jsonPromise = new Promise((resolve, reject) => {
 		resolve({token: "token123"});
 	});
@@ -23,8 +24,10 @@ beforeEach(() => {
 
 test("login", async () => {
 	// Test not logged in.
+	api.sessionToken = "";
 	expect(() => api.getIdentity("rossbob2")).toThrowError("Please login first.");
 	
+	api.sessionToken = "token123";
 	const request = api.login("rossbob2", "password123");
 	expect(fetch).toHaveBeenCalledTimes(1);
 	expect(fetch).toHaveBeenCalledWith(
