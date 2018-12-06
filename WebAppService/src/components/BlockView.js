@@ -34,7 +34,7 @@ export default class BlockView extends React.Component {
 			);
 		} else {
 			return (
-				<div className="BlockTimes">
+				<div className="blockTimes">
 					<input
 						name="start"
 						type="time"
@@ -53,7 +53,7 @@ export default class BlockView extends React.Component {
 						type="date"
 						value={this.props.date}
 						onChange={this.props.handleInputChange}
-					/>
+					/><br/>
 					{this.renderDurationList()}
 					Slot number: {this.props.slotNumber}
 					<br/>
@@ -87,12 +87,9 @@ export default class BlockView extends React.Component {
 		if (role === "student") {
 			return (
 				<div className="blockInfo">
-					Owners: {this.props.owners}
-					<br/>
-					Courses:{this.props.courseCodes}
-					<br/>
-					<h3>Block Description</h3>
-					<div> {this.props.comment}  </div>
+					Owners: {this.props.owners} <br/>
+					Courses:{this.props.courseCodes} <br/>
+					Comment: {this.props.comment}
 				</div>
 			);
 		} else {
@@ -105,16 +102,14 @@ export default class BlockView extends React.Component {
 						value={this.props.owners}
 						onChange={this.props.handleInputChange}
 					/>
-					<br/>
 					Courses:
 					<input
 						name="courseCodes"
 						type="text"
 						value={this.props.courseCodes}
 						onChange={this.props.handleInputChange}
-					/>
-					<br/>
-					Block Description
+					/><br/>
+					Comment:
 					<textarea
 						value = {this.props.comment} 
 						name = "comment" 
@@ -132,7 +127,7 @@ export default class BlockView extends React.Component {
 	render() {
 		return (
 			<div className="BlockView">
-				<div className="close-block" onClick={this.props.onClose}>Close</div>
+				<div className="close-block" onClick={this.props.onClose}>X</div>
 				{this.renderTimes(this.props.role)}
 				{this.renderInfo(this.props.role)}
 			</div>

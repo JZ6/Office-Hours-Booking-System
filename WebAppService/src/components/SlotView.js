@@ -70,7 +70,7 @@ export default class SlotView extends React.Component {
 			// Note editable by instructor or student author
 			return (
 				<input
-					className="text-input"
+					className="note-input"
 					name={`note${i}`}
 					id={`note${i}`}
 					type="text"
@@ -121,8 +121,10 @@ export default class SlotView extends React.Component {
 					id={`slot${i}`}
 					key={i}
 				>
-					{moment(moment(this.props.startTime) + this.props.slotDuration * i).format("h:mmA - ")}
-					{moment(moment(this.props.startTime) + this.props.slotDuration * (i + 1)).format("h:mmA")}
+					<div className="Time">
+						{moment(moment(this.props.startTime) + this.props.slotDuration * i).format("h:mmA - ")}
+						{moment(moment(this.props.startTime) + this.props.slotDuration * (i + 1)).format("h:mmA")}
+					</div>
 					{this.renderIdentity(i)}
 					{this.renderCourse(i)}
 					{this.renderNote(i)}

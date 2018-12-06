@@ -19,7 +19,7 @@ export default class DummyApi {
 						"csc302"
 					],
 					"comment": "We don't make mistakes, just happy little accidents.",
-					"startTime": "2018-11-18T12:00:00",
+					"startTime": "2018-12-03T12:00:00",
 					"appointmentDuration": 300000,
 					"appointmentSlots": [
 						{
@@ -50,7 +50,7 @@ export default class DummyApi {
 						"csc302"
 					],
 					"comment": "Birds!",
-					"startTime": "2018-11-18T16:00:00",
+					"startTime": "2018-12-02T16:00:00",
 					"appointmentDuration": 600000,
 					"appointmentSlots": [
 						{ "identity": "", "courseCode": "", "note": "" },
@@ -89,7 +89,7 @@ export default class DummyApi {
 						"csc402"
 					],
 					"comment": "TEST3!",
-					"startTime": "2018-11-21T09:00:00",
+					"startTime": "2018-12-05T09:00:00",
 					"appointmentDuration": 1200000,
 					"appointmentSlots": [
 						{ "identity": "", "courseCode": "", "note": "" },
