@@ -7,6 +7,7 @@ import logo from '../logo.png'
 
 import "../styles/LoginView.css";
 import '../styles/common.css'
+import { CLIENT_RENEG_LIMIT } from "tls";
 
 export default class LoginView extends React.Component {
 	constructor(props) {
@@ -23,9 +24,9 @@ export default class LoginView extends React.Component {
 	}
 	
 	handleLogin() {
-		if (this.state.loading || !this.state.visible) {return false;}
+		if (this.state.loading || !this.state.visible|| !this.state.username.length || !this.state.password.length) {return false;}
 		this.setState({loading: true});
-		
+
 		let promise = this.props.api.login(this.state.username, this.state.password);
 		promise.then((response) => {
 			console.log("Response:", response);
@@ -49,7 +50,7 @@ export default class LoginView extends React.Component {
 				visible: false,
 				loading: false
 			});
-			console.log(this.state.username);
+			// console.log(this.state.username);
 			if (this.state.username === "user1") {
 				this.props.authenticate(this.state.username, "instructor");
 			} else {
@@ -104,6 +105,9 @@ export default class LoginView extends React.Component {
 						value={this.state.username} 
 						placeholder="Username..."
 						onChange={this.handleChange} 
+						autoComplete='on'
+						autoFocus='on'
+						required={true}
 					/><br/>
 					Password:
 					<input 
@@ -112,6 +116,8 @@ export default class LoginView extends React.Component {
 						value={this.state.password}
 						placeholder="Password..."
 						onChange={this.handleChange} 
+						autoComplete='on'
+						required={true}
 					/><br/>
 					<button onClick={this.handleLogin}>Login</button>
 				</div>
