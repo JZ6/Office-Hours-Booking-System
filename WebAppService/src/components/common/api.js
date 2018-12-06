@@ -15,24 +15,7 @@ export default class Api {
 			method: "GET"
 		};
 		console.log("Request:", `${this.url}/auth`, fetchData);
-		let promise = fetch(`${this.url}/auth`, fetchData);
-		promise.then((response) => {
-			console.log("Response:", response);
-			if (response.status !== 200) {
-				window.alert(`${response.status}: ${response.statusText}`);
-			}
-			response.json().then((data) => {
-				this.sessionToken = data.token;
-			});
-			if (typeof (Storage) !== "undefined") {
-				sessionStorage.setItem("sessionToken", this.sessionToken);
-			}
-		})
-		.catch((error) => {
-			console.log(error);
-			window.alert(error.message);
-		});
-		return promise;
+		return fetch(`${this.url}/auth`, fetchData);
 	}
 
 	getIdentity(id) {

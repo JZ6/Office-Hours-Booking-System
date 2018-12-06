@@ -50,7 +50,7 @@ class App extends React.Component {
 		// , 2000);
 	}
 
-	authenticate(role, id) {
+	authenticate(id, role) {
 		this.setState({
 			authenticated: true,
 			locked: false,
@@ -58,7 +58,7 @@ class App extends React.Component {
 			id: id,
 			currentDate: new Date()
 		});
-		console.log('Logged in as:', role)
+		console.log(`Logged in as ${role} ${id}.`);
 		this.fetchBlocks(7);
 	}
 
