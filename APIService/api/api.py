@@ -1,6 +1,7 @@
 from logging import getLogger
 
 from flask_restful import Api
+from flask_cors import CORS
 
 from api.identity import Identity
 from api.auth import Auth
@@ -10,6 +11,7 @@ LOGGER = getLogger(__name__)
 
 def create_api(app):
     api = Api(app)
+    CORS(app)
 
     LOGGER.info("Initializing API resources")
 

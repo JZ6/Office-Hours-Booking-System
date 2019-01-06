@@ -11,13 +11,11 @@
 
 .login-LoadingOverlay {
     margin: auto;
-    width: 100%;
+    width: 100vw;
     position: absolute;
-    left: 0%;
-    bottom: 0%;
     z-index: 1001;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0);
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
     /* display: none; */
 }
 

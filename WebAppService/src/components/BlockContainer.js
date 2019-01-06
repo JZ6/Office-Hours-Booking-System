@@ -214,19 +214,19 @@ export default class BlockContainer extends React.Component {
 			this.props.api.deleteBlock(this.state.blockId)
 			.then((response) => {
 				console.log("Response:", response);
+				this.setState({locked: false});
 				if (response.status !== 200) {
 					window.alert(`${response.status}: ${response.statusText}`);
+				} else {
+					this.props.blockContainerCallback(this.state.blockId);
+					this.onClose();
 				}
-				this.setState({locked: false});
 			})
 			.catch((error) => {
 				console.log(error);
 				window.alert(error.message);
 				this.setState({locked: false});
 			});
-			
-			this.props.blockContainerCallback(this.state.blockId);
-			this.onClose();
 		}
 	}
 	
@@ -408,9 +408,11 @@ export default class BlockContainer extends React.Component {
 			} else {
 				// Instructor clears all
 				for (let i = 0; i < this.state.appointmentSlots.length; i++) {
-					promises.push(this.props.api.editSlot(
-						this.state.blockId, i, 
-						{identity: "", courseCode: "", note: ""}));
+					if (this.state.appointmentSlots[i].identity !== "") {
+						promises.push(this.props.api.editSlot(
+							this.state.blockId, i, 
+							{identity: "", courseCode: "", note: ""}));
+					}
 				}
 			}
 			Promise.all(promises)
