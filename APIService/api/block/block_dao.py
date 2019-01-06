@@ -110,17 +110,21 @@ def get_booking_by_id(block, booking_id, utor_id=None):
         if booking['utorId'] != utor_id \
                 and not is_admin(utor_id) \
                 and utor_id not in block['owners']:
-            booking['utorId'] = ''
-            booking['courseCode'] = ''  # TODO: Should this not be masked?
+            booking['utorId'] = 'RESERVED'
+            booking['courseCode'] = ''
             booking['note'] = ''
     return booking
 
 
 def map_bookings(block, utor_id=None):
     """Fill in given Block's slot info using the Bookings collection."""
-    block['slots'] = list(map(
-        lambda slot: get_booking_by_id(block, slot, utor_id) or {},
-        block['slots']))
+    block['slots'] = list(
+        map(
+            lambda slot: get_booking_by_id(block, slot, utor_id)
+            or {'utorId': '', 'courseCode': '', 'note': ''},
+            block['slots']
+        )
+    )
 
 
 def unmap_bookings(block):
@@ -133,21 +137,18 @@ def unmap_bookings(block):
             block['slots']))
 
 
-def book_slot(block_id, identity, slot_number, note):
+def book_slot(block_id, identity, slot_number, note, course_code):
     """Create a Booking and return its ID if successful, `None` otherwise."""
     block = get_block_by_id(block_id)
     if block is None:
         return None
 
-    # TODO: courseCode not provided; default to Block's data
-    course_codes = block['courseCodes']
-    course_code = course_codes[0] if len(course_codes) > 0 else ''
-
     slots = block['slots']
     if slot_number >= len(slots):
         return None
 
-    if slots[slot_number] != {}:
+    # TODO: This slot is probably taken (sufficient check?)
+    if slots[slot_number]['utorId'] != '':
         return None
 
     insertion = get_db().bookings.insert_one({
@@ -176,4 +177,7 @@ def prepare_block(block):
     block.pop('endTime')
     block['startTime'] = block['startTime'].isoformat()
     block['appointmentSlots'] = block.pop('slots')
+    for slot in block['appointmentSlots']:
+        if 'utorId' in slot:
+            slot['identity'] = slot.pop('utorId')
     block['appointmentDuration'] = block.pop('slotDuration')

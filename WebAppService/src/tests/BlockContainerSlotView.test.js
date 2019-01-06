@@ -153,9 +153,8 @@ describe("instructor view", () => {
 		await mockJsonPromise;
 		wrapper = wrapper.update();
 		
-		expect(mockEditSlot).toHaveBeenCalledTimes(3);
-		expect(mockEditSlot).toHaveBeenCalledWith("0", 2, 
-			{identity: "", courseCode: "", note: ""});
+		// Doesn't clear already empty slots.
+		expect(mockEditSlot).toHaveBeenCalledTimes(2);
 		expect(wrapper.find("#identity0").props().value).toEqual("");
 		expect(wrapper.find("#note0").props().value).toEqual("");
 		expect(wrapper.find("#identity1").props().value).toEqual("");

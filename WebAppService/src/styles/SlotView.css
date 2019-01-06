@@ -35,7 +35,7 @@
 	font-size: 14px;
 	border-radius: 4px;
 	padding: 4px 8px;
-	min-width: 100px;
+	min-width: 7em;
 	border: none;
 	margin: -2px 4px 2px 4px;
 	box-shadow: 0 4px rgb(0, 89, 179);
@@ -63,11 +63,10 @@ div.Time{
 	border-bottom: none;
 }
 
- .slot-container>div {	
-	border-radius: 36px;	
-    display: flex;	
-	justify-content: center;
-	height:2.5em;	
-	width:50%;
-	margin:0.5em auto;
+.slot-container>div {
+	display: flex;
+	justify-content: left;
+	height:1.5em;
+	width:100%;
+	padding: 0.25em 0 0.25em 0;
 } 

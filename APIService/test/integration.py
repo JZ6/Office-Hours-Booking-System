@@ -14,6 +14,8 @@ class IntegrationTest(TestCase):
         self.client = self.get_client(self.app)
     
     def tearDown(self):
+        with self.app.app_context():
+            get_db().client.drop_database(get_db().name)
         self.app = None
         self.client = None
 

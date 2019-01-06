@@ -32,29 +32,33 @@ export default class LoginView extends React.Component {
 			console.log("Response:", response);
 			if (response.status !== 200) {
 				window.alert(`${response.status}: ${response.statusText}`);
+				this.setState({loading: false});
+			} else {
+				return response.json();
 			}
-			return response.json();
 		})
 		.then((data) => {
-			console.log("Response Data:", data);
-			this.id = data.id;
-			this.sessionToken = data.token;
-			
-			this.props.api.sessionToken = data.token;
-			
-			if (typeof (Storage) !== "undefined") {
-				sessionStorage.setItem("sessionToken", this.sessionToken);
-			}
-			
-			this.setState({
-				visible: false,
-				loading: false
-			});
-			// console.log(this.state.username);
-			if (this.state.username === "user1") {
-				this.props.authenticate(this.state.username, "instructor");
-			} else {
-				this.props.authenticate(this.state.username, "student");
+			if (data) {
+				console.log("Response Data:", data);
+				this.id = data.id;
+				this.sessionToken = data.token;
+				
+				this.props.api.sessionToken = data.token;
+				
+				if (typeof (Storage) !== "undefined") {
+					sessionStorage.setItem("sessionToken", this.sessionToken);
+				}
+				
+				this.setState({
+					visible: false,
+					loading: false
+				});
+				// console.log(this.state.username);
+				if (this.state.username === "user1") {
+					this.props.authenticate(this.state.username, "instructor");
+				} else {
+					this.props.authenticate(this.state.username, "student");
+				}
 			}
 		})
 		.catch((error) => {

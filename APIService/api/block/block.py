@@ -35,7 +35,8 @@ def rebook(old_booking_ids, new_bookings, block_id):
                 block_id,
                 new_booking['identity'],
                 i,
-                new_booking['note']
+                new_booking['note'],
+                new_booking['courseCode']
             )
             if booking_id is None:
                 booking_id = ObjectId('000000000000000000000000')
@@ -50,7 +51,8 @@ def rebook(old_booking_ids, new_bookings, block_id):
                 block_id,
                 new_booking['identity'],
                 i,
-                new_booking['note']
+                new_booking['note'],
+                new_booking['courseCode']
             )
             if booking_id is None:
                 booking_id = ObjectId('000000000000000000000000')
@@ -78,6 +80,14 @@ def is_admin(identity):
     if result is None:
         return False
     return result['role'] == 'admin'
+
+
+def is_instructor(identity):
+    """Return `True` if user has instructor permissions."""
+    result = get_db().identity.find_one({'id': identity})
+    if result is None:
+        return False
+    return result['role'] == 'instructor'
 
 
 class Block(Resource):
@@ -133,21 +143,23 @@ class Block(Resource):
             booking = request.get_json()
             if booking is None \
                     or 'identity' not in booking \
-                    or 'slotNum' not in booking \
+                    or 'startTime' not in booking \
+                    or 'courseCode' not in booking \
                     or 'note' not in booking:
                 return Block.failure_invalid_body
 
             utor_id = booking['identity']
-            slot_num = booking['slotNum']
+            slot_num = booking['startTime']
             note = booking['note']
+            course_code = booking['courseCode'].upper()
+            if course_code == '' and utor_id != '':
+                return Block.failure_invalid_body
 
-            # TODO: Update API and add courseCode field here
-
+            block = get_block_by_id(block_id)
+            slots = block['slots']
+            slot = slots[slot_num]
             # Clear a booking
             if utor_id == '' and note == '':
-                block = get_block_by_id(block_id)
-                slots = block['slots']
-                slot = slots[slot_num]
                 if identity != slot['utorId'] \
                         and not is_admin(identity) \
                         and identity not in block['owners']:
@@ -159,19 +171,22 @@ class Block(Resource):
                 else:
                     return Block.failure_booking_incomplete
 
+            # If it exists, delete slot in order to re-add new values (edit)
+            if slot['utorId'] != '' \
+                    and (slot['utorId'] == identity \
+                    or is_admin(identity) \
+                    or is_instructor(identity)):
+                success = delete_booking(block_id, slot_num)
+                if not success:
+                    return Block.failure_booking_incomplete
+
             # Create a new booking
-            insertion_id = book_slot(block_id, utor_id, slot_num, note)
+            insertion_id = \
+                book_slot(block_id, utor_id, slot_num, note, course_code)
             if insertion_id is None:
                 return Block.failure_booking_incomplete
 
             return Block.success_booking_complete
-
-        # Only admin users can modify blocks
-        block = get_block_by_id(block_id)
-        if block is None:
-            return Block.failure_block_not_found
-        if not is_admin(identity) and identity not in block['owners']:
-            return Block.failure_auth
 
         # POST /blocks
         block = request.get_json()
@@ -183,6 +198,9 @@ class Block(Resource):
 
         existing_block = get_block_by_id(block['blockId'])
         if existing_block is None or block['blockId'] == '':
+            if not is_admin(identity) and not is_instructor(identity):
+                return Block.failure_auth
+
             # Add a new block; make sure all fields are included
             block['blockId'] = str(getrandbits(128))  # TODO: For now
 
@@ -194,6 +212,12 @@ class Block(Resource):
                     or 'appointmentSlots' not in block:
                 return Block.failure_invalid_body
 
+            if len(block['owners']) == 0:
+                block['owners'].append(identity)  # TODO: Workaround
+
+            if len(block['courseCodes']) == 0:
+                block['courseCodes'].append('CSC302')  # TODO: Workaround
+
             # Remap some field names and calculate endTime
             block['slotDuration'] = block.pop('appointmentDuration')
             # NOTE: Assume new blocks are always created with no bookings
@@ -201,16 +225,16 @@ class Block(Resource):
             for slot in block.pop('appointmentSlots'):
                 block['slots'].append(ObjectId('000000000000000000000000'))
             block['startTime'] = datetime.strptime(
-                block['startTime'], '%Y-%m-%dT%H:%M:%S'
-            )
+                block['startTime'], '%Y-%m-%dT%H:%M:%S.%fZ'
+            ) - timedelta(hours=5)  # TODO: Terrible hack; no DST anytime soon
             block['endTime'] = block['startTime'] + timedelta(
                 milliseconds=block['slotDuration'] * len(block['slots'])
             )
 
         else:
             # Editing an existing block; check permissions using identity
-            # TODO: Make sure user is permitted to delete the block (owner)
-            if False:
+            if not is_admin(identity) \
+                    and identity not in existing_block['owners']:
                 return Block.failure_auth
 
             unmap_bookings(existing_block)
@@ -239,6 +263,11 @@ class Block(Resource):
                 # Keep old bookings
                 block['slots'] = existing_block['slots']
             else:
+                # Make sure all provided courseCode fields are non-empty
+                for slot in block['appointmentSlots']:
+                    if slot['courseCode'] == '' and slot['identity'] != '':
+                        return Block.failure_invalid_body
+
                 block['slots'] = rebook(
                     existing_block['slots'],
                     block['appointmentSlots'],
@@ -250,8 +279,10 @@ class Block(Resource):
             if 'startTime' not in block:
                 block['startTime'] = existing_block['startTime']
             else:
-                block['startTime'] = \
-                    datetime.strptime(block['startTime'], '%Y-%m-%dT%H:%M:%S')
+                block['startTime'] = datetime.strptime(
+                    block['startTime'],
+                    '%Y-%m-%dT%H:%M:%S.%fZ'
+                ) - timedelta(hours=5)  # TODO: Terrible hack
 
             # End time
             if 'endTime' not in block:

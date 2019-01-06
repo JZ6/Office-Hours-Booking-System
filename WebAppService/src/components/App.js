@@ -38,11 +38,17 @@ class App extends React.Component {
 			currentDate: new Date()
 		};
 		// console.log(process.env)
-		if (process.env.REACT_APP_useDummyAPI == 'true' && config.useDummyAPI) {
-			console.log('useDummyAPI')
-			this.api = new dummyAPI('Test');
+		let url = "localhost";
+		if (process.env.REACT_APP_url) {
+			url = process.env.REACT_APP_url;
+		}
+		
+		if (process.env.REACT_APP_useDummyAPI === "true") {
+			console.log("Using dummy API");
+			this.api = new dummyAPI("TESTURL");
 		} else {
-			this.api = new api(config.apiURL);
+			console.log(`Using real API at ${url}`);
+			this.api = new api(url);
 		}
 
 		this.authenticate = this.authenticate.bind(this);
@@ -70,28 +76,24 @@ class App extends React.Component {
 		const startDate = new Date();
 		const endDate = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + days);
 		const blocksPromise = this.api.getBlocks(startDate.toISOString(), endDate.toISOString());
-
-		blocksPromise.then(
-			response => {
-				console.log("Response:", response);
-				if (response.status !== 200) {
-					window.alert(`${response.status}: ${response.statusText}`);
-					return false;
-				}
-
-				this.setState({ events: [] });  // Empty out existing events
-
-				response.json().then(
-					data => {
-						data.blocks.forEach(block => this.addNewBlock(block));
-					}
-				)
+		
+		blocksPromise.then((response) => {
+			console.log("Response:", response);
+			if (response.status === 200) {
+				return response.json();
+			} else {
+				window.alert(`${response.status}: ${response.statusText}`);
 			}
-		)
-			.catch(error => {
-				console.log(error);
-				window.alert(error.message);
-			})
+		}).then((data) => {
+			if (data) {
+				console.log("Response Data:", data);
+				this.setState({ events: [] });  // Empty existing events
+				data.blocks.forEach(block => this.addNewBlock(block));  // Repopulate
+			}
+		}).catch(error => {
+			console.log(error);
+			window.alert(error.message);
+		});
 	}
 
 	addNewBlock(block) {
@@ -198,7 +200,10 @@ class App extends React.Component {
 		this.fetchBlocks(7);
 	};
 
-	blockContainerClose = () => this.setState({ locked: false });
+	blockContainerClose = () => {
+		this.setState({locked: false});
+		this.fetchBlocks(7);
+	}
 
 	changeDate = day => this.setState({ currentDate: day });
 

@@ -1,10 +1,14 @@
 from hashlib import sha256
 from datetime import datetime, timedelta
+from logging import getLogger, basicConfig, INFO
 
 from flask_restful import Resource
 from flask import request
 
 from ..db import get_db
+
+basicConfig(level=INFO)
+LOGGER = getLogger(__name__)
 
 
 def deny_authorization(reason=None):
@@ -18,10 +22,11 @@ class Auth(Resource):
     # TODO: log request
     def get(self):
         # TODO: implement real auth
-        if request.authorization is None:
+        auth_header = request.headers.get('Authorization')
+        if auth_header is None:
             return deny_authorization("No credentials provided")
-        password = request.authorization.password
-        username = request.authorization.username
+        username = auth_header.split(' ')[1].split(':')[0]
+        password = auth_header.split(' ')[1].split(':')[1]
         if not self.check_password(username, password):
             return deny_authorization("Invalid credentials")
         token = self.generate_token(username)

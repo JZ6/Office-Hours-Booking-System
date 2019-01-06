@@ -191,7 +191,7 @@ export default class DummyApi {
 				status: 200,
 				statusText: "OK",
 				json: jsonPromise
-			}), this.delay);
+			}), 600);
 		});
 		return promise;
 	}

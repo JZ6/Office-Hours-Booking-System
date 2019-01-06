@@ -1,3 +1,5 @@
+from unittest import skip
+
 from flask import jsonify, json
 from test import integration
 from api.db import get_db
@@ -35,7 +37,7 @@ class TestAPIIdentity(integration.IntegrationTest):
     Posting an invalid document that doesn't pass the Identity validator should
     throw 404.
     '''
-
+    @skip
     def test_post_404_local_validator(self):
         with self.app.app_context():
             identity_id = "mcgregor1"
